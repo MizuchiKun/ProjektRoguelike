@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 namespace ProjektRoguelike
 {
     /// <summary>
-    /// A templat for a class.
+    /// A template for a class.
     /// </summary>
     public class _ClassTemplate
     {

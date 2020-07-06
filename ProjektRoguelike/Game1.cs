@@ -9,13 +9,19 @@ namespace ProjektRoguelike
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            // Set Global's Graphics and Content.
+            Globals.Content = Content;
+            Globals.Content.RootDirectory = "Content";
+
+            // Create the GraphicsDeviceManager.
+            Globals.Graphics = new GraphicsDeviceManager(this)
+            {
+                IsFullScreen = false,
+                PreferredBackBufferWidth = 1280,
+                PreferredBackBufferHeight = 720
+            };
         }
 
         /// <summary>
@@ -26,7 +32,18 @@ namespace ProjektRoguelike
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Set the GraphicsDevice's SamplerState and RasterizerState.
+            //Globals.Graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            Globals.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { CullMode = CullMode.None };
+
+            // Initialize the Camera.
+            Globals.Camera = new Camera(new Vector3(0, 0/*128, -128*/, 150), Vector3.Forward);
+
+            // Initialize the BasicEffect.
+            Globals.BasicEffect = new BasicEffect(Globals.Graphics.GraphicsDevice);
+
+            // Set the initial Scene.
+            Globals.CurrentScene = new Level();
 
             base.Initialize();
         }
@@ -35,22 +52,13 @@ namespace ProjektRoguelike
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent()
-        {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
-        }
+        protected override void LoadContent() { }
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
         /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
-        }
+        protected override void UnloadContent() { }
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -59,10 +67,19 @@ namespace ProjektRoguelike
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            // Save the current GameTime and states.
+            Globals.GameTime = gameTime;
+            Globals.CurrentKeyboardState = Keyboard.GetState();
+            Globals.CurrentMouseState = Mouse.GetState();
+            Globals.CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
 
-            // TODO: Add your update logic here
+            // Call the current Scene's Update method.
+            Globals.CurrentScene.Update();
+
+            // Save the current states as the previous states (so they will be accessable as previous states in the next Update()).
+            Globals.PreviousKeyboardState = Globals.CurrentKeyboardState;
+            Globals.PreviousMouseState = Globals.CurrentMouseState;
+            Globals.PreviousGamePadState = Globals.CurrentGamePadState;
 
             base.Update(gameTime);
         }
@@ -73,9 +90,11 @@ namespace ProjektRoguelike
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            // Clear the GraphicsDevice.
+            Globals.Graphics.GraphicsDevice.Clear(Color.Navy);
 
-            // TODO: Add your drawing code here
+            // Call the current Scene's Draw method.
+            Globals.CurrentScene.Draw();
 
             base.Draw(gameTime);
         }
