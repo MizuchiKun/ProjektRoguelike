@@ -25,7 +25,7 @@ namespace ProjektRoguelike
             //_levelIndex = levelIndex;
 
             // Set the camera's position.
-            Globals.Camera.Position = new Vector3(0, 0, 150);
+            Globals.Camera.Position = new Vector3(0, 0, 300);
 
             //TEST STUFF
             _gameObjects.Add(new Sprite(texture: Globals.Content.Load<Texture2D>("Sprites/test"),
