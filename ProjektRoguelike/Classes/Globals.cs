@@ -12,6 +12,11 @@ namespace ProjektRoguelike
     public static class Globals
     {
         /// <summary>
+        /// The <see cref="Game1"/> of this project.
+        /// </summary>
+        public static Game1 Game1 { get; set; }
+
+        /// <summary>
         /// The <see cref="ContentManager"/> of this project.
         /// </summary>
         public static ContentManager Content { get; set; }
@@ -212,10 +217,81 @@ namespace ProjektRoguelike
         /// </summary>
         /// <param name="time">The given time span.</param>
         /// <param name="pointInTime">The given point in time.</param>
-        /// <returns></returns>
+        /// <returns>True if the given time span has passed, false otherwise.</returns>
         public static bool HasTimePassed(TimeSpan time, DateTime pointInTime)
         {
             return (DateTime.Now - pointInTime >= time);
+        }
+
+        /// <summary>
+        /// Gets the distance between the two given <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="origin">The origin <see cref="Vector2"/>.</param>
+        /// <param name="target">The target <see cref="Vector2"/>.</param>
+        /// <returns>The distance between the two <see cref="Vector2"/>.</returns>
+        public static float GetDistance(Vector2 origin, Vector2 target)
+        {
+            return (origin - target).Length();
+        }
+
+        /// <summary>
+        /// Gets the distance between the two given <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="origin">The origin <see cref="Vector3"/>.</param>
+        /// <param name="target">The target <see cref="Vector3"/>.</param>
+        /// <returns>The distance between the two <see cref="Vector3"/>.</returns>
+        public static float GetDistance(Vector3 origin, Vector3 target)
+        {
+            return (origin - target).Length();
+        }
+
+        /// <summary>
+        /// Gets the degrees of the given <see cref="Vector2"/> direction.
+        /// </summary>
+        /// <param name="direction">The <see cref="Vector2"/> direction.</param>
+        /// <returns>The degrees of the direction.</returns>
+        public static float Vector2ToDegrees(Vector2 direction)
+        {
+            // Return the angle.
+            return MathHelper.ToDegrees((float)Math.Atan2(direction.Y, direction.X));
+        }
+
+        /// <summary>
+        /// Converts the given degrees to a <see cref="Vector2"/>.<br></br>
+        /// </summary>
+        /// <param name="degrees">The degrees that will be converted.</param>
+        /// <returns>The <see cref="Vector2"/> direction equivalent to the degrees.</returns>
+        public static Vector2 DegreesToVector2(float degrees)
+        {
+            // Return the degrees as Vector2.
+            return new Vector2((float)Math.Cos(MathHelper.ToRadians(degrees)), (float)Math.Sin(MathHelper.ToRadians(degrees)));
+        }
+
+        /// <summary>
+        /// Gets the degrees of the given <see cref="Vector3"/> direction.
+        /// </summary>
+        /// <param name="direction">The <see cref="Vector3"/> direction.</param>
+        /// <returns>The rotational degrees around the axis.</returns>
+        public static Vector3 Vector3ToDegrees(Vector3 direction)
+        {
+            // Return the angle.
+            return new Vector3(MathHelper.ToDegrees((float)Math.Atan2(direction.Y, direction.Z)),
+                               MathHelper.ToDegrees((float)Math.Atan2(direction.X, direction.Z)),
+                               MathHelper.ToDegrees((float)Math.Atan2(direction.Y, direction.X)));
+        }
+
+        /// <summary>
+        /// Converts the given degrees to a <see cref="Vector3"/>.<br></br>
+        /// </summary>
+        /// <param name="degrees">The degrees that will be converted.</param>
+        /// <returns>The <see cref="Vector3"/> direction equivalent to the degrees.</returns>
+        public static Vector3 DegreesToVector3(Vector3 degrees)
+        {
+            // Convert degrees to radians.
+            degrees *= MathHelper.Pi / 180f;
+
+            // Return the Vector3 direction equivalent to the degrees.
+            return Matrix.CreateFromAxisAngle(degrees / degrees.Length(), degrees.Length()).Forward;
         }
     }
 
