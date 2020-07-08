@@ -1,3 +1,4 @@
-﻿// Create the Level and Room structure, based on the whiteboard.
+﻿// Re-think about the Level and Room structure...
+// Create the Level and Room structure, based on the whiteboard.
 // Create the level generation stuff.
 // and more... I guess.
