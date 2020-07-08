@@ -46,6 +46,7 @@
     <Compile Include="Classes\Scene\Level.cs" />
     <Compile Include="Classes\GameObject\Sprite.cs" />
     <Compile Include="Classes\Camera.cs" />
+    <Compile Include="Classes\Scene\Room.cs" />
     <Compile Include="Classes\_ClassTemplate.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Game1.cs" />
@@ -61,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
-    <Content Include="TilsLog.txt" />
+    <Content Include="TilTasks.txt" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

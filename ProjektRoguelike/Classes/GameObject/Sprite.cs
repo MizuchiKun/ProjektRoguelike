@@ -1,11 +1,4 @@
-﻿// STILL Sprite.Draw()!
-    // Prevent shifting to the right, it might be the only problem...
-    // OR JUST GET THE ROTATION TO WORK... >_<
-// standard layout of room!
-// Level, Room, etc. classes!
-// and more...
-
-using System;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;

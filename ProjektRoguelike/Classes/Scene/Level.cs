@@ -28,16 +28,7 @@ namespace ProjektRoguelike
             Globals.Camera.Position = new Vector3(0, 0, 300);
 
             //TEST STUFF
-            _gameObjects.Add(new Sprite(texture: Globals.Content.Load<Texture2D>("Sprites/test"),
-                                        position: new Vector3(-128, 0, 0),
-                                        origin: new Vector2(0.5f),
-                                        rotation: new Vector3(0, 0, 0),
-                                        scales: new Vector2(1, 2)));
-            _gameObjects.Add(new Sprite(texture: Globals.Content.Load<Texture2D>("Sprites/test"),
-                                        position: new Vector3(128, 0, 0),
-                                        origin: new Vector2(0.5f),
-                                        rotation: new Vector3(0, 0, 0),
-                                        scales: new Vector2(1, 0.5f)));
+            _gameObjects.Add(new Room(Vector2.One));
         }
     }
 }
