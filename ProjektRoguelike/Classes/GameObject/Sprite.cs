@@ -1,4 +1,6 @@
-﻿// Sprite.Draw()!
+﻿// STILL Sprite.Draw()!
+    // Prevent shifting to the right, it might be the only problem...
+    // OR JUST GET THE ROTATION TO WORK... >_<
 // standard layout of room!
 // Level, Room, etc. classes!
 // and more...
@@ -28,17 +30,17 @@ namespace ProjektRoguelike
         /// <summary>
         /// The origin of this <see cref="Sprite"/>.
         /// </summary>
-        public Vector2? Origin { get; set; }
+        public Vector2 Origin { get; set; }
 
         /// <summary>
         /// The rotation of this <see cref="Sprite"/>.
         /// </summary>
-        public Vector3? Rotation { get; set; }
+        public Vector3 Rotation { get; set; }
 
         /// <summary>
         /// The scale of this <see cref="Sprite"/>.
         /// </summary>
-        public Vector3? Scale { get; set; }
+        public Vector2 Scales { get; set; }
 
         /// <summary>
         /// The source rectangle of this <see cref="Sprite"/>.
@@ -61,20 +63,23 @@ namespace ProjektRoguelike
         /// If null, it will be <see cref="Vector2.Zero"/>.
         /// </param>
         /// <param name="rotation">An optional rotation of this Sprite. If null, it will be <see cref="Vector3.Zero"/>.</param>
+        /// <param name="scales">Optional scaling values for the x- and y-axis of this Sprite. If null, it will be <see cref="Vector2.One"/>.</param>
         /// <param name="sourceRectangle">An optional rotation of this Sprite (in degrees). If null, it will be <see cref="Vector3.Zero"/>.</param>
         /// <param name="spriteEffect">An optional sprite effect of this Sprite. <see cref="SpriteEffects.None"/> by default.</param>
         public Sprite(Texture2D texture, 
                       Vector3 position,
                       Vector2? origin = null,
                       Vector3? rotation = null,
+                      Vector2? scales = null,
                       Rectangle? sourceRectangle = null,
                       SpriteEffects spriteEffect = SpriteEffects.None)
         {
             // Store the parameters.
             Texture = texture;
             Position = position;
-            Origin = origin;
-            Rotation = rotation;
+            Origin = (origin != null) ? origin.Value : Vector2.Zero;
+            Rotation = (rotation != null) ? rotation.Value : Vector3.Zero;
+            Scales = (scales != null) ? scales.Value : Vector2.One;
             SourceRectangle = sourceRectangle;
             SpriteEffect = spriteEffect;
         }
@@ -84,7 +89,15 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Update()
         {
-
+            float speed = 45;
+            if (Globals.GetKey(Keys.A))
+            {
+                Rotation += new Vector3(0, 0, -speed) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (Globals.GetKey(Keys.D))
+            {
+                Rotation += new Vector3(0, 0, speed) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+            }
         }
 
         /// <summary>
@@ -96,11 +109,11 @@ namespace ProjektRoguelike
             VertexPositionTexture[] spriteVertices = new VertexPositionTexture[6];
 
             // Their positions.
-            Vector3 origin = ((Origin != null) ? new Vector3(Origin.Value * new Vector2(Texture.Width, -Texture.Height), 0f) : Vector3.Zero);
-            spriteVertices[0].Position = (Position - origin);
-            spriteVertices[1].Position = (Position - origin) + new Vector3(Texture.Width, 0, 0);
-            spriteVertices[2].Position = (Position - origin) + new Vector3(0, -Texture.Height, 0);
-            spriteVertices[3].Position = (Position - origin) + new Vector3(Texture.Width, -Texture.Height, 0);
+            Vector3 absOrigin = new Vector3(Origin * new Vector2(Texture.Width, -Texture.Height), 0f);
+            spriteVertices[0].Position = (Position - absOrigin);
+            spriteVertices[1].Position = (Position - absOrigin) + new Vector3(Texture.Width, 0, 0);
+            spriteVertices[2].Position = (Position - absOrigin) + new Vector3(0, -Texture.Height, 0);
+            spriteVertices[3].Position = (Position - absOrigin) + new Vector3(Texture.Width, -Texture.Height, 0);
             spriteVertices[4].Position = spriteVertices[1].Position;
             spriteVertices[5].Position = spriteVertices[2].Position;
 
@@ -126,29 +139,48 @@ namespace ProjektRoguelike
             }
 
 
-            // Rotating.
-            //loop through the first 4 spriteVertices
-            //Matrix.CreateRotation()??
-            //get distance by deltaPos
-            //DegreesToVector3(deltaPos)
-            //add Rotation to above result
-            //calculate new Vector3 in the new direction, at the calculated distance
-            //update the 5th and 6th spriteVertices
-            //...
+            // Rotating and Scaling.
+            // For every corner.
+            for (byte i = 0; i < 4; i++)
+            {
+
+                            // TRY DegreesToVector3 AND STUFF!
+
+                // Rotate.
+                Vector2 delta, planePos;
+                Vector3 position = spriteVertices[i].Position;
+                // X.
+                delta = new Vector2(position.Y, position.Z) - new Vector2(Position.Y, Position.Z);
+                planePos = delta.Length() * Globals.DegreesToVector2(Globals.Vector2ToDegrees(delta) + Rotation.X);
+                position = new Vector3(position.X, planePos.X, planePos.Y);
+                // Y.
+                delta = new Vector2(position.X, position.Z) - new Vector2(Position.X, Position.Z);
+                planePos = delta.Length() * Globals.DegreesToVector2(Globals.Vector2ToDegrees(delta) + Rotation.Y);
+                position = new Vector3(planePos.X, position.Y, planePos.Y);
+                // Z.
+                delta = new Vector2(position.X, position.Y) - new Vector2(Position.X, Position.Y);
+                planePos = delta.Length() * Globals.DegreesToVector2(Globals.Vector2ToDegrees(delta) + Rotation.Z);
+                position = new Vector3(planePos.X, planePos.Y, position.Z);
+                // Apply the new position.
+                spriteVertices[i].Position = position;
+
+                // Scale.
+                spriteVertices[i].Position =
+                    Vector3.Transform(spriteVertices[i].Position,
+                                      Matrix.CreateScale(new Vector3(Scales, 1)));
+            }
 
 
-            // Scaling.
-            //loop through first 4 spriteVertices
-            //Matrix.CreateScale()??
-            //get delta to Position (vertexposition - Position)
-            //new vertexposition is (Position + delta * Scale)
-            //update the 5th and 6th spriteVertices
-            //...
+            // Update the 5th and 6th vertex position.
+            spriteVertices[4].Position = spriteVertices[1].Position;
+            spriteVertices[5].Position = spriteVertices[2].Position;
 
 
-            // Apply the matrices.
-            Globals.BasicEffect.View = Globals.Camera.View;
+            // Draw the Sprite.
+            // Apply the projection, view and world matrices.
             Globals.BasicEffect.Projection = Globals.Camera.Projection;
+            Globals.BasicEffect.View = Globals.Camera.View;
+            Globals.BasicEffect.World = Globals.Camera.World;
 
             // Apply the texture.
             Globals.BasicEffect.TextureEnabled = true;

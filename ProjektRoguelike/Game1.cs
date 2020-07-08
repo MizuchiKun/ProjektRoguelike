@@ -11,6 +11,9 @@ namespace ProjektRoguelike
     {
         public Game1()
         {
+            // Store yourself in Globals.
+            Globals.Game1 = this;
+
             // Set Global's Graphics and Content.
             Globals.Content = Content;
             Globals.Content.RootDirectory = "Content";
@@ -37,7 +40,7 @@ namespace ProjektRoguelike
             Globals.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { CullMode = CullMode.None };
 
             // Initialize the Camera.
-            Globals.Camera = new Camera(new Vector3(0, 0/*128, -128*/, 150), Vector3.Forward);
+            Globals.Camera = new Camera(new Vector3(0, 0, 0), Vector3.Forward);
 
             // Initialize the BasicEffect.
             Globals.BasicEffect = new BasicEffect(Globals.Graphics.GraphicsDevice);
