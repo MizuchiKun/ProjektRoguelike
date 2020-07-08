@@ -6,7 +6,6 @@
 // and more...
 
 using System;
-using System.Net.Sockets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -61,11 +60,11 @@ namespace ProjektRoguelike
         /// <param name="origin">
         /// An optional <b>relative</b> origin of this Sprite. <br></br>
         /// For example: (0, 0) is at the top-left, (1, 1) is at the bottom-right.<br></br>
-        /// If null, it will use <see cref="Vector2.Zero"/>.
+        /// If null, it will be <see cref="Vector2.Zero"/>.
         /// </param>
-        /// <param name="rotation">An optional rotation of this Sprite. If null, it will use <see cref="Vector3.Zero"/>.</param>
-        /// <param name="scales">Optional scaling values for the x- and y-axis of this Sprite. If null, it will use <see cref="Vector2.One"/>.</param>
-        /// <param name="sourceRectangle">An optional rotation of this Sprite (in degrees). If null, it will use <see cref="Vector3.Zero"/>.</param>
+        /// <param name="rotation">An optional rotation of this Sprite. If null, it will be <see cref="Vector3.Zero"/>.</param>
+        /// <param name="scales">Optional scaling values for the x- and y-axis of this Sprite. If null, it will be <see cref="Vector2.One"/>.</param>
+        /// <param name="sourceRectangle">An optional rotation of this Sprite (in degrees). If null, it will be <see cref="Vector3.Zero"/>.</param>
         /// <param name="spriteEffect">An optional sprite effect of this Sprite. <see cref="SpriteEffects.None"/> by default.</param>
         public Sprite(Texture2D texture, 
                       Vector3 position,
@@ -144,6 +143,9 @@ namespace ProjektRoguelike
             // For every corner.
             for (byte i = 0; i < 4; i++)
             {
+
+                            // TRY DegreesToVector3 AND STUFF!
+
                 // Rotate.
                 Vector2 delta, planePos;
                 Vector3 position = spriteVertices[i].Position;
