@@ -90,13 +90,29 @@ namespace ProjektRoguelike
         public override void Update()
         {
             float speed = 45;
+            if (Globals.GetKey(Keys.W))
+            {
+                Rotation += new Vector3(-speed, 0, 0) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (Globals.GetKey(Keys.S))
+            {
+                Rotation += new Vector3(speed, 0, 0) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+            }
             if (Globals.GetKey(Keys.A))
             {
-                Rotation += new Vector3(0, 0, -speed) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+                Rotation += new Vector3(0, 0, speed) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
             }
             if (Globals.GetKey(Keys.D))
             {
-                Rotation += new Vector3(0, 0, speed) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+                Rotation += new Vector3(0, 0, -speed) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (Globals.GetKey(Keys.Left))
+            {
+                Rotation += new Vector3(0, -speed, 0) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (Globals.GetKey(Keys.Right))
+            {
+                Rotation += new Vector3(0, speed, 0) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
             }
         }
 
@@ -139,35 +155,29 @@ namespace ProjektRoguelike
             }
 
 
-            // Rotating and Scaling.
+            // Scaling and Rotating.
             // For every corner.
             for (byte i = 0; i < 4; i++)
             {
-
-                            // TRY DegreesToVector3 AND STUFF!
+                // Scale.
+                spriteVertices[i].Position = Position +
+                    Vector3.Transform(spriteVertices[i].Position - Position,
+                                      Matrix.CreateScale(new Vector3(Scales, 1)));
 
                 // Rotate.
-                Vector2 delta, planePos;
-                Vector3 position = spriteVertices[i].Position;
-                // X.
-                delta = new Vector2(position.Y, position.Z) - new Vector2(Position.Y, Position.Z);
-                planePos = delta.Length() * Globals.DegreesToVector2(Globals.Vector2ToDegrees(delta) + Rotation.X);
-                position = new Vector3(position.X, planePos.X, planePos.Y);
-                // Y.
-                delta = new Vector2(position.X, position.Z) - new Vector2(Position.X, Position.Z);
-                planePos = delta.Length() * Globals.DegreesToVector2(Globals.Vector2ToDegrees(delta) + Rotation.Y);
-                position = new Vector3(planePos.X, position.Y, planePos.Y);
-                // Z.
-                delta = new Vector2(position.X, position.Y) - new Vector2(Position.X, Position.Y);
-                planePos = delta.Length() * Globals.DegreesToVector2(Globals.Vector2ToDegrees(delta) + Rotation.Z);
-                position = new Vector3(planePos.X, planePos.Y, position.Z);
-                // Apply the new position.
-                spriteVertices[i].Position = position;
+                spriteVertices[i].Position = Position
+                                             + Vector3.Transform(position: spriteVertices[i].Position - Position,
+                                                                 matrix: Matrix.CreateRotationX(MathHelper.ToRadians(Rotation.X))
+                                                                         * Matrix.CreateRotationY(MathHelper.ToRadians(Rotation.Y))
+                                                                         * Matrix.CreateRotationZ(MathHelper.ToRadians(Rotation.Z)));
 
-                // Scale.
-                spriteVertices[i].Position =
-                    Vector3.Transform(spriteVertices[i].Position,
-                                      Matrix.CreateScale(new Vector3(Scales, 1)));
+                //// Yaw, pitch and roll based rotation.
+                //Vector3 rotation = Rotation * (float)(Math.PI / 180);
+                //spriteVertices[i].Position = Position
+                //                                + Vector3.Transform(position: spriteVertices[i].Position - Position,
+                //                                                    matrix: Matrix.CreateFromYawPitchRoll(rotation.Y, 
+                //                                                                                        rotation.X, 
+                //                                                                                        rotation.Z));
             }
 
 
