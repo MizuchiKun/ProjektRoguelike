@@ -6,38 +6,45 @@ using Microsoft.Xna.Framework.Input;
 namespace ProjektRoguelike
 {
     /// <summary>
-    /// The Main Menu.
+    /// A level.
     /// </summary>
     public class Level : Scene
     {
         /// <summary>
-        /// The Tilesheet with the floor and wall tiles.
+        /// The index of this level.
         /// </summary>
-        protected byte _levelIndex;
+        public byte LevelIndex { get; set; }
 
         /// <summary>
-        /// Creates a Level.
+        /// The current room.
+        /// </summary>
+        public Room CurrentRoom { get; set; }
+
+        /// <summary>
+        /// The next room.<br></br>
+        /// Is used for the transition (?) if it's not null.
+        /// </summary>
+        public Room NextRoom { get; set; }
+
+        /// <summary>
+        /// Creates a new Level by the given level index.
         /// </summary>
         /// <param name="levelIndex">The index of the level you want to create.</param>
-        public Level(/*byte levelIndex*/)
+        public Level(byte levelIndex)
         {
             // Store the parameters.
-            //_levelIndex = levelIndex;
+            LevelIndex = levelIndex;
 
-            // Set the camera's position.
-            Globals.Camera.Position = new Vector3(0, 0, 300);
+            //TESTTESTTESTROOM
+            Room.CurrentLevel = this;
+            _gameObjects.Add(new Room(0, Vector2.Zero));
+            CurrentRoom = (Room)_gameObjects[0];
 
-            //TEST STUFF
-            _gameObjects.Add(new Sprite(texture: Globals.Content.Load<Texture2D>("Sprites/test"),
-                                        position: new Vector3(-128, 0, 0),
-                                        origin: new Vector2(0.5f),
-                                        rotation: new Vector3(0, 0, 0),
-                                        scales: new Vector2(1, 2)));
-            _gameObjects.Add(new Sprite(texture: Globals.Content.Load<Texture2D>("Sprites/test"),
-                                        position: new Vector3(128, 0, 0),
-                                        origin: new Vector2(0.5f),
-                                        rotation: new Vector3(0, 0, 0),
-                                        scales: new Vector2(1, 0.5f)));
+            //generate the level / rooms
+            //......
+
+            // Add the player.
+            //_gameObjects.Add(new Player());
         }
     }
 }

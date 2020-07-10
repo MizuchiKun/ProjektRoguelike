@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 namespace ProjektRoguelike
 {
     /// <summary>
-    /// Represents a GameObject.
+    /// Represents an object of the game.
     /// </summary>
     public abstract class GameObject
     {

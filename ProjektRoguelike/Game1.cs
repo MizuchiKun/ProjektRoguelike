@@ -35,18 +35,11 @@ namespace ProjektRoguelike
         /// </summary>
         protected override void Initialize()
         {
-            // Set the GraphicsDevice's SamplerState and RasterizerState.
-            //Globals.Graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
-            Globals.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { CullMode = CullMode.None };
-
-            // Initialize the Camera.
-            Globals.Camera = new Camera(new Vector3(0, 0, 0), Vector3.Forward);
-
-            // Initialize the BasicEffect.
-            Globals.BasicEffect = new BasicEffect(Globals.Graphics.GraphicsDevice);
+            // Set the SpriteBatch.
+            Globals.SpriteBatch = new SpriteBatch(Globals.Graphics.GraphicsDevice);
 
             // Set the initial Scene.
-            Globals.CurrentScene = new Level();
+            Globals.CurrentScene = new Level(0);
 
             base.Initialize();
         }
@@ -96,8 +89,17 @@ namespace ProjektRoguelike
             // Clear the GraphicsDevice.
             Globals.Graphics.GraphicsDevice.Clear(Color.Navy);
 
+            // Begin the SpriteBatch.
+            Globals.SpriteBatch.Begin(
+                sortMode: SpriteSortMode.BackToFront,
+                transformMatrix: Matrix.CreateTranslation(new Vector3(Camera.Position, 0))
+                                 * Matrix.CreateScale(Camera.Scale));
+
             // Call the current Scene's Draw method.
             Globals.CurrentScene.Draw();
+
+            // End the SpriteBatch.
+            Globals.SpriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -27,14 +27,21 @@ namespace ProjektRoguelike
         public static GraphicsDeviceManager Graphics { get; set; }
 
         /// <summary>
-        /// The <see cref="Camera"/> of this project.
+        /// The current dimensions of the window.
         /// </summary>
-        public static Camera Camera { get; set; }
+        public static Vector2 WindowDimensions
+        {
+            get
+            {
+                return new Vector2(Graphics.PreferredBackBufferWidth,
+                                   Graphics.PreferredBackBufferHeight);
+            }
+        }
 
         /// <summary>
-        /// The <see cref="BasicEffect"/> of this project.
+        /// The <see cref="SpriteBatch"/> of this project.
         /// </summary>
-        public static BasicEffect BasicEffect { get; set; }
+        public static SpriteBatch SpriteBatch { get; set; }
 
         /// <summary>
         /// The current <see cref="Scene"/>.
@@ -265,33 +272,6 @@ namespace ProjektRoguelike
         {
             // Return the degrees as Vector2.
             return new Vector2((float)Math.Cos(MathHelper.ToRadians(degrees)), (float)Math.Sin(MathHelper.ToRadians(degrees)));
-        }
-
-        /// <summary>
-        /// Gets the degrees of the given <see cref="Vector3"/> direction.
-        /// </summary>
-        /// <param name="direction">The <see cref="Vector3"/> direction.</param>
-        /// <returns>The rotational degrees around the axis.</returns>
-        public static Vector3 Vector3ToDegrees(Vector3 direction)
-        {
-            // Return the angle.
-            return new Vector3(MathHelper.ToDegrees((float)Math.Atan2(direction.Y, direction.Z)),
-                               MathHelper.ToDegrees((float)Math.Atan2(direction.X, direction.Z)),
-                               MathHelper.ToDegrees((float)Math.Atan2(direction.Y, direction.X)));
-        }
-
-        /// <summary>
-        /// Converts the given degrees to a <see cref="Vector3"/>.<br></br>
-        /// </summary>
-        /// <param name="degrees">The degrees that will be converted.</param>
-        /// <returns>The <see cref="Vector3"/> direction equivalent to the degrees.</returns>
-        public static Vector3 DegreesToVector3(Vector3 degrees)
-        {
-            // Convert degrees to radians.
-            degrees *= MathHelper.Pi / 180f;
-
-            // Return the Vector3 direction equivalent to the degrees.
-            return Matrix.CreateFromAxisAngle(degrees / degrees.Length(), degrees.Length()).Forward;
         }
     }
 
