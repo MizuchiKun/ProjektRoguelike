@@ -6,189 +6,129 @@ using Microsoft.Xna.Framework.Input;
 namespace ProjektRoguelike
 {
     /// <summary>
-    /// A Sprite in 3D space.
+    /// A Sprite in 2D space.
     /// </summary>
     public class Sprite : GameObject
     {
         /// <summary>
-        /// The texture of this <see cref="Sprite"/>.
+        /// This <see cref="Sprite"/>'s texture.
         /// </summary>
-        public Texture2D Texture { get; set; }
+        public Texture2D Texture { get; }
 
         /// <summary>
-        /// The position of this <see cref="Sprite"/>.
+        /// This <see cref="Sprite"/>'s position.
         /// </summary>
-        public Vector3 Position { get; set; }
+        public Vector2 Position { get; set; }
 
         /// <summary>
-        /// The origin of this <see cref="Sprite"/>.
+        /// This <see cref="Sprite"/>'s relative origin.
         /// </summary>
-        public Vector2 Origin { get; set; }
+        public Vector2 Origin { get; }
 
         /// <summary>
-        /// The rotation of this <see cref="Sprite"/>.
+        /// This <see cref="Sprite"/>'s source rectangle.
         /// </summary>
-        public Vector3 Rotation { get; set; }
+        public Rectangle? SourceRectangle { get; }
 
         /// <summary>
-        /// The scale of this <see cref="Sprite"/>.
+        /// This <see cref="Sprite"/>'s scale factors.
         /// </summary>
-        public Vector2 Scales { get; set; }
+        public Vector2 Scale { get; set; }
 
         /// <summary>
-        /// The source rectangle of this <see cref="Sprite"/>.
+        /// This <see cref="Sprite"/>'s rotation (in degrees).
         /// </summary>
-        public Rectangle? SourceRectangle { get; set; }
+        public float Rotation { get; set; }
 
         /// <summary>
-        /// The sprite effect of this <see cref="Sprite"/>.
+        /// This <see cref="Sprite"/>'s layer depth.
         /// </summary>
-        public SpriteEffects SpriteEffect { get; set; }
+        public float Layer { get; set; }
+
+        /// <summary>
+        /// This <see cref="Sprite"/>'s colour.
+        /// </summary>
+        public Color Colour { get; }
+
+        /// <summary>
+        /// This <see cref="Sprite"/>'s sprite effect.
+        /// </summary>
+        public SpriteEffects Effect { get; }
+
+        /// <summary>
+        /// The hitbox of this <see cref="Sprite"/>.
+        /// </summary>
+        public virtual Rectangle Hitbox
+        {
+            get
+            {
+                return new Rectangle(location: Position.ToPoint(),
+                                     size: (SourceRectangle != null) 
+                                           ? SourceRectangle.Value.Size 
+                                           : new Point(Texture.Width, Texture.Height));
+            }
+        }
 
         /// <summary>
         /// Creates a new Sprite with the given graphical parameters.
         /// </summary>
-        /// <param name="texture">The texure of this Sprite.</param>
-        /// <param name="position">The position of this Sprite.</param>
+        /// <param name="texture">Its texture.</param>
+        /// <param name="position">Its position. <br></br>If null, it will be <see cref="Vector2.Zero"/>.</param>
         /// <param name="origin">
-        /// An optional <b>relative</b> origin of this Sprite. <br></br>
-        /// For example: (0, 0) is at the top-left, (1, 1) is at the bottom-right.<br></br>
-        /// If null, it will be <see cref="Vector2.Zero"/>.
+        /// Its relative origin. <br></br>
+        /// It's relative to the <see cref="Sprite"/>'s dimensions.<br></br>
+        /// E.g. (0.5, 0.5) corresponds to any <see cref="Sprite"/>'s centre.
         /// </param>
-        /// <param name="rotation">An optional rotation of this Sprite. If null, it will be <see cref="Vector3.Zero"/>.</param>
-        /// <param name="scales">Optional scaling values for the x- and y-axis of this Sprite. If null, it will be <see cref="Vector2.One"/>.</param>
-        /// <param name="sourceRectangle">An optional rotation of this Sprite (in degrees). If null, it will be <see cref="Vector3.Zero"/>.</param>
-        /// <param name="spriteEffect">An optional sprite effect of this Sprite. <see cref="SpriteEffects.None"/> by default.</param>
-        public Sprite(Texture2D texture, 
-                      Vector3 position,
+        /// <param name="sourceRectangle">Its source rectangle. <br></br>If null, the whole texture will be drawn.</param>
+        /// <param name="scale">Its scale factors. <br></br>If null, it will be <see cref="Vector2.One"/>.</param>
+        /// <param name="rotation">Its rotation in degrees. <br></br>It's 0 by default.</param>
+        /// <param name="layerDepth">Its layer depth. <br></br>It's 0 by default.</param>
+        /// <param name="colour">Its colour. <br></br>If null, it will be <see cref="Color.White"/>.</param>
+        /// <param name="effect">Its sprite effect. <br></br>It's <see cref="SpriteEffects.None"/> by default.</param>
+        public Sprite(Texture2D texture,
+                      Vector2? position = null,
                       Vector2? origin = null,
-                      Vector3? rotation = null,
-                      Vector2? scales = null,
                       Rectangle? sourceRectangle = null,
-                      SpriteEffects spriteEffect = SpriteEffects.None)
+                      Vector2? scale = null,
+                      float rotation = 0f,
+                      float layerDepth = 0f,
+                      Color? colour = null,
+                      SpriteEffects effect = SpriteEffects.None)
         {
             // Store the parameters.
             Texture = texture;
-            Position = position;
+            Position = (position != null) ? position.Value : Vector2.Zero;
             Origin = (origin != null) ? origin.Value : Vector2.Zero;
-            Rotation = (rotation != null) ? rotation.Value : Vector3.Zero;
-            Scales = (scales != null) ? scales.Value : Vector2.One;
             SourceRectangle = sourceRectangle;
-            SpriteEffect = spriteEffect;
+            Scale = (scale != null) ? scale.Value : Vector2.One;
+            Rotation = rotation;
+            Layer = layerDepth;
+            Colour = (colour != null) ? colour.Value : Color.White;
+            Effect = effect;
         }
 
         /// <summary>
-        /// The update method of a <see cref="Sprite"/>. It's empty if not overriden.
+        /// A <see cref="Sprite"/>'s Update method.<br></br>
+        /// Is empty if not overriden.
         /// </summary>
         public override void Update() { }
 
         /// <summary>
-        /// Draws this Sprite with its current graphical parameters.
+        /// Draws the <see cref="Sprite"/> with its current graphical parameters.
         /// </summary>
         public override void Draw()
         {
-            // The vertices of this Sprite.
-            VertexPositionTexture[] spriteVertices = new VertexPositionTexture[6];
-
-            // Their positions and texture coordinates.
-            if (SourceRectangle != null)
-            {
-                // The source rectangle.
-                Rectangle sourceRect = SourceRectangle.Value;
-
-                // Positions.
-                Vector3 absOrigin = new Vector3(Origin * new Vector2(sourceRect.Width, -sourceRect.Height), 0f);
-                spriteVertices[0].Position = (Position - absOrigin);
-                spriteVertices[1].Position = (Position - absOrigin) + new Vector3(sourceRect.Width, 0, 0);
-                spriteVertices[2].Position = (Position - absOrigin) + new Vector3(0, -sourceRect.Height, 0);
-                spriteVertices[3].Position = (Position - absOrigin) + new Vector3(sourceRect.Width, -sourceRect.Height, 0);
-                spriteVertices[4].Position = spriteVertices[1].Position;
-                spriteVertices[5].Position = spriteVertices[2].Position;
-
-                // Texture coordinates.
-                spriteVertices[0].TextureCoordinate = sourceRect.Location.ToVector2() / new Vector2(Texture.Width, Texture.Height);
-                spriteVertices[1].TextureCoordinate = (sourceRect.Location.ToVector2() + new Vector2(sourceRect.Width, 0)) / new Vector2(Texture.Width, Texture.Height);
-                spriteVertices[2].TextureCoordinate = (sourceRect.Location.ToVector2() + new Vector2(0, sourceRect.Height)) / new Vector2(Texture.Width, Texture.Height);
-                spriteVertices[3].TextureCoordinate = (sourceRect.Location + sourceRect.Size).ToVector2() / new Vector2(Texture.Width, Texture.Height);
-                spriteVertices[4].TextureCoordinate = spriteVertices[1].TextureCoordinate;
-                spriteVertices[5].TextureCoordinate = spriteVertices[2].TextureCoordinate;
-            }
-            else
-            {
-                // Positions.
-                Vector3 absOrigin = new Vector3(Origin * new Vector2(Texture.Width, -Texture.Height), 0f);
-                spriteVertices[0].Position = (Position - absOrigin);
-                spriteVertices[1].Position = (Position - absOrigin) + new Vector3(Texture.Width, 0, 0);
-                spriteVertices[2].Position = (Position - absOrigin) + new Vector3(0, -Texture.Height, 0);
-                spriteVertices[3].Position = (Position - absOrigin) + new Vector3(Texture.Width, -Texture.Height, 0);
-                spriteVertices[4].Position = spriteVertices[1].Position;
-                spriteVertices[5].Position = spriteVertices[2].Position;
-
-                // Texture coordinates.
-                spriteVertices[0].TextureCoordinate = new Vector2(0, 0);
-                spriteVertices[1].TextureCoordinate = new Vector2(1, 0);
-                spriteVertices[2].TextureCoordinate = new Vector2(0, 1);
-                spriteVertices[3].TextureCoordinate = new Vector2(1, 1);
-                spriteVertices[4].TextureCoordinate = spriteVertices[1].TextureCoordinate;
-                spriteVertices[5].TextureCoordinate = spriteVertices[2].TextureCoordinate;
-            }
-
-
-            // Scaling and Rotating.
-            // For every corner.
-            for (byte i = 0; i < 4; i++)
-            {
-                // Scale.
-                spriteVertices[i].Position = Position +
-                    Vector3.Transform(spriteVertices[i].Position - Position,
-                                      Matrix.CreateScale(new Vector3(Scales, 1)));
-
-                // Rotate.
-                //spriteVertices[i].Position = Position
-                //                             + Vector3.Transform(position: spriteVertices[i].Position - Position,
-                //                                                 matrix: Matrix.CreateRotationX(MathHelper.ToRadians(Rotation.X))
-                //                                                         * Matrix.CreateRotationY(MathHelper.ToRadians(Rotation.Y))
-                //                                                         * Matrix.CreateRotationZ(MathHelper.ToRadians(Rotation.Z)));
-
-                //// Yaw, pitch and roll based rotation.
-                Vector3 rotation = Rotation * (float)(Math.PI / 180);
-                spriteVertices[i].Position = Position
-                                                + Vector3.Transform(position: spriteVertices[i].Position - Position,
-                                                                    matrix: Matrix.CreateFromYawPitchRoll(rotation.Y,
-                                                                                                        rotation.X,
-                                                                                                        rotation.Z));
-            }
-
-
-            // Update the 5th and 6th vertex position.
-            spriteVertices[4].Position = spriteVertices[1].Position;
-            spriteVertices[5].Position = spriteVertices[2].Position;
-
-
-            // Draw the Sprite.
-            // Apply the projection, view and world matrices.
-            Globals.BasicEffect.Projection = Globals.Camera.Projection;
-            Globals.BasicEffect.View = Globals.Camera.View;
-            Globals.BasicEffect.World = Globals.Camera.World;
-
-            // Apply the texture.
-            Globals.BasicEffect.TextureEnabled = true;
-            Globals.BasicEffect.Texture = Texture;
-
-            //apply something??????
-
-            // Apply BasicEffect's passes and draw the Sprite.
-            foreach (EffectPass pass in Globals.BasicEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-
-                Globals.Graphics.GraphicsDevice.DrawUserPrimitives(
-                    PrimitiveType.TriangleList,
-                    spriteVertices,
-                    0,
-                    2);
-            }
+            // Draw the Sprite with its current graphical parameters.
+            Globals.SpriteBatch.Draw(
+                texture: Texture,
+                position: Position,
+                sourceRectangle: SourceRectangle,
+                color: Colour,
+                rotation: MathHelper.ToRadians(Rotation),
+                origin: Origin * ((SourceRectangle != null) ? SourceRectangle.Value.Size.ToVector2() : Texture.Bounds.Size.ToVector2()),
+                scale: Scale,
+                effects: Effect,
+                layerDepth: Layer);
         }
     }
 }
- 

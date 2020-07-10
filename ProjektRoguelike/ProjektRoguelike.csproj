@@ -41,11 +41,15 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classes\GameObject\GameObjectContainer\Room.cs" />
+    <Compile Include="Classes\GameObject\Sprite.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Tile.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity.cs" />
     <Compile Include="Classes\Globals.cs" />
     <Compile Include="Classes\Scene.cs" />
     <Compile Include="Classes\Scene\Level.cs" />
-    <Compile Include="Classes\GameObject\Sprite.cs" />
     <Compile Include="Classes\Camera.cs" />
+    <Compile Include="Classes\GameObject\GameObjectContainer.cs" />
     <Compile Include="Classes\_ClassTemplate.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Game1.cs" />
