@@ -16,9 +16,9 @@ namespace ProjektRoguelike
         public Vector3 Position { get; set; }
 
         /// <summary>
-        /// The direction in which the camera is looking.
+        /// The angles in which the camera is looking horizontally and vertically.
         /// </summary>
-        public Vector3 LookAtVector { get; set; }
+        public Vector2 LookAtAngles { get; set; }
 
         /// <summary>
         /// Gets the camera's projection matrix.
@@ -27,12 +27,12 @@ namespace ProjektRoguelike
             get
             {
                 return Matrix.CreatePerspectiveFieldOfView(
-                    fieldOfView: MathHelper.ToRadians(90f), 
-                    aspectRatio: Globals.Graphics.GraphicsDevice.DisplayMode.AspectRatio, 
-                    nearPlaneDistance: 10f, 
-                    farPlaneDistance: 1000f
+                    fieldOfView: MathHelper.ToRadians(90f),
+                    aspectRatio: Globals.Graphics.GraphicsDevice.DisplayMode.AspectRatio,
+                    nearPlaneDistance: 10f,
+                    farPlaneDistance: 2560f
                 );
-            } 
+            }
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace ProjektRoguelike
             {
                 return Matrix.CreateLookAt(
                     cameraPosition: Position,
-                    cameraTarget: Position + LookAtVector,
-                    cameraUpVector: Vector3.Up
+                    cameraTarget: Position + Globals.DegreesToVector3(LookAtAngles),
+                    cameraUpVector: Vector3.UnitZ
                 );
             }
         }
@@ -56,7 +56,7 @@ namespace ProjektRoguelike
             get
             {
                 return Matrix.CreateWorld(
-                    position: LookAtVector,
+                    position: Globals.DegreesToVector3(LookAtAngles),
                     forward: Vector3.Forward,
                     up: Vector3.Up
                 );
@@ -68,10 +68,10 @@ namespace ProjektRoguelike
         /// </summary>
         /// <param name="position">The Camera's position.</param>
         /// <param name="lookAtVector">The direction in which the camera is looking.</param>
-        public Camera(Vector3 position, Vector3 lookAtVector)
+        public Camera(Vector3 position, Vector2 lookAtVector)
         {
             Position = position;
-            LookAtVector = lookAtVector;
+            LookAtAngles = lookAtVector;
         }
     }
 }

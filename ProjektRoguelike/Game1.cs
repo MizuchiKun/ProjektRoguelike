@@ -38,15 +38,17 @@ namespace ProjektRoguelike
             // Set the GraphicsDevice's SamplerState and RasterizerState.
             //Globals.Graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
             Globals.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { CullMode = CullMode.None };
+            Globals.Graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
             // Initialize the Camera.
-            Globals.Camera = new Camera(new Vector3(0, 0, 0), Vector3.Forward);
+            Globals.Camera = new Camera(new Vector3(0, 0, 0), Vector2.Zero);
 
             // Initialize the BasicEffect.
             Globals.BasicEffect = new BasicEffect(Globals.Graphics.GraphicsDevice);
+            Globals.BasicEffect.Alpha = 1.0f;
 
             // Set the initial Scene.
-            Globals.CurrentScene = new Level();
+            Globals.CurrentScene = new Level(0);
 
             base.Initialize();
         }
@@ -94,7 +96,7 @@ namespace ProjektRoguelike
         protected override void Draw(GameTime gameTime)
         {
             // Clear the GraphicsDevice.
-            Globals.Graphics.GraphicsDevice.Clear(Color.Navy);
+            Globals.Graphics.GraphicsDevice.Clear(Color.Black);
 
             // Call the current Scene's Draw method.
             Globals.CurrentScene.Draw();

@@ -281,17 +281,27 @@ namespace ProjektRoguelike
         }
 
         /// <summary>
-        /// Converts the given degrees to a <see cref="Vector3"/>.<br></br>
+        /// Converts the given degrees to a <see cref="Vector3"/>.
         /// </summary>
-        /// <param name="degrees">The degrees that will be converted.</param>
+        /// <param name="degrees">
+        /// The horizontal and vertical degrees that will be converted.<br></br>
+        /// The x-value corresponds to the horizontal rotation, the y-value to the vertical rotation.
+        /// </param>
         /// <returns>The <see cref="Vector3"/> direction equivalent to the degrees.</returns>
-        public static Vector3 DegreesToVector3(Vector3 degrees)
+        public static Vector3 DegreesToVector3(Vector2 degrees)
         {
-            // Convert degrees to radians.
-            degrees *= MathHelper.Pi / 180f;
+            // The default direction.
+            Vector3 direction = Vector3.UnitY;
 
-            // Return the Vector3 direction equivalent to the degrees.
-            return Matrix.CreateFromAxisAngle(degrees / degrees.Length(), degrees.Length()).Forward;
+            // The rotation matrix.
+            Matrix rotationMatrix = Matrix.Identity;
+            // Add the horizontal rotation matrix.
+            rotationMatrix *= Matrix.CreateRotationZ(MathHelper.ToRadians(degrees.X));
+            // Add the vertical rotation matrix.
+            rotationMatrix *= Matrix.CreateRotationX(MathHelper.ToRadians(degrees.Y));
+
+            // Return the direction.
+            return Vector3.Transform(direction, rotationMatrix);
         }
     }
 

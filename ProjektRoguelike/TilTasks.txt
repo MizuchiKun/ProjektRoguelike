@@ -1,4 +1,4 @@
-﻿// Re-think about the Level and Room structure...
-// Create the Level and Room structure, based on the whiteboard.
+﻿// Get the 2D approach up and running (BOW)!(?)
+// Create the Level and Room structure (BOW).
 // Create the level generation stuff.
 // and more... I guess.

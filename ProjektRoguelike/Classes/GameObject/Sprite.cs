@@ -80,56 +80,32 @@ namespace ProjektRoguelike
         /// <summary>
         /// The update method of a <see cref="Sprite"/>. It's empty if not overriden.
         /// </summary>
-        public override void Update()
-        {
-            float speed = 45;
-            if (Globals.GetKey(Keys.W))
-            {
-                Rotation += new Vector3(-speed, 0, 0) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (Globals.GetKey(Keys.S))
-            {
-                Rotation += new Vector3(speed, 0, 0) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (Globals.GetKey(Keys.A))
-            {
-                Rotation += new Vector3(0, 0, speed) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (Globals.GetKey(Keys.D))
-            {
-                Rotation += new Vector3(0, 0, -speed) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (Globals.GetKey(Keys.Left))
-            {
-                Rotation += new Vector3(0, -speed, 0) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (Globals.GetKey(Keys.Right))
-            {
-                Rotation += new Vector3(0, speed, 0) * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-            }
-        }
+        public override void Update() { }
 
         /// <summary>
         /// Draws this Sprite with its current graphical parameters.
         /// </summary>
         public override void Draw()
         {
-            // Get the base vertices (without scaling, rotating or origin-repositioning) and apply the source rectangle if not null.
+            // The vertices of this Sprite.
             VertexPositionTexture[] spriteVertices = new VertexPositionTexture[6];
 
-            // Their positions.
-            Vector3 absOrigin = new Vector3(Origin * new Vector2(Texture.Width, -Texture.Height), 0f);
-            spriteVertices[0].Position = (Position - absOrigin);
-            spriteVertices[1].Position = (Position - absOrigin) + new Vector3(Texture.Width, 0, 0);
-            spriteVertices[2].Position = (Position - absOrigin) + new Vector3(0, -Texture.Height, 0);
-            spriteVertices[3].Position = (Position - absOrigin) + new Vector3(Texture.Width, -Texture.Height, 0);
-            spriteVertices[4].Position = spriteVertices[1].Position;
-            spriteVertices[5].Position = spriteVertices[2].Position;
-
-            // Their texture coordinates.
+            // Their positions and texture coordinates.
             if (SourceRectangle != null)
             {
+                // The source rectangle.
                 Rectangle sourceRect = SourceRectangle.Value;
+
+                // Positions.
+                Vector3 absOrigin = new Vector3(Origin * new Vector2(sourceRect.Width, -sourceRect.Height), 0f);
+                spriteVertices[0].Position = (Position - absOrigin);
+                spriteVertices[1].Position = (Position - absOrigin) + new Vector3(sourceRect.Width, 0, 0);
+                spriteVertices[2].Position = (Position - absOrigin) + new Vector3(0, -sourceRect.Height, 0);
+                spriteVertices[3].Position = (Position - absOrigin) + new Vector3(sourceRect.Width, -sourceRect.Height, 0);
+                spriteVertices[4].Position = spriteVertices[1].Position;
+                spriteVertices[5].Position = spriteVertices[2].Position;
+
+                // Texture coordinates.
                 spriteVertices[0].TextureCoordinate = sourceRect.Location.ToVector2() / new Vector2(Texture.Width, Texture.Height);
                 spriteVertices[1].TextureCoordinate = (sourceRect.Location.ToVector2() + new Vector2(sourceRect.Width, 0)) / new Vector2(Texture.Width, Texture.Height);
                 spriteVertices[2].TextureCoordinate = (sourceRect.Location.ToVector2() + new Vector2(0, sourceRect.Height)) / new Vector2(Texture.Width, Texture.Height);
@@ -139,6 +115,16 @@ namespace ProjektRoguelike
             }
             else
             {
+                // Positions.
+                Vector3 absOrigin = new Vector3(Origin * new Vector2(Texture.Width, -Texture.Height), 0f);
+                spriteVertices[0].Position = (Position - absOrigin);
+                spriteVertices[1].Position = (Position - absOrigin) + new Vector3(Texture.Width, 0, 0);
+                spriteVertices[2].Position = (Position - absOrigin) + new Vector3(0, -Texture.Height, 0);
+                spriteVertices[3].Position = (Position - absOrigin) + new Vector3(Texture.Width, -Texture.Height, 0);
+                spriteVertices[4].Position = spriteVertices[1].Position;
+                spriteVertices[5].Position = spriteVertices[2].Position;
+
+                // Texture coordinates.
                 spriteVertices[0].TextureCoordinate = new Vector2(0, 0);
                 spriteVertices[1].TextureCoordinate = new Vector2(1, 0);
                 spriteVertices[2].TextureCoordinate = new Vector2(0, 1);
@@ -158,19 +144,19 @@ namespace ProjektRoguelike
                                       Matrix.CreateScale(new Vector3(Scales, 1)));
 
                 // Rotate.
-                spriteVertices[i].Position = Position
-                                             + Vector3.Transform(position: spriteVertices[i].Position - Position,
-                                                                 matrix: Matrix.CreateRotationX(MathHelper.ToRadians(Rotation.X))
-                                                                         * Matrix.CreateRotationY(MathHelper.ToRadians(Rotation.Y))
-                                                                         * Matrix.CreateRotationZ(MathHelper.ToRadians(Rotation.Z)));
+                //spriteVertices[i].Position = Position
+                //                             + Vector3.Transform(position: spriteVertices[i].Position - Position,
+                //                                                 matrix: Matrix.CreateRotationX(MathHelper.ToRadians(Rotation.X))
+                //                                                         * Matrix.CreateRotationY(MathHelper.ToRadians(Rotation.Y))
+                //                                                         * Matrix.CreateRotationZ(MathHelper.ToRadians(Rotation.Z)));
 
                 //// Yaw, pitch and roll based rotation.
-                //Vector3 rotation = Rotation * (float)(Math.PI / 180);
-                //spriteVertices[i].Position = Position
-                //                                + Vector3.Transform(position: spriteVertices[i].Position - Position,
-                //                                                    matrix: Matrix.CreateFromYawPitchRoll(rotation.Y, 
-                //                                                                                        rotation.X, 
-                //                                                                                        rotation.Z));
+                Vector3 rotation = Rotation * (float)(Math.PI / 180);
+                spriteVertices[i].Position = Position
+                                                + Vector3.Transform(position: spriteVertices[i].Position - Position,
+                                                                    matrix: Matrix.CreateFromYawPitchRoll(rotation.Y,
+                                                                                                        rotation.X,
+                                                                                                        rotation.Z));
             }
 
 
@@ -188,6 +174,8 @@ namespace ProjektRoguelike
             // Apply the texture.
             Globals.BasicEffect.TextureEnabled = true;
             Globals.BasicEffect.Texture = Texture;
+
+            //apply something??????
 
             // Apply BasicEffect's passes and draw the Sprite.
             foreach (EffectPass pass in Globals.BasicEffect.CurrentTechnique.Passes)
