@@ -18,6 +18,11 @@ namespace ProjektRoguelike
         public static Level CurrentLevel { get; set; }
 
         /// <summary>
+        /// The dimensions of a room (measured in sprites).
+        /// </summary>
+        public static Vector2 Dimensions { get; } = new Vector2(15, 9);
+
+        /// <summary>
         /// The position of the top-left corner of this <see cref="Room"/>.
         /// </summary>
         private Vector2 _position;
@@ -26,7 +31,18 @@ namespace ProjektRoguelike
         /// The walls of this <see cref="Room"/>.<br></br>
         /// The first index specifies the direction (0=top, 1=right, 2=bottom, 3=left).
         /// </summary>
-        public Tile[,] Walls = new Tile[4, 13];
+        public Tile[][] Walls { get; } = new Tile[4][];
+
+        /// <summary>
+        /// The doors of this <see cref="Room"/>.<br></br>
+        /// The index specifies the direction (0=top, 1=right, 2=bottom, 3=left).
+        /// </summary>
+        public Door[] Doors { get; } = new Door[4];
+
+        /// <summary>
+        /// The entities of this <see cref="Room"/>.
+        /// </summary>
+        public List<Entity> Entities { get; } = new List<Entity>();
 
         /// <summary>
         /// Creates a new room by the given room index.
@@ -45,61 +61,85 @@ namespace ProjektRoguelike
             // Add the room background.
             Vector2 topLeftCorner = position;
             topLeftCorner += new Vector2(1, 0.5f) * Tile.Size;
-            Vector2 dimensions = new Vector2(15, 9);
+            topLeftCorner.Y -= Dimensions.Y * Tile.Size.Y;
             // The corners.
             _gameObjects.Add(new Tile(corner, 
                                       topLeftCorner));
             _gameObjects.Add(new Tile(corner, 
-                                      topLeftCorner + new Vector2(dimensions.X - 1, 0) * Tile.Size,
-                                      effect: SpriteEffects.FlipHorizontally));
+                                      topLeftCorner + new Vector2(Dimensions.X - 1, 0) * Tile.Size,
+                                      rotation: 90f));
             _gameObjects.Add(new Tile(corner, 
-                                      topLeftCorner + (dimensions - Vector2.One) * Tile.Size,
-                                      effect: SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically));
+                                      topLeftCorner + (Dimensions - Vector2.One) * Tile.Size,
+                                      rotation: 180f));
             _gameObjects.Add(new Tile(corner, 
-                                      topLeftCorner + new Vector2(0, dimensions.Y - 1) * Tile.Size,
-                                      effect: SpriteEffects.FlipVertically));
+                                      topLeftCorner + new Vector2(0, Dimensions.Y - 1) * Tile.Size,
+                                      rotation: -90f));
             // The walls.
-            for (byte x = 1; x < dimensions.X - 1; x++)
+            // Initialize the Walls arrays.
+            Walls[0] = new Tile[(int)Dimensions.X - 2];
+            Walls[1] = new Tile[(int)Dimensions.Y - 2];
+            Walls[2] = new Tile[(int)Dimensions.X - 2];
+            Walls[3] = new Tile[(int)Dimensions.Y - 2];
+            // Top and bottom.
+            for (byte x = 1; x < Dimensions.X - 1; x++)
             {
                 // Top.
                 Tile topWall = new Tile(wall, 
                                         topLeftCorner + new Vector2(x, 0) * Tile.Size,
                                         rotation: 0f);
-                Walls[0, x-1] = topWall;
-                _gameObjects.Add(topWall);
+                Walls[0][x-1] = topWall;
 
                 // Bottom.
                 Tile bottomWall = new Tile(wall,
-                                           topLeftCorner + new Vector2(x, dimensions.Y - 1) * Tile.Size,
+                                           topLeftCorner + new Vector2(x, Dimensions.Y - 1) * Tile.Size,
                                            rotation: 180f);
-                Walls[2, x-1] = bottomWall;
-                _gameObjects.Add(bottomWall);
+                Walls[2][x-1] = bottomWall;
             }
-            for (byte y = 1; y < dimensions.Y - 1; y++)
+            // Left and right.
+            for (byte y = 1; y < Dimensions.Y - 1; y++)
             {
                 // Left.
                 Tile leftWall = new Tile(wall,
                                          topLeftCorner + new Vector2(0, y) * Tile.Size,
                                          rotation: -90f);
-                Walls[3, y - 1] = leftWall;
-                _gameObjects.Add(leftWall);
+                Walls[3][y - 1] = leftWall;
 
                 // Right.
                 Tile rightWall = new Tile(wall,
-                                          topLeftCorner + new Vector2(dimensions.X - 1, y) * Tile.Size,
+                                          topLeftCorner + new Vector2(Dimensions.X - 1, y) * Tile.Size,
                                           rotation: 90f);
-                Walls[1, y - 1] = rightWall;
-                _gameObjects.Add(rightWall);
+                Walls[1][y - 1] = rightWall;
             }
+            _gameObjects.AddRange(Walls[0]);
+            _gameObjects.AddRange(Walls[1]);
+            _gameObjects.AddRange(Walls[2]);
+            _gameObjects.AddRange(Walls[3]);
             // The ground.
-            for (byte x = 1; x < dimensions.X - 1; x++)
+            for (byte x = 1; x < Dimensions.X - 1; x++)
             {
-                for (byte y = 1; y < dimensions.Y - 1; y++)
+                for (byte y = 1; y < Dimensions.Y - 1; y++)
                 {
                     _gameObjects.Add(new Tile(ground,
                                               topLeftCorner + new Vector2(x, y) * Tile.Size));
                 }
             }
+
+            //add the doors based on the 2D Room array of the current level
+            //...
+            //TESTTESTTESTDOORS
+            Doors[0] = new Door(position: topLeftCorner + new Vector2((Dimensions.X - 1) / 2, 0) * Tile.Size,
+                                direction: 0,
+                                null);
+            Doors[1] = new Door(position: topLeftCorner + new Vector2(Dimensions.X - 1, (Dimensions.Y - 1) / 2) * Tile.Size,
+                                direction: 1,
+                                null);
+            Doors[2] = new Door(position: topLeftCorner + new Vector2((Dimensions.X - 1) / 2, Dimensions.Y - 1) * Tile.Size,
+                                direction: 2,
+                                null);
+            Doors[3] = new Door(position: topLeftCorner + new Vector2(0, (Dimensions.Y - 1) / 2) * Tile.Size,
+                                direction: 3,
+                                null);
+            _gameObjects.AddRange(Doors);
 
             //load room from file...
             //...

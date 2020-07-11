@@ -11,14 +11,21 @@ namespace ProjektRoguelike
     /// </summary>
     public class Entity : Sprite
     {
+        /// <summary>
+        /// The hitbox of this <see cref="Entity"/>.
+        /// </summary>
         public override Rectangle Hitbox
         {
             get
             {
                 // Hitbox is bottom half of sprite.
-                Vector2 size = Texture.Bounds.Size.ToVector2();
-                return new Rectangle(location: (Position + new Vector2(0.5f, 0) * size).ToPoint(),
-                                     size: (new Vector2(0.5f, 0) * size).ToPoint());
+                Vector2 actualSize = ((SourceRectangle != null)
+                                     ? SourceRectangle.Value.Size.ToVector2()
+                                     : Texture.Bounds.Size.ToVector2())
+                                     * Scale;
+                Vector2 absOrigin = Origin * actualSize;
+                return new Rectangle(location: ((Position - absOrigin) + new Vector2(0f, 0.5f) * actualSize).ToPoint(),
+                                     size: (new Vector2(1f, 0.5f) * actualSize).ToPoint());
             }
         }
 
@@ -31,18 +38,26 @@ namespace ProjektRoguelike
         /// <param name="layerDepth">Its layer depth. <br></br>It's 0 by default.</param>
         /// <param name="effect">Its sprite effect. <br></br>It's <see cref="SpriteEffects.None"/> by default.</param>
         public Entity(Texture2D texture,
-                    Vector2? position = null,
-                    Rectangle? sourceRectangle = null,
-                    float rotation = 0f,
-                    SpriteEffects effect = SpriteEffects.None)
+                      Vector2? position = null,
+                      Rectangle? sourceRectangle = null,
+                      float rotation = 0f,
+                      SpriteEffects effect = SpriteEffects.None)
         : base(texture: texture,
                position: position,
                origin: new Vector2(0.5f),
                sourceRectangle: sourceRectangle,
-               scale: Tile.Size / new Vector2(texture.Width, texture.Height),
+               scale: Tile.Size / ((sourceRectangle != null) ? sourceRectangle.Value.Size.ToVector2() : texture.Bounds.Size.ToVector2()),
                rotation: rotation,
-               layerDepth: 1.0f,
                effect: effect)
         { }
+
+        public override void Update()
+        {
+            // Update code.
+            //...
+
+            // Update the Layer.
+            //Layer = 
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace ProjektRoguelike
                position: position, 
                origin: new Vector2(0.5f), 
                sourceRectangle: sourceRectangle, 
-               scale: Size / new Vector2(texture.Width, texture.Height),
+               scale: Tile.Size / ((sourceRectangle != null) ? sourceRectangle.Value.Size.ToVector2() : texture.Bounds.Size.ToVector2()),
                rotation: rotation,
                layerDepth: 1.0f,
                effect: effect)
