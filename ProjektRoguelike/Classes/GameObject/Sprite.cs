@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -62,10 +63,13 @@ namespace ProjektRoguelike
         {
             get
             {
-                return new Rectangle(location: Position.ToPoint(),
-                                     size: (SourceRectangle != null) 
-                                           ? SourceRectangle.Value.Size 
-                                           : new Point(Texture.Width, Texture.Height));
+                Vector2 actualSize = ((SourceRectangle != null)
+                                     ? SourceRectangle.Value.Size.ToVector2()
+                                     : Texture.Bounds.Size.ToVector2())
+                                     * Scale;
+                Vector2 absOrigin = Origin * actualSize;
+                return new Rectangle(location: (Position - absOrigin).ToPoint(),
+                                     size: actualSize.ToPoint());
             }
         }
 
@@ -129,6 +133,56 @@ namespace ProjektRoguelike
                 scale: Scale,
                 effects: Effect,
                 layerDepth: Layer);
+        }
+
+        /// <summary>
+        /// Gets whether this <see cref="Sprite"/> collides with the given other <see cref="Sprite"/>.
+        /// </summary>
+        /// <param name="otherSprite">The other <see cref="Sprite"/>.</param>
+        /// <returns>True if they collide, false otherwise.</returns>
+        public bool Collides (Sprite otherSprite)
+        {
+            // They collide it their hitboxes intersect.
+            return Hitbox.Intersects(otherSprite.Hitbox);
+        }
+
+        /// <summary>
+        /// Gets whether this <see cref="Sprite"/> collides with any of the given other <see cref="Sprite"/>s.
+        /// </summary>
+        /// <param name="otherSprites">The other <see cref="Sprite"/>s.</param>
+        /// <returns>True if it collides with any of them, false otherwise.</returns>
+        public bool Collides(IEnumerable<Sprite> otherSprites)
+        {
+            // Check every Sprite.
+            foreach (Sprite sprite in otherSprites)
+            {
+                // If it collides with one of them.
+                if (Collides(sprite))
+                {
+                    // Return true.
+                    return true;
+                }
+            }
+
+            // It seemingly doesn't collide with any of them.
+            return false;
+        }
+
+        /// <summary>
+        /// Gets whether this <see cref="Sprite"/> is just touching the given other <see cref="Sprite"/>.
+        /// </summary>
+        /// <param name="otherSprite">The other <see cref="Sprite"/>.</param>
+        /// <returns>True if they are just touching, false otherwise.</returns>
+        public bool Touches (Sprite otherSprite)
+        {
+            // Get an inflated copy of this Sprite's hitbox.
+            Rectangle inflatedHitbox = Hitbox;
+            inflatedHitbox.Location += new Point(-1);
+            inflatedHitbox.Size += new Point(1);
+
+            // It just touches if it isn't colliding unless this hitbox is inflated by 1.
+            return (!Hitbox.Intersects(otherSprite.Hitbox)
+                    && inflatedHitbox.Intersects(otherSprite.Hitbox));
         }
     }
 }

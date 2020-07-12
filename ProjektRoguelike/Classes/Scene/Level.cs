@@ -18,13 +18,13 @@ namespace ProjektRoguelike
         /// <summary>
         /// The current room.
         /// </summary>
-        public Room CurrentRoom { get; set; }
+        public static Room CurrentRoom { get; set; }
 
         /// <summary>
         /// The next room.<br></br>
         /// Is used for the transition (?) if it's not null.
         /// </summary>
-        public Room NextRoom { get; set; }
+        public static Room NextRoom { get; set; }
 
         /// <summary>
         /// Creates a new Level by the given level index.
@@ -36,6 +36,7 @@ namespace ProjektRoguelike
             LevelIndex = levelIndex;
 
             //TESTTESTTESTROOM
+            Camera.Position += new Vector2(0f, 1f) * (Room.Dimensions * Tile.Size);
             Room.CurrentLevel = this;
             _gameObjects.Add(new Room(0, Vector2.Zero));
             CurrentRoom = (Room)_gameObjects[0];
@@ -44,7 +45,7 @@ namespace ProjektRoguelike
             //......
 
             // Add the player.
-            //_gameObjects.Add(new Player());
+            _gameObjects.Add(new Player(Vector2.Zero + (Room.Dimensions / 2 + new Vector2(0.5f, -Room.Dimensions.Y)) * Tile.Size));
         }
     }
 }
