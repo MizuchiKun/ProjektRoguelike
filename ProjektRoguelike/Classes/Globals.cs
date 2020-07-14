@@ -6,11 +6,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ProjektRoguelike
 {
+    public delegate void PassObject(object i);
+    public delegate object PassObjectsAndReturn(object i);
+
     /// <summary>
     /// Contains information and functions of global importance.
     /// </summary>
     public static class Globals
     {
+
         /// <summary>
         /// The <see cref="Game1"/> of this project.
         /// </summary>
@@ -27,14 +31,21 @@ namespace ProjektRoguelike
         public static GraphicsDeviceManager Graphics { get; set; }
 
         /// <summary>
-        /// The <see cref="Camera"/> of this project.
+        /// The current dimensions of the window.
         /// </summary>
-        public static Camera Camera { get; set; }
+        public static Vector2 WindowDimensions
+        {
+            get
+            {
+                return new Vector2(Graphics.PreferredBackBufferWidth,
+                                   Graphics.PreferredBackBufferHeight);
+            }
+        }
 
         /// <summary>
-        /// The <see cref="BasicEffect"/> of this project.
+        /// The <see cref="SpriteBatch"/> of this project.
         /// </summary>
-        public static BasicEffect BasicEffect { get; set; }
+        public static SpriteBatch SpriteBatch { get; set; }
 
         /// <summary>
         /// The current <see cref="Scene"/>.
@@ -268,30 +279,24 @@ namespace ProjektRoguelike
         }
 
         /// <summary>
-        /// Gets the degrees of the given <see cref="Vector3"/> direction.
+        /// Moves the user towards its focus with the given speed.<br></br>
         /// </summary>
-        /// <param name="direction">The <see cref="Vector3"/> direction.</param>
-        /// <returns>The rotational degrees around the axis.</returns>
-        public static Vector3 Vector3ToDegrees(Vector3 direction)
+        /// <param name="focus">The position to move towards.</param>
+        /// <param name="pos">The current position.</param>
+        /// <param name="speed">The speed it will move with towards the focus.</param>
+        /// <returns>The <see cref="Vector2"/> of the target's position.</returns>
+        public static Vector2 RadialMovement(Vector2 focus, Vector2 pos, float speed)
         {
-            // Return the angle.
-            return new Vector3(MathHelper.ToDegrees((float)Math.Atan2(direction.Y, direction.Z)),
-                               MathHelper.ToDegrees((float)Math.Atan2(direction.X, direction.Z)),
-                               MathHelper.ToDegrees((float)Math.Atan2(direction.Y, direction.X)));
-        }
+            float dist = Globals.GetDistance(pos, focus);
 
-        /// <summary>
-        /// Converts the given degrees to a <see cref="Vector3"/>.<br></br>
-        /// </summary>
-        /// <param name="degrees">The degrees that will be converted.</param>
-        /// <returns>The <see cref="Vector3"/> direction equivalent to the degrees.</returns>
-        public static Vector3 DegreesToVector3(Vector3 degrees)
-        {
-            // Convert degrees to radians.
-            degrees *= MathHelper.Pi / 180f;
-
-            // Return the Vector3 direction equivalent to the degrees.
-            return Matrix.CreateFromAxisAngle(degrees / degrees.Length(), degrees.Length()).Forward;
+            if (dist <= speed)
+            {
+                return focus - pos;
+            }
+            else
+            {
+                return (focus - pos) * speed / dist;
+            }
         }
     }
 
