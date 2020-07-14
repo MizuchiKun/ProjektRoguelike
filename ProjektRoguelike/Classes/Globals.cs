@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ProjektRoguelike
 {
+    public delegate void PassObject(object i);
+    public delegate object PassObjectsAndReturn(object i);
+
     /// <summary>
     /// Contains information and functions of global importance.
     /// </summary>
@@ -272,6 +275,27 @@ namespace ProjektRoguelike
         {
             // Return the degrees as Vector2.
             return new Vector2((float)Math.Cos(MathHelper.ToRadians(degrees)), (float)Math.Sin(MathHelper.ToRadians(degrees)));
+        }
+
+        /// <summary>
+        /// Converts the given degrees to a <see cref="Vector2"/>.<br></br>
+        /// </summary>
+        /// <param name="focus">The point the entity needs to move to.</param>
+        /// <param name="pos">The current position.</param>
+        /// <param name="speed">The speed it should move in.</param>
+        /// <returns>The <see cref="Vector2"/> which the unit has to move to, to reach the focus in given speed.</returns>
+        public static Vector2 RadialMovement(Vector2 focus, Vector2 pos, float speed)
+        {
+            float dist = Globals.GetDistance(pos, focus);
+
+            if (dist <= speed)
+            {
+                return focus - pos;
+            }
+            else
+            {
+                return (focus - pos) * speed / dist;
+            }
         }
     }
 

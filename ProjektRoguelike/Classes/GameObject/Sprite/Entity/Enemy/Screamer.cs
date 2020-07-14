@@ -22,7 +22,7 @@ namespace ProjektRoguelike
                rotation,
                effect)
         {
-            speed = 2;
+            Speed = 2;
             timer = new McTimer(1000);
         }
 
@@ -38,17 +38,17 @@ namespace ProjektRoguelike
             }
         }
 
-        public override void AI(Vector2 focus)
+        public virtual void ChangePosition(Vector2 focus)
         {
             //if you are not in range of the player, move towards them.
             if (Globals.GetDistance(Position, player.Position) >= 201)
             {
-                Position += Globals.RadialMovement(focus, Position, speed);
+                Position += Globals.RadialMovement(focus, Position, Speed);
             }
             //if the player closes in, move away from them
             else if (Globals.GetDistance(Position, player.Position) < 199)
             {
-                Position -= Globals.RadialMovement(focus, Position, speed);
+                Position -= Globals.RadialMovement(focus, Position, Speed);
             }
             
         }

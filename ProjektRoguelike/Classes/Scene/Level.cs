@@ -46,6 +46,10 @@ namespace ProjektRoguelike
 
             // Add the player.
             _gameObjects.Add(new Player(Vector2.Zero + (Room.Dimensions / 2 + new Vector2(0.5f, -Room.Dimensions.Y)) * Tile.Size));
+
+            // Add enemies to test.
+            _gameObjects.Add(new Floater(Vector2.Zero + (Room.Dimensions / 5 + new Vector2(0.5f, -Room.Dimensions.Y)) * Tile.Size));
+            _gameObjects.Add(new Screamer(Vector2.Zero + (Room.Dimensions / 2 + new Vector2(0.5f, -Room.Dimensions.Y)) * Tile.Size));
         }
     }
 }

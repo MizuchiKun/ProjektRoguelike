@@ -20,7 +20,7 @@ namespace ProjektRoguelike
                rotation,
                effect)
         {
-            speed = 2f;
+            Speed = 2f;
         }
 
         public override void Update()

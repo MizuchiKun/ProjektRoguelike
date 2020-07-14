@@ -10,6 +10,8 @@ namespace ProjektRoguelike
     /// </summary>
     public class Player : Entity
     {
+        McTimer timer;
+
         /// <summary>
         /// The walking animations of the Player.
         /// </summary>
@@ -27,7 +29,7 @@ namespace ProjektRoguelike
         : base(texture: Globals.Content.Load<Texture2D>("Sprites/Playable Char/Herosheet_front"),
                position: position,
                sourceRectangle: new Rectangle(0, 0, 256, 256))
-        { }
+        { timer = new McTimer(600, true); }
 
         public override void Update()
         {
@@ -126,6 +128,35 @@ namespace ProjektRoguelike
                     // Revert its position.
                     Position -= new Vector2(-speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds, 0);
                 }
+            }
+
+
+            // handle combat inputs
+
+            timer.UpdateTimer();
+            // up
+            if (Globals.GetKey(Keys.Up) && timer.Test())
+            {
+                GameGlobals.PassProjectile(new BasicAttack(0 - 90, Position));
+                timer.ResetToZero();
+            }
+            // right
+            if (Globals.GetKey(Keys.Right) && timer.Test())
+            {
+                GameGlobals.PassProjectile(new BasicAttack(90 - 90, Position));
+                timer.ResetToZero();
+            }
+            // down
+            if (Globals.GetKey(Keys.Down) && timer.Test())
+            {
+                GameGlobals.PassProjectile(new BasicAttack(180 - 90, Position));
+                timer.ResetToZero();
+            }
+            // left
+            if (Globals.GetKey(Keys.Left) && timer.Test())
+            {
+                GameGlobals.PassProjectile(new BasicAttack(270 - 90, Position));
+                timer.ResetToZero();
             }
         }
     }
