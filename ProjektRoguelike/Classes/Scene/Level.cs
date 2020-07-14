@@ -26,6 +26,9 @@ namespace ProjektRoguelike
         /// </summary>
         public static Room NextRoom { get; set; }
 
+            
+        public static Player Player { get; } = new Player(Vector2.Zero + (Room.Dimensions / 2 + new Vector2(0.5f, -Room.Dimensions.Y)) * Tile.Size);
+
         /// <summary>
         /// Creates a new Level by the given level index.
         /// </summary>
@@ -45,7 +48,7 @@ namespace ProjektRoguelike
             //......
 
             // Add the player.
-            _gameObjects.Add(new Player(Vector2.Zero + (Room.Dimensions / 2 + new Vector2(0.5f, -Room.Dimensions.Y)) * Tile.Size));
+            _gameObjects.Add(Player);
 
             // Add enemies to test.
             _gameObjects.Add(new Floater(Vector2.Zero + (Room.Dimensions / 5 + new Vector2(0.5f, -Room.Dimensions.Y)) * Tile.Size));
