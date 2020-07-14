@@ -16,6 +16,8 @@ namespace ProjektRoguelike
         /// </summary>
         protected List<GameObject> _gameObjects;
 
+        public List<Projectile> projectiles = new List<Projectile>();
+
         /// <summary>
         /// Creates a new <see cref="Scene"/> object with the given <see cref="GameObject"/>s.
         /// </summary>
@@ -27,6 +29,8 @@ namespace ProjektRoguelike
         {
             // Store the parameters.
             _gameObjects = (gameObjects != null) ? gameObjects : new List<GameObject>();
+
+            GameGlobals.PassProjectile = AddProjectile;
         }
 
         /// <summary>
@@ -38,6 +42,16 @@ namespace ProjektRoguelike
             foreach (GameObject gameObject in _gameObjects)
             {
                 gameObject.Update();
+            }
+
+            for (int i = 0; i < projectiles.Count; i++)
+            {
+                projectiles[i].Update();
+
+                if (projectiles[i].done)
+                {
+                    projectiles.RemoveAt(i);
+                }
             }
         }
 
@@ -51,6 +65,16 @@ namespace ProjektRoguelike
             {
                 gameObject.Draw();
             }
+
+            for (int i = 0; i < projectiles.Count; i++)
+            {
+                projectiles[i].Draw();
+            }
+        }
+
+        public virtual void AddProjectile(object info)
+        {
+            projectiles.Add((Projectile)info);
         }
     }
 }
