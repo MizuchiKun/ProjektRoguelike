@@ -87,7 +87,7 @@ namespace ProjektRoguelike
         protected override void Draw(GameTime gameTime)
         {
             // Clear the GraphicsDevice.
-            Globals.Graphics.GraphicsDevice.Clear(Color.Navy);
+            Globals.Graphics.GraphicsDevice.Clear(Color.Black);
 
             // Begin the SpriteBatch.
             Globals.SpriteBatch.Begin(
