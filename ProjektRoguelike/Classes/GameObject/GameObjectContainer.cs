@@ -14,7 +14,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// A list of all <see cref="GameObject"/>s of this room.
         /// </summary>
-        protected List<GameObject> _gameObjects;
+        protected List<GameObject> _gameObjects = new List<GameObject>();
 
         /// <summary>
         /// Creates a new <see cref="GameObjectContainer"/> with the given <see cref="GameObject"/>s.

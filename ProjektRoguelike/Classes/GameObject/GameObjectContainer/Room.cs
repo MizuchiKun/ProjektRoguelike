@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -42,7 +41,50 @@ namespace ProjektRoguelike
         /// <summary>
         /// The entities of this <see cref="Room"/>.
         /// </summary>
-        public List<Entity> Entities { get; } = new List<Entity>();
+        public List<Entity> Entities
+        {
+            get
+            {
+                // The entities.
+                List<Entity> entities = new List<Entity>();
+
+                // Add all Entities to entities.
+                foreach (GameObject gameObject in _gameObjects)
+                {
+                    if (gameObject.GetType().IsSubclassOf(typeof(Entity)))
+                    {
+                        entities.Add((Entity)gameObject);
+                    }
+                }
+
+                // Return the entities.
+                return entities;
+            }
+        }
+
+        /// <summary>
+        /// The enemies of this <see cref="Room"/>.
+        /// </summary>
+        public List<Enemy> Enemies
+        {
+            get
+            {
+                // The enemies.
+                List<Enemy> enemies = new List<Enemy>();
+
+                // Add all Enemies to enemies.
+                foreach (GameObject gameObject in _gameObjects)
+                {
+                    if (gameObject.GetType().IsSubclassOf(typeof(Enemy)))
+                    {
+                        enemies.Add((Enemy)gameObject);
+                    }
+                }
+
+                // Return the enemies.
+                return enemies;
+            }
+        }
 
         /// <summary>
         /// Creates a new room by the given room index.
@@ -143,6 +185,25 @@ namespace ProjektRoguelike
 
             //load room from file...
             //...
+        }
+
+        /// <summary>
+        /// A <b>temporary method</b> to add a GameObject to this Room.<br></br>
+        /// <b>Will be replaced by the level generation.</b>
+        /// </summary>
+        /// <param name="gameObject">The GameObject that will be added.</param>
+        public void Add(GameObject gameObject)
+        {
+            _gameObjects.Add(gameObject);
+        }
+
+        /// <summary>
+        /// Removes the given <see cref="GameObject"/> from this Room.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/> that will be removed.</param>
+        public void Remove(GameObject gameObject)
+        {
+            _gameObjects.Remove(gameObject);
         }
     }
 }
