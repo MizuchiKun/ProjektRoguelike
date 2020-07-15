@@ -15,13 +15,13 @@ namespace ProjektRoguelike
                       Vector2? position = null,
                       Rectangle? sourceRectangle = null,
                       float rotation = 0f,
-                      SpriteEffects effect = SpriteEffects.None)
+                      SpriteEffects effects = SpriteEffects.None)
         : base(texture: Globals.Content.Load<Texture2D>("Sprites/Pickups/Coin"),
                angle: angle,
                position: position,
                sourceRectangle: sourceRectangle,
                rotation: rotation,
-               effect: effect)
+               effects: effects)
         {
             done = false;
 

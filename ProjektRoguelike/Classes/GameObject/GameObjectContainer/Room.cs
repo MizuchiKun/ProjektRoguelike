@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,11 +12,6 @@ namespace ProjektRoguelike
     /// </summary>
     public class Room : GameObjectContainer
     {
-        /// <summary>
-        /// The currently active <see cref="Level"/>.
-        /// </summary>
-        public static Level CurrentLevel { get; set; }
-
         /// <summary>
         /// The dimensions of a room (measured in sprites).
         /// </summary>
@@ -185,6 +181,43 @@ namespace ProjektRoguelike
 
             //load room from file...
             //...
+                        //TESTROOMINDICATOR
+                        string roomPos = "";
+                        switch (roomIndex)
+                        {
+                            case 0:
+                                roomPos = "Top-left";
+                                break;
+                            case 1:
+                                roomPos = "Top";
+                                break;
+                            case 2:
+                                roomPos = "Top-right";
+                                break;
+                            case 3:
+                                roomPos = "Left";
+                                break;
+                            case 4:
+                                roomPos = "Centre";
+                                break;
+                            case 5:
+                                roomPos = "Right";
+                                break;
+                            case 6:
+                                roomPos = "Bottom-left";
+                                break;
+                            case 7:
+                                roomPos = "Bottom";
+                                break;
+                            case 8:
+                                roomPos = "Bottom-right";
+                                break;
+                        }
+                        _gameObjects.Add(new Text(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"),
+                                                  new StringBuilder(roomPos),
+                                                  topLeftCorner + new Vector2(7.5f, 4.5f) * Tile.Size,
+                                                  new Vector2(0.5f),
+                                                  layerDepth: 0.999f));
         }
 
         /// <summary>

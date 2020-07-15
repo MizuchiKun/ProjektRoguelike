@@ -60,6 +60,8 @@
     <Compile Include="Classes\Scene\Level.cs" />
     <Compile Include="Classes\Camera.cs" />
     <Compile Include="Classes\GameObject\GameObjectContainer.cs" />
+    <Compile Include="Classes\GameObject\Text.cs" />
+    <Compile Include="Classes\Animation.cs" />
     <Compile Include="Classes\_ClassTemplate.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Game1.cs" />

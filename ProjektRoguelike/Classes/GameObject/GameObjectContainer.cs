@@ -12,6 +12,17 @@ namespace ProjektRoguelike
     public class GameObjectContainer : GameObject
     {
         /// <summary>
+        /// The hitbox of a <see cref="GameObjectContainer"/>.
+        /// </summary>
+        public override Rectangle Hitbox 
+        { 
+            get
+            {
+                return Rectangle.Empty;
+            }
+        }
+
+        /// <summary>
         /// A list of all <see cref="GameObject"/>s of this room.
         /// </summary>
         protected List<GameObject> _gameObjects = new List<GameObject>();

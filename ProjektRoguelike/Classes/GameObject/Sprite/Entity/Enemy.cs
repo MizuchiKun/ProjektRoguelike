@@ -32,6 +32,8 @@ namespace ProjektRoguelike
             PlayerPos = (Vector2)(a.GetValue(player, null));
             player.Update();
             AI();
+
+            base.Update();
         }
 
         public virtual void ChangePosition()

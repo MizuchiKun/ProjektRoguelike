@@ -24,14 +24,14 @@ namespace ProjektRoguelike
                       Vector2? position = null,
                       Rectangle? sourceRectangle = null,
                       float rotation = 0f,
-                      SpriteEffects effect = SpriteEffects.None)
+                      SpriteEffects effects = SpriteEffects.None)
         : base(texture: texture,
                position: position,
                origin: new Vector2(0.5f),
                sourceRectangle: sourceRectangle,
                scale: Tile.Size / ((sourceRectangle != null) ? sourceRectangle.Value.Size.ToVector2() : texture.Bounds.Size.ToVector2()),
                rotation: rotation,
-               effect: effect)
+               effects: effects)
         {
             done = false;
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -7,65 +7,54 @@ using Microsoft.Xna.Framework.Input;
 namespace ProjektRoguelike
 {
     /// <summary>
-    /// A Sprite in 2D space.
+    /// Text in 2D space.
     /// </summary>
-    public class Sprite : GameObject
+    public class Text : GameObject
     {
         /// <summary>
-        /// This <see cref="Sprite"/>'s texture.
+        /// The <see cref="SpriteFont"/> of this <see cref="Text"/>.
         /// </summary>
-        public Texture2D Texture { get; set; }
-
+        public SpriteFont Font { get; set; }
         /// <summary>
-        /// This <see cref="Sprite"/>'s position.
+        /// The message of this <see cref="Text"/>.
+        /// </summary>
+        public StringBuilder Message { get; set; }
+        /// <summary>
+        /// The position of this <see cref="Text"/>.
         /// </summary>
         public Vector2 Position { get; set; }
-
         /// <summary>
-        /// This <see cref="Sprite"/>'s relative origin.
+        /// The relative origin of this <see cref="Text"/>.
         /// </summary>
-        public Vector2 Origin { get; }
-
+        public Vector2 Origin { get; set; }
         /// <summary>
-        /// This <see cref="Sprite"/>'s source rectangle.
+        /// The colour of this <see cref="Text"/>.
         /// </summary>
-        public Rectangle? SourceRectangle { get; set; }
-
+        public Color Colour { get; set; }
         /// <summary>
-        /// This <see cref="Sprite"/>'s scale factors.
+        /// The scale factors of this <see cref="Text"/>.
         /// </summary>
         public Vector2 Scale { get; set; }
-
         /// <summary>
-        /// This <see cref="Sprite"/>'s rotation (in degrees).
+        /// The rotation of this <see cref="Text"/>.
         /// </summary>
         public float Rotation { get; set; }
-
         /// <summary>
-        /// This <see cref="Sprite"/>'s layer depth.
+        /// The layer of this <see cref="Text"/>.
         /// </summary>
         public float Layer { get; set; }
-
         /// <summary>
-        /// This <see cref="Sprite"/>'s colour.
+        /// The sprite effects of this <see cref="Text"/>.
         /// </summary>
-        public Color Colour { get; }
-
+        public SpriteEffects Effects { get; set; }
         /// <summary>
-        /// This <see cref="Sprite"/>'s sprite effects.
-        /// </summary>
-        public SpriteEffects Effects { get; }
-
-        /// <summary>
-        /// The hitbox of this <see cref="Sprite"/>.
+        /// The hitbox of this <see cref="Text"/>.
         /// </summary>
         public override Rectangle Hitbox
         {
             get
             {
-                Vector2 actualSize = ((SourceRectangle != null)
-                                     ? SourceRectangle.Value.Size.ToVector2()
-                                     : Texture.Bounds.Size.ToVector2())
+                Vector2 actualSize = Font.MeasureString(Message)
                                      * Scale;
                 Vector2 absOrigin = Origin * actualSize;
                 return new Rectangle(location: (Position - absOrigin).ToPoint(),
@@ -74,65 +63,66 @@ namespace ProjektRoguelike
         }
 
         /// <summary>
-        /// Creates a new Sprite with the given graphical parameters.
+        /// Creates a new Text with the given graphical parameters.
         /// </summary>
-        /// <param name="texture">Its texture.</param>
+        /// <param name="font">Its font.</param>
+        /// <param name="message">The message it will display.</param>
         /// <param name="position">Its position. <br></br>If null, it will be <see cref="Vector2.Zero"/>.</param>
         /// <param name="origin">
         /// Its relative origin. <br></br>
         /// It's relative to the <see cref="Sprite"/>'s dimensions.<br></br>
         /// E.g. (0.5, 0.5) corresponds to any <see cref="Sprite"/>'s centre.
         /// </param>
-        /// <param name="sourceRectangle">Its source rectangle. <br></br>If null, the whole texture will be drawn.</param>
+        /// <param name="colour">Its colour. <br></br>If null, it will be <see cref="Color.White"/>.</param>
         /// <param name="scale">Its scale factors. <br></br>If null, it will be <see cref="Vector2.One"/>.</param>
         /// <param name="rotation">Its rotation in degrees. <br></br>It's 0 by default.</param>
         /// <param name="layerDepth">Its layer depth. <br></br>It's 0 by default.</param>
-        /// <param name="colour">Its colour. <br></br>If null, it will be <see cref="Color.White"/>.</param>
         /// <param name="effects">Its sprite effects. <br></br>It's <see cref="SpriteEffects.None"/> by default.</param>
-        public Sprite(Texture2D texture,
-                      Vector2? position = null,
-                      Vector2? origin = null,
-                      Rectangle? sourceRectangle = null,
-                      Vector2? scale = null,
-                      float rotation = 0f,
-                      float layerDepth = 0f,
-                      Color? colour = null,
-                      SpriteEffects effects = SpriteEffects.None)
+        public Text(SpriteFont font,
+                    StringBuilder message,
+                    Vector2? position = null,
+                    Vector2? origin = null,
+                    Color? colour = null,
+                    Vector2? scale = null,
+                    float rotation = 0f,
+                    float layerDepth = 0f,
+                    SpriteEffects effects = SpriteEffects.None)
         {
             // Store the parameters.
-            Texture = texture;
+            Font = font;
+            Message = message;
             Position = (position != null) ? position.Value : Vector2.Zero;
             Origin = (origin != null) ? origin.Value : Vector2.Zero;
-            SourceRectangle = sourceRectangle;
+            Colour = (colour != null) ? colour.Value : Color.White;
             Scale = (scale != null) ? scale.Value : Vector2.One;
             Rotation = rotation;
             Layer = layerDepth;
-            Colour = (colour != null) ? colour.Value : Color.White;
             Effects = effects;
         }
 
         /// <summary>
-        /// A <see cref="Sprite"/>'s Update method.<br></br>
+        /// A <see cref="Text"/>'s Update method.<br></br>
         /// Is empty if not overriden.
         /// </summary>
         public override void Update() { }
 
         /// <summary>
-        /// Draws the <see cref="Sprite"/> with its current graphical parameters.
+        /// Draws the <see cref="Text"/> with its current graphical parameters.
         /// </summary>
         public override void Draw()
         {
             // Draw the Sprite with its current graphical parameters.
-            Globals.SpriteBatch.Draw(
-                texture: Texture,
+            Globals.SpriteBatch.DrawString(
+                spriteFont: Font,
+                text: Message,
                 position: Position,
-                sourceRectangle: SourceRectangle,
-                color: Colour,
+                color: Color.Navy,
                 rotation: MathHelper.ToRadians(Rotation),
-                origin: Origin * ((SourceRectangle != null) ? SourceRectangle.Value.Size.ToVector2() : Texture.Bounds.Size.ToVector2()),
+                origin: Origin * Font.MeasureString(Message),
                 scale: Scale,
                 effects: Effects,
-                layerDepth: Layer);
+                layerDepth: Layer
+            );
         }
     }
 }

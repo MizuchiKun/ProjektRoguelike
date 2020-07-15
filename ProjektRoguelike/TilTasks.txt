@@ -1,4 +1,4 @@
-﻿// Create the Level and Room structure (BOW).
+﻿// Create the Level and Room structure / the Room switching mechanic (BOW).
+// Add animation choosing code in Player.cs and Entity.cs.
 // Create the level generation stuff.
 // Menus?
-// and more... I guess.

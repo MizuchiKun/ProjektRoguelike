@@ -267,7 +267,7 @@ namespace ProjektRoguelike
         }
 
         /// <summary>
-        /// Converts the given degrees to a <see cref="Vector2"/>.<br></br>
+        /// Converts the given degrees to a <see cref="Vector2"/>.
         /// </summary>
         /// <param name="degrees">The degrees that will be converted.</param>
         /// <returns>The <see cref="Vector2"/> direction equivalent to the degrees.</returns>

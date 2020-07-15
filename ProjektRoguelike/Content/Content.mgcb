@@ -13,6 +13,13 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Fonts/Consolas24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Consolas24.spritefont
+
 #begin Sprites/Effects/Explosionsheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -469,7 +476,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Pickups/PickupHeart.png
 
-#begin Sprites/Playable Char/Herosheet_back.png
+#begin Sprites/Playable Char/Herosheet_down.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -479,9 +486,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Playable Char/Herosheet_back.png
+/build:Sprites/Playable Char/Herosheet_down.png
 
-#begin Sprites/Playable Char/Herosheet_front.png
+#begin Sprites/Playable Char/Herosheet_left.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -491,9 +498,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Playable Char/Herosheet_front.png
+/build:Sprites/Playable Char/Herosheet_left.png
 
-#begin Sprites/Playable Char/Herosheet_side.png
+#begin Sprites/Playable Char/Herosheet_right.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -503,5 +510,17 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Playable Char/Herosheet_side.png
+/build:Sprites/Playable Char/Herosheet_right.png
+
+#begin Sprites/Playable Char/Herosheet_up.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Playable Char/Herosheet_up.png
 
