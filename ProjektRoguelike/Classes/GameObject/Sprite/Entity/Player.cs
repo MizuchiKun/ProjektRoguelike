@@ -120,25 +120,25 @@ namespace ProjektRoguelike
             // up
             if (Globals.GetKey(Keys.Up) && timer.Test())
             {
-                GameGlobals.PassProjectile(new BasicAttack(0 - 90, Position));
+                GameGlobals.PassProjectile(new PlayerAttack(0 - 90, Position));
                 timer.ResetToZero();
             }
             // right
             if (Globals.GetKey(Keys.Right) && timer.Test())
             {
-                GameGlobals.PassProjectile(new BasicAttack(90 - 90, Position));
+                GameGlobals.PassProjectile(new PlayerAttack(90 - 90, Position));
                 timer.ResetToZero();
             }
             // down
             if (Globals.GetKey(Keys.Down) && timer.Test())
             {
-                GameGlobals.PassProjectile(new BasicAttack(180 - 90, Position));
+                GameGlobals.PassProjectile(new PlayerAttack(180 - 90, Position));
                 timer.ResetToZero();
             }
             // left
             if (Globals.GetKey(Keys.Left) && timer.Test())
             {
-                GameGlobals.PassProjectile(new BasicAttack(270 - 90, Position));
+                GameGlobals.PassProjectile(new PlayerAttack(270 - 90, Position));
                 timer.ResetToZero();
             }
 
@@ -209,6 +209,11 @@ namespace ProjektRoguelike
                 // Revert its position.
                 Position -= directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
             }
+        }
+
+        public override void IsDone()
+        {
+            
         }
     }
 }

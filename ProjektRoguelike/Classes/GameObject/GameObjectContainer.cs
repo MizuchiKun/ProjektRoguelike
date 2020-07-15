@@ -45,10 +45,24 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Update()
         {
+            for (int i = 0; i < _gameObjects.Count; i++)
+            {
+                _gameObjects[i].Update();
+
+                if (_gameObjects[i].Done)
+                {
+                    _gameObjects.RemoveAt(i);
+                }
+            }
+            /*
             foreach (GameObject gameObject in _gameObjects)
             {
-                gameObject.Update();
+                if (!gameObject.Done)
+                {
+                    gameObject.Update();
+                }
             }
+            */
         }
 
         /// <summary>

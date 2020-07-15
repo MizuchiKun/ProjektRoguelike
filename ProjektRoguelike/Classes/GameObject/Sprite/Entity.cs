@@ -11,6 +11,8 @@ namespace ProjektRoguelike
     /// </summary>
     public class Entity : Sprite
     {
+        public int Health { get; set; } = 1;
+
         /// <summary>
         /// The hitbox of this <see cref="Entity"/>.
         /// </summary>
@@ -54,10 +56,20 @@ namespace ProjektRoguelike
         public override void Update()
         {
             // Update code.
-            //...
+            IsDone();
 
             // Update the Layer.
             Layer = 0.9f - (Position.Y / 10e6f);
+        }
+
+        public virtual void IsDone()
+        {
+            if (Health <= 0)
+            {
+                //Entity is done/dying...
+                //Code, what happens when the entity is done
+                Done = true;
+            }
         }
 
         /// <summary>
@@ -136,6 +148,11 @@ namespace ProjektRoguelike
                 // Revert its position.
                 Position -= directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
             }
+        }
+
+        public virtual void GetHit(int hitValue)
+        {
+            Health -= hitValue;
         }
     }
 }

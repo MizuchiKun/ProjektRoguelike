@@ -58,7 +58,8 @@ namespace ProjektRoguelike
 
         /// <summary>
         /// The hitbox of this <see cref="Sprite"/>.
-        /// </summary>
+        /// </summary> 
+
         public override Rectangle Hitbox
         {
             get

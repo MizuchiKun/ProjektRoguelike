@@ -21,6 +21,7 @@ namespace ProjektRoguelike
                effect)
         {
             Speed = 2f;
+            Health = 3;
         }
 
         public override void Update()

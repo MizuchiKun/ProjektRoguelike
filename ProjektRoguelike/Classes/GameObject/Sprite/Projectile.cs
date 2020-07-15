@@ -10,17 +10,17 @@ namespace ProjektRoguelike
 {
     public class Projectile : Sprite
     {
-        public int ownerID { get; set; }
-        public float speed;
-        public bool done;
+        public int OwnerID { get; set; }
+        protected int HitValue;
+        public float Speed;
 
         protected McTimer timer;
 
-        protected Vector2 direction;
+        protected Vector2 Direction;
+
 
 
         public Projectile(Texture2D texture,
-                      float angle,
                       Vector2? position = null,
                       Rectangle? sourceRectangle = null,
                       float rotation = 0f,
@@ -33,71 +33,74 @@ namespace ProjektRoguelike
                rotation: rotation,
                effects: effects)
         {
-            done = false;
+            Speed = 10;
 
-            speed = 10;
-
+            Direction = Vector2.Zero;
             timer = new McTimer(1000);
-
-            direction = Globals.DegreesToVector2(angle);
-            direction.Normalize();
         }
 
-        public override void Update()
+        public virtual void Update(List<Enemy> enemies)
         {
             timer.UpdateTimer();
             ChangePosition();
             if (timer.Test())
             {
-                done = true;
+                Done = true;
             }
             if (HitWall())
             {
-                done = true;
+                Done = true;
             }
-            /*if (Collides(Level.CurrentRoom.Entities))
+            if (Collides(Level.Player) && (OwnerID == 2 || OwnerID == 0))
             {
-                done = true;
-            }*/
+                Level.Player.GetHit(HitValue);
+                Done = true;
+            }
+            if (Collides(enemies) && (OwnerID == 1 || OwnerID == 0))
+            {
+                for (int i = 0; i < enemies.Count; i++)
+                {
+                    if (OwnerID == 1)
+                    {
+                        enemies[i].GetHit(HitValue);
+                        Done = true;
+                    }
+                }
+            }
             base.Update();
-        }
-
-        public override void Draw()
-        {
-            base.Draw();
         }
 
         public virtual void ChangePosition()
         {
-            Position += speed * direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+            Position += Speed * Direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public virtual bool HitWall()
         {
             // up
             if (Collides(Level.CurrentRoom.Walls[0])
-                         || Collides(Level.CurrentRoom.Entities)
+                         //|| Collides(Level.CurrentRoom.Entities)
                          || ((Collides(Level.CurrentRoom.Doors[1]) || Collides(Level.CurrentRoom.Doors[3]))))
             {
                 return true;
             }
             // right
             else if (Collides(Level.CurrentRoom.Walls[1])
-                         || Collides(Level.CurrentRoom.Entities)
+                         //|| Collides(Level.CurrentRoom.Entities)
                          || ((Collides(Level.CurrentRoom.Doors[0]) || Collides(Level.CurrentRoom.Doors[2]))))
             {
                 return true;
             }
             // down
             else if (Collides(Level.CurrentRoom.Walls[2])
-                         || Collides(Level.CurrentRoom.Entities)
+                        // || Collides(Level.CurrentRoom.Entities)
                          || ((Collides(Level.CurrentRoom.Doors[1]) || Collides(Level.CurrentRoom.Doors[3]))))
             {
                 return true;
             }
             // left
             else if (Collides(Level.CurrentRoom.Walls[3])
-                         || Collides(Level.CurrentRoom.Entities)
+                         //|| Collides(Level.CurrentRoom.Entities)
                          || ((Collides(Level.CurrentRoom.Doors[0]) || Collides(Level.CurrentRoom.Doors[2]))))
             {
                 return true;

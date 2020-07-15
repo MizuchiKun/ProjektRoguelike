@@ -11,6 +11,7 @@ namespace ProjektRoguelike
     /// </summary>
     public abstract class Scene
     {
+        private UI ui = new UI();
         /// <summary>
         /// This Scene's <see cref="GameObject"/>s.
         /// </summary>
@@ -41,14 +42,13 @@ namespace ProjektRoguelike
             // Call your GameObjects' Update() methods.
             foreach (GameObject gameObject in _gameObjects)
             {
-                gameObject.Update();
+                    gameObject.Update();
             }
-
             for (int i = 0; i < projectiles.Count; i++)
             {
-                projectiles[i].Update();
+                projectiles[i].Update(Level.CurrentRoom.Enemies);
 
-                if (projectiles[i].done)
+                if (projectiles[i].Done)
                 {
                     projectiles.RemoveAt(i);
                 }

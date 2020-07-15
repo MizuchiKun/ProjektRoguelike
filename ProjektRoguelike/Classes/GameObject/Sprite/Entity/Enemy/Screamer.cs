@@ -24,6 +24,8 @@ namespace ProjektRoguelike
         {
             Speed = 2;
             timer = new McTimer(1000);
+
+            Health = 1;
         }
 
         public override void Update()
@@ -33,24 +35,33 @@ namespace ProjektRoguelike
             timer.UpdateTimer();
             if (timer.Test())
             {
-                GameGlobals.PassProjectile(new EnemyShot(Globals.Vector2ToDegrees(PlayerPos), Position, null, Globals.Vector2ToDegrees(PlayerPos), SpriteEffects.None));
+                GameGlobals.PassProjectile(new EnemyAttack(Globals.Vector2ToDegrees(Level.Player.Position), Position, null, Globals.Vector2ToDegrees(Level.Player.Position), SpriteEffects.None));
                 timer.ResetToZero();
             }
         }
 
-        public virtual void ChangePosition(Vector2 focus)
+        public override void ChangePosition()
         {
             //if you are not in range of the player, move towards them.
-            if (Globals.GetDistance(Position, player.Position) >= 201)
+            if (Globals.GetDistance(Position, Level.Player.Position) >= 201)
             {
-                Position += Globals.RadialMovement(focus, Position, Speed);
+                Position += Globals.RadialMovement(Level.Player.Position, Position, Speed);
             }
             //if the player closes in, move away from them
-            else if (Globals.GetDistance(Position, player.Position) < 199)
+            else if (Globals.GetDistance(Position, Level.Player.Position) < 199)
             {
-                Position -= Globals.RadialMovement(focus, Position, Speed);
+                Position -= Globals.RadialMovement(Level.Player.Position, Position, Speed);
             }
-            
+        }
+
+        public override void AI()
+        {
+            ChangePosition();
+
+            if (Collides(Level.Player))
+            {
+                //player.Health--;
+            }
         }
     }
 }

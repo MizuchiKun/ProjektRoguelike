@@ -49,11 +49,12 @@
     <Compile Include="Classes\GameObject\Sprite\Entity\Player.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Enemy.cs" />
     <Compile Include="Classes\GameObject\Sprite\Projectile.cs" />
-    <Compile Include="Classes\GameObject\Sprite\Projectile\BasicAttack.cs" />
-    <Compile Include="Classes\GameObject\Sprite\Projectile\EnemyShot.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Projectile\PlayerAttack.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Projectile\EnemyAttack.cs" />
     <Compile Include="Classes\GameObject\Sprite\Tile.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity.cs" />
     <Compile Include="Classes\GameObject\Sprite\Door.cs" />
+    <Compile Include="Classes\UI.cs" />
     <Compile Include="Classes\Globals.cs" />
     <Compile Include="Classes\McTimer.cs" />
     <Compile Include="Classes\Scene.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Classes\GameObject\GameObjectContainer.cs" />
     <Compile Include="Classes\GameObject\Text.cs" />
     <Compile Include="Classes\Animation.cs" />
+    <Compile Include="Classes\UI Elements\QualityDisplayBar.cs" />
     <Compile Include="Classes\_ClassTemplate.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Game1.cs" />

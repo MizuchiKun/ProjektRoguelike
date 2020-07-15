@@ -8,39 +8,46 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ProjektRoguelike
 {
-    public class BasicAttack : Projectile
+    public class EnemyAttack : Projectile
     {
-
-        public BasicAttack(float angle,
+        public EnemyAttack(float angle,
                       Vector2? position = null,
                       Rectangle? sourceRectangle = null,
                       float rotation = 0f,
                       SpriteEffects effects = SpriteEffects.None)
-        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Pickups/Key"),
-               angle: angle,
+        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Pickups/Coin"),
                position: position,
                sourceRectangle: sourceRectangle,
                rotation: rotation,
                effects: effects)
         {
-            done = false;
+            Done = false;
 
-            speed = 250.0f;
+            Speed = 250.0f;
+
+            Direction = Globals.DegreesToVector2(angle);
+            Direction.Normalize();
+
+            HitValue = 1;
 
             timer = new McTimer(1000);
 
-            direction = Globals.DegreesToVector2(angle);
-            direction.Normalize();
+            OwnerID = 2;
         }
 
-        public override void Update()
+        public override void Update(List<Enemy> entities)
         {
-            base.Update();
+            base.Update(entities);
         }
 
         public override void Draw()
         {
             base.Draw();
+        }
+
+        public override void ChangePosition()
+        {
+            Position += Speed * Direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 }

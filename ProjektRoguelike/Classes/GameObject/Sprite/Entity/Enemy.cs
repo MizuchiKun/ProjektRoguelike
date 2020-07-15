@@ -10,8 +10,6 @@ namespace ProjektRoguelike
     /// </summary>
     public abstract class Enemy : Entity
     {
-        protected Player player = new Player(Vector2.Zero + (Room.Dimensions / 2 + new Vector2(0.5f, -Room.Dimensions.Y)) * Tile.Size);
-        protected Vector2 PlayerPos;
         protected float Speed;
 
         public Enemy(Texture2D texture,
@@ -24,28 +22,34 @@ namespace ProjektRoguelike
                sourceRectangle,
                rotation,
                effect)
-        { Speed = 2f; }
+        { 
+            Speed = 2f;
+        }
 
         public override void Update()
         {
-            System.Reflection.PropertyInfo a = player.GetType().GetProperty("Position");
-            PlayerPos = (Vector2)(a.GetValue(player, null));
-            player.Update();
-            AI();
-
+            /*
+             * Something of the past
+            if (Done == true)
+            {
+                Level.CurrentRoom.Remove(this);
+            }
+            */
             base.Update();
+
+            AI();
         }
 
         public virtual void ChangePosition()
         {
-            Position += Globals.RadialMovement(PlayerPos, Position, Speed);
+            Position += Globals.RadialMovement(Level.Player.Position, Position, Speed);
         }
 
         public virtual void AI()
         {
             ChangePosition();
 
-            if (Collides(player))
+            if (Collides(Level.Player))
             {
                 //player.Health--;
             }
