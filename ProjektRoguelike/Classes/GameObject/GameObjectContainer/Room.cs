@@ -20,7 +20,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// The position of the top-left corner of this <see cref="Room"/>.
         /// </summary>
-        private Vector2 _position;
+        public Vector2 Position { get; }
 
         /// <summary>
         /// The walls of this <see cref="Room"/>.<br></br>
@@ -30,9 +30,45 @@ namespace ProjektRoguelike
 
         /// <summary>
         /// The doors of this <see cref="Room"/>.<br></br>
-        /// The index specifies the direction (0=top, 1=right, 2=bottom, 3=left).
+        /// The index specifies the <see cref="Door"/>'s <see cref="Directions"/>.
         /// </summary>
-        public Door[] Doors { get; } = new Door[4];
+        public Door[] Doors
+        {
+            get
+            {
+                return _doors;
+            }
+            set
+            {
+                // Store the value in _doors.
+                for (byte i = 0; i < value.Length; i++)
+                {
+                    _doors[i] = value[i];
+                }
+                
+                // Remove all Doors from _gameObjects.
+                for (ushort i = 0; i < _gameObjects.Count; i++)
+                {
+                    if (_gameObjects[i].GetType().IsSubclassOf(typeof(Door)))
+                    {
+                        _gameObjects.Remove(_gameObjects[i]);
+                    }
+                }
+
+                // Add the new Doors.
+                for (byte i = 0; i < _doors.Length; i++)
+                {
+                    if (_doors[i] != null)
+                    {
+                        _gameObjects.Add(_doors[i]);
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// The doors of this room.
+        /// </summary>
+        private Door[] _doors = new Door[4];
 
         /// <summary>
         /// The entities of this <see cref="Room"/>.
@@ -89,7 +125,7 @@ namespace ProjektRoguelike
         public Room(byte roomIndex, Vector2 position)
         {
             // Store the parameters.
-            _position = position;
+            Position = position;
 
             // Load the Textures.
             Texture2D ground = Globals.Content.Load<Texture2D>("Sprites/Environment/Boden");
@@ -98,19 +134,18 @@ namespace ProjektRoguelike
 
             // Add the room background.
             Vector2 topLeftCorner = position;
-            topLeftCorner += new Vector2(1, 0.5f) * Tile.Size;
-            topLeftCorner.Y -= Dimensions.Y * Tile.Size.Y;
+            topLeftCorner += new Vector2(1, 0.5f) * Tile.Size * Globals.Scale;
             // The corners.
             _gameObjects.Add(new Tile(corner, 
                                       topLeftCorner));
             _gameObjects.Add(new Tile(corner, 
-                                      topLeftCorner + new Vector2(Dimensions.X - 1, 0) * Tile.Size,
+                                      topLeftCorner + new Vector2(Dimensions.X - 1, 0) * Tile.Size * Globals.Scale,
                                       rotation: 90f));
             _gameObjects.Add(new Tile(corner, 
-                                      topLeftCorner + (Dimensions - Vector2.One) * Tile.Size,
+                                      topLeftCorner + (Dimensions - Vector2.One) * Tile.Size * Globals.Scale,
                                       rotation: 180f));
             _gameObjects.Add(new Tile(corner, 
-                                      topLeftCorner + new Vector2(0, Dimensions.Y - 1) * Tile.Size,
+                                      topLeftCorner + new Vector2(0, Dimensions.Y - 1) * Tile.Size * Globals.Scale,
                                       rotation: -90f));
             // The walls.
             // Initialize the Walls arrays.
@@ -123,13 +158,13 @@ namespace ProjektRoguelike
             {
                 // Top.
                 Tile topWall = new Tile(wall, 
-                                        topLeftCorner + new Vector2(x, 0) * Tile.Size,
+                                        topLeftCorner + new Vector2(x, 0) * Tile.Size * Globals.Scale,
                                         rotation: 0f);
                 Walls[0][x-1] = topWall;
 
                 // Bottom.
                 Tile bottomWall = new Tile(wall,
-                                           topLeftCorner + new Vector2(x, Dimensions.Y - 1) * Tile.Size,
+                                           topLeftCorner + new Vector2(x, Dimensions.Y - 1) * Tile.Size * Globals.Scale,
                                            rotation: 180f);
                 Walls[2][x-1] = bottomWall;
             }
@@ -138,13 +173,13 @@ namespace ProjektRoguelike
             {
                 // Left.
                 Tile leftWall = new Tile(wall,
-                                         topLeftCorner + new Vector2(0, y) * Tile.Size,
+                                         topLeftCorner + new Vector2(0, y) * Tile.Size * Globals.Scale,
                                          rotation: -90f);
                 Walls[3][y - 1] = leftWall;
 
                 // Right.
                 Tile rightWall = new Tile(wall,
-                                          topLeftCorner + new Vector2(Dimensions.X - 1, y) * Tile.Size,
+                                          topLeftCorner + new Vector2(Dimensions.X - 1, y) * Tile.Size * Globals.Scale,
                                           rotation: 90f);
                 Walls[1][y - 1] = rightWall;
             }
@@ -158,26 +193,9 @@ namespace ProjektRoguelike
                 for (byte y = 1; y < Dimensions.Y - 1; y++)
                 {
                     _gameObjects.Add(new Tile(ground,
-                                              topLeftCorner + new Vector2(x, y) * Tile.Size));
+                                              topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale));
                 }
             }
-
-            //add the doors based on the 2D Room array of the current level
-            //...
-            //TESTTESTTESTDOORS
-            Doors[0] = new Door(position: topLeftCorner + new Vector2((Dimensions.X - 1) / 2, 0) * Tile.Size,
-                                direction: 0,
-                                null);
-            Doors[1] = new Door(position: topLeftCorner + new Vector2(Dimensions.X - 1, (Dimensions.Y - 1) / 2) * Tile.Size,
-                                direction: 1,
-                                null);
-            Doors[2] = new Door(position: topLeftCorner + new Vector2((Dimensions.X - 1) / 2, Dimensions.Y - 1) * Tile.Size,
-                                direction: 2,
-                                null);
-            Doors[3] = new Door(position: topLeftCorner + new Vector2(0, (Dimensions.Y - 1) / 2) * Tile.Size,
-                                direction: 3,
-                                null);
-            _gameObjects.AddRange(Doors);
 
             //load room from file...
             //...
@@ -215,7 +233,7 @@ namespace ProjektRoguelike
                         }
                         _gameObjects.Add(new Text(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"),
                                                   new StringBuilder(roomPos),
-                                                  topLeftCorner + new Vector2(7.5f, 4.5f) * Tile.Size,
+                                                  Position + (Room.Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale,
                                                   new Vector2(0.5f),
                                                   layerDepth: 0.999f));
         }

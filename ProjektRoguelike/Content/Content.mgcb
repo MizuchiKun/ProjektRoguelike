@@ -212,7 +212,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Environment/Boden.png
 
-#begin Sprites/Environment/Bossdoorsheet.png
+#begin Sprites/Environment/BossDoorSheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -222,9 +222,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Environment/Bossdoorsheet.png
+/build:Sprites/Environment/BossDoorSheet.png
 
-#begin Sprites/Environment/Doorsheet.png
+#begin Sprites/Environment/DoorSheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -234,7 +234,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Environment/Doorsheet.png
+/build:Sprites/Environment/DoorSheet.png
 
 #begin Sprites/Environment/Ecke.png
 /importer:TextureImporter
@@ -260,6 +260,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Environment/Firesheet.png
 
+#begin Sprites/Environment/HiddenDoorSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Environment/HiddenDoorSheet.png
+
 #begin Sprites/Environment/Hole.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -271,18 +283,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Environment/Hole.png
-
-#begin Sprites/Environment/HoleInWall.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Environment/HoleInWall.png
 
 #begin Sprites/Environment/Itemstone.png
 /importer:TextureImporter
@@ -499,18 +499,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Playable Char/Herosheet_left.png
-
-#begin Sprites/Playable Char/Herosheet_right.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Playable Char/Herosheet_right.png
 
 #begin Sprites/Playable Char/Herosheet_up.png
 /importer:TextureImporter

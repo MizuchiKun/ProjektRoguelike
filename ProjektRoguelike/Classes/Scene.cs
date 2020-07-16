@@ -40,9 +40,9 @@ namespace ProjektRoguelike
         public virtual void Update()
         {
             // Call your GameObjects' Update() methods.
-            foreach (GameObject gameObject in _gameObjects)
+            for (ushort i = 0; i < _gameObjects.Count; i++)
             {
-                    gameObject.Update();
+                _gameObjects[i].Update();
             }
             for (int i = 0; i < projectiles.Count; i++)
             {
@@ -58,7 +58,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// Calls the <see cref="Scene"/>'s <see cref="GameObject"/>s' Draw() methods.
         /// </summary>
-        public void Draw()
+        public virtual void Draw()
         {
             // Call your GameObjects' Draw() methods.
             foreach (GameObject gameObject in _gameObjects)

@@ -17,7 +17,7 @@ namespace ProjektRoguelike
         {
             get
             {
-                return Globals.WindowDimensions / new Vector2(16, 9);
+                return Globals.BaseWindowDimensions / new Vector2(16, 9);
             }
         }
 
@@ -38,7 +38,6 @@ namespace ProjektRoguelike
                position: position, 
                origin: new Vector2(0.5f), 
                sourceRectangle: sourceRectangle, 
-               scale: Tile.Size / ((sourceRectangle != null) ? sourceRectangle.Value.Size.ToVector2() : texture.Bounds.Size.ToVector2()),
                rotation: rotation,
                layerDepth: 1.0f,
                effects: effects)

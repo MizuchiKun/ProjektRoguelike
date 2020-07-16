@@ -1,4 +1,4 @@
-﻿// Create the Level and Room structure / the Room switching mechanic (BOW).
-// Add animation choosing code in Player.cs and Entity.cs.
-// Create the level generation stuff.
+﻿// Finish the Doors! They i.a. have to be same on each side (of the Door)!
+//? Sound.cs &/ SoundEffect.cs &/ Music.cs
 // Menus?
+// Create the level generation stuff.

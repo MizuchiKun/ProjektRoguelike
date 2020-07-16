@@ -24,7 +24,7 @@ namespace ProjektRoguelike
                 Vector2 actualSize = ((SourceRectangle != null)
                                      ? SourceRectangle.Value.Size.ToVector2()
                                      : Texture.Bounds.Size.ToVector2())
-                                     * Scale;
+                                     * Scale * Globals.Scale;
                 Vector2 absOrigin = Origin * actualSize;
                 return new Rectangle(location: ((Position - absOrigin) + new Vector2(0f, 0.5f) * actualSize).ToPoint(),
                                      size: (new Vector2(1f, 0.5f) * actualSize).ToPoint());
@@ -78,28 +78,31 @@ namespace ProjektRoguelike
         /// <param name="velocity">The given velocity.</param>
         protected void Move(Vector2 velocity)
         {
+            // Multiply the velocity by Globals.Scale.
+            velocity *= Globals.Scale;
+
             // Move horizontally.
             // If it moves right.
             if (velocity.X > 0)
             {
-                Move(1, (float)Math.Abs(velocity.X));
+                Move(Directions.Right, (float)Math.Abs(velocity.X));
             }
-            // Else it moves right.
+            // Else it moves left.
             else
             {
-                Move(3, (float)Math.Abs(velocity.X));
+                Move(Directions.Left, (float)Math.Abs(velocity.X));
             }
 
             // Move vertically.
             // If it moves down.
             if (velocity.Y > 0)
             {
-                Move(2, (float)Math.Abs(velocity.Y));
+                Move(Directions.Down, (float)Math.Abs(velocity.Y));
             }
             // Else it moves up.
             else
             {
-                Move(0, (float)Math.Abs(velocity.Y));
+                Move(Directions.Up, (float)Math.Abs(velocity.Y));
             }
         }
 
@@ -107,40 +110,34 @@ namespace ProjektRoguelike
         /// Moves the Entity in the given direction with the given speed if possible.
         /// </summary>
         /// <param name="direciton">
-        /// The direction in which the Entity shall move.<br></br>
-        /// (0=up, 1=right, 2=down, 3=left)
+        /// The direction in which the Entity shall move.
         /// </param>
         /// <param name="speed">The given speed.</param>
-        protected virtual void Move(byte direction, float speed)
+        protected virtual void Move(Directions direction, float speed)
         {
             // Get the Vector of the direction.
             Vector2 directionVector = Vector2.Zero;
             switch (direction)
             {
-                // Up.
-                case 0:
+                case Directions.Up:
                     directionVector = -Vector2.UnitY;
                     break;
-                // Right.
-                case 1:
+                case Directions.Right:
                     directionVector = Vector2.UnitX;
                     break;
-                // Down.
-                case 2:
+                case Directions.Down:
                     directionVector = Vector2.UnitY;
                     break;
-                // Left.
-                case 3:
+                case Directions.Left:
                     directionVector = -Vector2.UnitX;
                     break;
-
             }
 
             // Move this Sprite.
             Position += directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
 
             // If it collides with the top wall or another Entity.
-            if (Collides(Level.CurrentRoom.Walls[direction])
+            if (Collides(Level.CurrentRoom.Walls[(byte)direction])
                 || Collides(Level.CurrentRoom.Entities)
                 || Collides(Level.Player))
             {

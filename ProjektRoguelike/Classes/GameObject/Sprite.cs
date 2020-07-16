@@ -54,7 +54,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// This <see cref="Sprite"/>'s sprite effects.
         /// </summary>
-        public SpriteEffects Effects { get; }
+        public SpriteEffects Effects { get; set; }
 
         /// <summary>
         /// The hitbox of this <see cref="Sprite"/>.
@@ -67,7 +67,7 @@ namespace ProjektRoguelike
                 Vector2 actualSize = ((SourceRectangle != null)
                                      ? SourceRectangle.Value.Size.ToVector2()
                                      : Texture.Bounds.Size.ToVector2())
-                                     * Scale;
+                                     * Scale * Globals.Scale;
                 Vector2 absOrigin = Origin * actualSize;
                 return new Rectangle(location: (Position - absOrigin).ToPoint(),
                                      size: actualSize.ToPoint());
@@ -131,7 +131,7 @@ namespace ProjektRoguelike
                 color: Colour,
                 rotation: MathHelper.ToRadians(Rotation),
                 origin: Origin * ((SourceRectangle != null) ? SourceRectangle.Value.Size.ToVector2() : Texture.Bounds.Size.ToVector2()),
-                scale: Scale,
+                scale: Scale * Globals.Scale,
                 effects: Effects,
                 layerDepth: Layer);
         }

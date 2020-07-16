@@ -119,7 +119,7 @@ namespace ProjektRoguelike
                 color: Color.Navy,
                 rotation: MathHelper.ToRadians(Rotation),
                 origin: Origin * Font.MeasureString(Message),
-                scale: Scale,
+                scale: Scale * Globals.Scale,
                 effects: Effects,
                 layerDepth: Layer
             );

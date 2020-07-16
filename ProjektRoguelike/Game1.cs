@@ -68,7 +68,7 @@ namespace ProjektRoguelike
             Globals.CurrentKeyboardState = Keyboard.GetState();
             Globals.CurrentMouseState = Mouse.GetState();
             Globals.CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
-
+            
             // Call the current Scene's Update method.
             Globals.CurrentScene.Update();
 
@@ -92,7 +92,7 @@ namespace ProjektRoguelike
             // Begin the SpriteBatch.
             Globals.SpriteBatch.Begin(
                 sortMode: SpriteSortMode.BackToFront,
-                transformMatrix: Matrix.CreateTranslation(new Vector3(Camera.Position, 0))
+                transformMatrix: Matrix.CreateTranslation(new Vector3(-Camera.Position, 0))
                                  * Matrix.CreateScale(Camera.Scale));
 
             // Call the current Scene's Draw method.

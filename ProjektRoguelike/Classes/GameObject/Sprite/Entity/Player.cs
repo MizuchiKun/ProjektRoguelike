@@ -20,19 +20,20 @@ namespace ProjektRoguelike
         {
             new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Playable Char/Herosheet_up"),
                           frameDimensions: new Vector2(256),
-                          frameDuration: TimeSpan.FromMilliseconds(200)),
-            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Playable Char/Herosheet_right"),
-                          frameDimensions: new Vector2(256),
-                          frameDuration: TimeSpan.FromMilliseconds(200)),
-            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Playable Char/Herosheet_down"),
-                          frameDimensions: new Vector2(256),
-                          frameDuration: TimeSpan.FromMilliseconds(200)),
+                          frameDuration: TimeSpan.FromMilliseconds(150)),
             new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Playable Char/Herosheet_left"),
                           frameDimensions: new Vector2(256),
-                          frameDuration: TimeSpan.FromMilliseconds(200))
+                          frameDuration: TimeSpan.FromMilliseconds(150),
+                          effects: SpriteEffects.FlipHorizontally),
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Playable Char/Herosheet_down"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(150)),
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Playable Char/Herosheet_left"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(150))
         };
         /// <summary>
-        /// The <see cref="Player"/>'s current animation.
+        /// The player's current animation.
         /// </summary>
         private Animation _currentAnimation = _walkingAnimations[2];
 
@@ -50,56 +51,67 @@ namespace ProjektRoguelike
                sourceRectangle: new Rectangle(0, 0, 256, 256))
         { timer = new McTimer(600, true); }
 
+        /// <summary>
+        /// The Update method of a Player. Handles input and "stuff".
+        /// </summary>
         public override void Update()
         {
             // Handle movement input.
             // The movement speed.
-            ushort speed = 200;
+            ushort speed = 350;
             // The velocity.
             Vector2 velocity = Vector2.Zero;
             // Up.
-            if (Globals.GetKeyDown(Keys.W))
-            {
-                // Choose the "walking up" animation.
-                _currentAnimation = _walkingAnimations[0];
-            }
             if (Globals.GetKey(Keys.W))
             {
                 // Move it up.
                 velocity += -Vector2.UnitY * speed;
             }
             // Right.
-            if (Globals.GetKeyDown(Keys.D))
-            {
-                // Choose the "walking right" animation.
-                _currentAnimation = _walkingAnimations[1];
-            }
             if (Globals.GetKey(Keys.D))
             {
                 // Move it right.
                 velocity += Vector2.UnitX * speed;
             }
             // Down.
-            if (Globals.GetKeyDown(Keys.S))
-            {
-                // Choose the "walking down" animation.
-                _currentAnimation = _walkingAnimations[2];
-            }
             if (Globals.GetKey(Keys.S))
             {
                 // Move it down.
                 velocity += Vector2.UnitY * speed;
             }
             // Left.
-            if (Globals.GetKeyDown(Keys.A))
-            {
-                // Choose the "walking left" animation.
-                _currentAnimation = _walkingAnimations[3];
-            }
             if (Globals.GetKey(Keys.A))
             {
                 // Move it left.
                 velocity += -Vector2.UnitX * speed;
+            }
+            // Choose the proper antimation.
+            if (Math.Abs(velocity.X) > Math.Abs(velocity.Y))
+            {
+                // If it moves left.
+                if (velocity.X < 0)
+                {
+                    _currentAnimation = _walkingAnimations[3];
+                }
+                // Else it moves right.
+                else
+                {
+                    _currentAnimation = _walkingAnimations[1];
+                }
+            }
+            // Else it moves up, down or diagonally.
+            else
+            {
+                // If it moves up.
+                if (velocity.Y < 0)
+                {
+                    _currentAnimation = _walkingAnimations[0];
+                }
+                // Else it moves down.
+                else if (velocity.Y > 0)
+                {
+                    _currentAnimation = _walkingAnimations[2];
+                }
             }
             // Move it.
             if (velocity != Vector2.Zero)
@@ -145,6 +157,7 @@ namespace ProjektRoguelike
             // Get the current animation frame.
             Texture = _currentAnimation.Sheet;
             SourceRectangle = _currentAnimation.CurrentFrame;
+            Effects = _currentAnimation.Effects;
 
             base.Update();
         }
@@ -153,30 +166,25 @@ namespace ProjektRoguelike
         /// Moves the Entity in the given direction with the given speed if possible.
         /// </summary>
         /// <param name="direciton">
-        /// The direction in which the Entity shall move.<br></br>
-        /// (0=up, 1=right, 2=down, 3=left)
+        /// The direction in which the Entity shall move.
         /// </param>
         /// <param name="speed">The given speed.</param>
-        protected override void Move(byte direction, float speed)
+        protected override void Move(Directions direction, float speed)
         {
             // Get the Vector of the direction.
             Vector2 directionVector = Vector2.Zero;
             switch (direction)
             {
-                // Up.
-                case 0:
+                case Directions.Up:
                     directionVector = -Vector2.UnitY;
                     break;
-                // Right.
-                case 1:
+                case Directions.Right:
                     directionVector = Vector2.UnitX;
                     break;
-                // Down.
-                case 2:
+                case Directions.Down:
                     directionVector = Vector2.UnitY;
                     break;
-                // Left.
-                case 3:
+                case Directions.Left:
                     directionVector = -Vector2.UnitX;
                     break;
             }
@@ -187,23 +195,39 @@ namespace ProjektRoguelike
             // Move this Sprite.
             Position += directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
 
-            // If it collides with a door and is withing the door frame.
-            if ((direction % 2 == 0
-                 && Math.Abs(Position.X - Level.CurrentRoom.Doors[0].Position.X) <= doorWidth * Scale.X)
-                || (direction % 2 == 1
-                    && Math.Abs(Position.Y - Level.CurrentRoom.Doors[1].Position.Y) <= doorWidth * Scale.Y))
+            // If it collides with a door and is within the door frame.
+            if ((direction == Directions.Up
+                 && ((Level.CurrentRoom.Doors[(byte)Directions.Up] != null
+                      && Level.CurrentRoom.Doors[(byte)Directions.Up].State == DoorState.Open
+                      && Math.Abs(Position.X - Level.CurrentRoom.Doors[(byte)Directions.Up].Position.X) <= doorWidth * Scale.X)))
+                || (direction == Directions.Right
+                    && ((Level.CurrentRoom.Doors[(byte)Directions.Right] != null
+                      && Level.CurrentRoom.Doors[(byte)Directions.Right].State == DoorState.Open
+                         && Math.Abs(Position.Y - Level.CurrentRoom.Doors[(byte)Directions.Right].Position.Y) <= doorWidth * Scale.Y)))
+                || (direction == Directions.Down
+                 && ((Level.CurrentRoom.Doors[(byte)Directions.Down] != null
+                      && Level.CurrentRoom.Doors[(byte)Directions.Down].State == DoorState.Open
+                      && Math.Abs(Position.X - Level.CurrentRoom.Doors[(byte)Directions.Down].Position.X) <= doorWidth * Scale.X)))
+                || (direction == Directions.Left
+                    && ((Level.CurrentRoom.Doors[(byte)Directions.Left] != null
+                      && Level.CurrentRoom.Doors[(byte)Directions.Left].State == DoorState.Open
+                         && Math.Abs(Position.Y - Level.CurrentRoom.Doors[(byte)Directions.Left].Position.Y) <= doorWidth * Scale.Y))))
             {
                 // It's allowed to move.
             }
             // Else if it collides with the top wall, another Entity or the frame of a door.
-            else if (Collides(Level.CurrentRoom.Walls[direction])
-                || Collides(Level.CurrentRoom.Entities)
-                || (direction % 2 == 0
-                    && (Collides(Level.CurrentRoom.Doors[1]) || Collides(Level.CurrentRoom.Doors[3]))
-                        && Math.Abs(Position.Y - Level.CurrentRoom.Doors[1].Position.Y) > doorWidth * Scale.Y)
-                || (direction % 2 == 1
-                    && (Collides(Level.CurrentRoom.Doors[0]) || Collides(Level.CurrentRoom.Doors[2]))
-                        && Math.Abs(Position.X - Level.CurrentRoom.Doors[0].Position.X) > doorWidth * Scale.X))
+            else if (Collides(Level.CurrentRoom.Walls[(byte)direction])
+                     || Collides(Level.CurrentRoom.Entities)
+                     || ((byte)direction % 2 == 0
+                         && ((Level.CurrentRoom.Doors[1] != null && Collides(Level.CurrentRoom.Doors[1])) 
+                              || (Level.CurrentRoom.Doors[3] != null && Collides(Level.CurrentRoom.Doors[3])))
+                         && ((Level.CurrentRoom.Doors[1] != null && Math.Abs(Position.Y - Level.CurrentRoom.Doors[1].Position.Y) > doorWidth * Scale.Y)
+                             || (Level.CurrentRoom.Doors[3] != null && Math.Abs(Position.Y - Level.CurrentRoom.Doors[3].Position.Y) > doorWidth * Scale.Y)))
+                     || ((byte)direction % 2 == 1
+                         && ((Level.CurrentRoom.Doors[0] != null && Collides(Level.CurrentRoom.Doors[0]))
+                              || (Level.CurrentRoom.Doors[2] != null && Collides(Level.CurrentRoom.Doors[2])))
+                         && ((Level.CurrentRoom.Doors[0] != null && Math.Abs(Position.X - Level.CurrentRoom.Doors[0].Position.X) > doorWidth * Scale.X)
+                             || (Level.CurrentRoom.Doors[2] != null && Math.Abs(Position.X - Level.CurrentRoom.Doors[2].Position.X) > doorWidth * Scale.X))))
             {
                 // It's not allowed to move up.
                 // Revert its position.

@@ -10,6 +10,14 @@ namespace ProjektRoguelike
     public delegate object PassObjectsAndReturn(object i);
 
     /// <summary>
+    /// An enum containing the directions up, right, down and left.
+    /// </summary>
+    public enum Directions : byte
+    {
+        Up, Right, Down, Left
+    }
+
+    /// <summary>
     /// Contains information and functions of global importance.
     /// </summary>
     public static class Globals
@@ -30,6 +38,17 @@ namespace ProjektRoguelike
         public static GraphicsDeviceManager Graphics { get; set; }
 
         /// <summary>
+        /// The base dimensions of the window.
+        /// </summary>
+        public static Vector2 BaseWindowDimensions
+        {
+            get
+            {
+                return new Vector2(1280, 720);
+            }
+        }
+
+        /// <summary>
         /// The current dimensions of the window.
         /// </summary>
         public static Vector2 WindowDimensions
@@ -38,6 +57,17 @@ namespace ProjektRoguelike
             {
                 return new Vector2(Graphics.PreferredBackBufferWidth,
                                    Graphics.PreferredBackBufferHeight);
+            }
+        }
+
+        /// <summary>
+        /// The current global scale factors.
+        /// </summary>
+        public static Vector2 Scale
+        {
+            get
+            {
+                return WindowDimensions / BaseWindowDimensions;
             }
         }
 

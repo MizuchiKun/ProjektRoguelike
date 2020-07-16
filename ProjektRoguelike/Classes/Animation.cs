@@ -45,15 +45,19 @@ namespace ProjektRoguelike
         /// Whether the animation is paused.
         /// </summary>
         private bool _isPaused = false;
+        /// <summary>
+        /// Whether this animation is playing in reversed order.
+        /// </summary>
+        public bool IsReversed { get; set; } = false;
 
         /// <summary>
         /// The current frame of this <see cref="Animation"/>.
         /// </summary>
-        private byte _currentFrame = 0;
+        private sbyte _currentFrame;
         /// <summary>
         /// The count of frame of this <see cref="Animation"/>.
         /// </summary>
-        private byte _frameCount;
+        private sbyte _frameCount;
         /// <summary>
         /// The time when the current frame started.
         /// </summary>
@@ -71,27 +75,64 @@ namespace ProjektRoguelike
                     && !_isPaused
                     && Globals.HasTimePassed(_frameDuration, _frameStart))
                 {
-                    // It's the next frame.
-                    _currentFrame++;
-
-                    // If the current repetition ended.
-                    if (_currentFrame == _frameCount)
+                    // If it's not reversed.
+                    if (!IsReversed)
                     {
-                        // And it shall repeat.
-                        if (_repetitions < 0
-                            || (_repetitions > 0
-                                && _currentRepetition < _repetitions))
+                        // It's the next frame.
+                        _currentFrame++;
+
+                        // If the current repetition ended.
+                        if (_currentFrame == _frameCount)
                         {
-                            // Start from the beginning.
-                            _currentFrame = 0;
-                            // A new repetition starts.
-                            _currentRepetition++;
+                            // And it shall repeat.
+                            if (_repetitions < 0
+                                || (_repetitions > 0
+                                    && _currentRepetition < _repetitions))
+                            {
+                                // Start from the beginning.
+                                _currentFrame = 0;
+                                // A new repetition starts.
+                                if (_repetitions > 0)
+                                {
+                                    _currentRepetition++;
+                                }
+                            }
+                            // Else it shall not repeat.
+                            else
+                            {
+                                _currentFrame = (sbyte)(_frameCount - 1);
+                                _hasEnded = true;
+                            }
                         }
-                        // Else it shall not repeat.
-                        else
+                    }
+                    // Else it is reversed.
+                    else
+                    {
+                        // It's the next frame.
+                        _currentFrame--;
+
+                        // If the current repetition ended.
+                        if (_currentFrame == -1)
                         {
-                            _currentFrame = 0;
-                            _hasEnded = true;
+                            // And it shall repeat.
+                            if (_repetitions < 0
+                                || (_repetitions > 0
+                                    && _currentRepetition < _repetitions))
+                            {
+                                // Start from the beginning.
+                                _currentFrame = (sbyte)(_frameCount - 1);
+                                // A new repetition starts.
+                                if (_repetitions > 0)
+                                {
+                                    _currentRepetition++;
+                                }
+                            }
+                            // Else it shall not repeat.
+                            else
+                            {
+                                _currentFrame = 0;
+                                _hasEnded = true;
+                            }
                         }
                     }
 
@@ -104,6 +145,10 @@ namespace ProjektRoguelike
                                      size: _frameDimensions.ToPoint());
             }
         }
+        /// <summary>
+        /// The sprite effects of this <see cref="Animation"/>.
+        /// </summary>
+        public SpriteEffects Effects { get; }
 
         /// <summary>
         /// Creates a new <see cref="Animation"/> with the given parameters.
@@ -111,23 +156,30 @@ namespace ProjektRoguelike
         /// <param name="animationSheet">The sheet that contains the frames of the animation.</param>
         /// <param name="frameDimensions">The dimensions of a frame.</param>
         /// <param name="frameDuration">The duration of a frame in milliseconds.</param>
+        /// <param name="effects">The sprite effects of this animation.</param>
         /// <param name="repetitions">How often it shall repeat. Set to -1 if it shall repeat continuously.</param>
+        /// <param name="orderIsReversed">Whether this animation shall be player in reverse order.</param>
         /// <param name="startingFrameIndex">An optional index of the starting frame. It's 0 by default.</param>
         public Animation(Texture2D animationSheet,
                          Vector2 frameDimensions,
                          TimeSpan frameDuration,
+                         SpriteEffects effects = SpriteEffects.None,
                          sbyte repetitions = -1,
-                         byte startingFrameIndex = 0)
+                         bool orderIsReversed = false)
         {
             // Store the parameters.
             Sheet = animationSheet;
             _frameDimensions = frameDimensions;
             _frameDuration = frameDuration;
+            Effects = effects;
             _repetitions = repetitions;
-            _currentFrame = startingFrameIndex;
+            IsReversed = orderIsReversed;
 
             // Get the frame count.
-            _frameCount = (byte)(Sheet.Width / _frameDimensions.X);
+            _frameCount = (sbyte)(Sheet.Width / _frameDimensions.X);
+
+            // Set the starting frame.
+            _currentFrame = (!IsReversed) ? (sbyte)0 : (sbyte)(_frameCount - 1);
 
             // Let the first frame start.
             _frameStart = DateTime.Now;
@@ -150,13 +202,33 @@ namespace ProjektRoguelike
         }
 
         /// <summary>
+        /// Restarts the animation from repetition 0.
+        /// </summary>
+        public void Restart()
+        {
+            // Select the first frame.
+            _currentFrame = (!IsReversed) ? (sbyte)0 : (sbyte)(_frameCount - 1);
+
+            // It's the first repetition, again.
+            _currentRepetition = 0;
+
+            // It neither ended, nor is it paused.
+            _hasEnded = false;
+            _isPaused = false;
+
+            // The current frame starts.
+            _frameStart = DateTime.Now;
+        }
+
+        /// <summary>
         /// Selects the frame at the given index. <br></br>
-        /// The Animation will continue from that frame.
+        /// The Animation will continue from that frame. <br></br>
+        /// 0 corresponds to the first frame in the current order.
         /// </summary>
         /// <param name="frameIndex">The given frame index.</param>
-        public void SelectFrame(byte frameIndex)
+        public void SelectFrame(sbyte frameIndex)
         {
-            _currentFrame = frameIndex;
+            _currentFrame = (!IsReversed) ? frameIndex : (sbyte)((_frameCount - 1) - frameIndex);
         }
     }
 }
