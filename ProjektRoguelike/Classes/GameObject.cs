@@ -17,11 +17,6 @@ namespace ProjektRoguelike
         public abstract void Draw();
 
         /// <summary>
-        /// Considers, if the <see cref="GameObject"/> has done its purpose in the current context.
-        /// </summary>
-        public bool Done { get; set; } = false;
-
-        /// <summary>
         /// Gets whether this <see cref="GameObject"/> collides with the given other <see cref="GameObject"/>.
         /// </summary>
         /// <param name="otherGameObject">The other <see cref="GameObject"/>.</param>

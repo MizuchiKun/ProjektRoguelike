@@ -327,6 +327,18 @@ namespace ProjektRoguelike
                 return (focus - pos) * speed / dist;
             }
         }
+
+        /// <summary>
+        /// Rotates the object around the origin
+        /// </summary>
+        /// <param name="point">The Point from which the rotation around the origin starts</param>
+        /// <param name="origin">The origin of the rotation</param>
+        /// <param name="rotation">The speed at which the rotation works</param>
+        /// <returns>The <see cref="Vector2"/> of the rotation.</returns>
+        public static Vector2 RotateAboutOrigin(Vector2 point, Vector2 origin, float rotation)
+        {
+            return Vector2.Transform(point - origin, Matrix.CreateRotationZ(rotation)) + origin;
+        }
     }
 
     /// <summary>

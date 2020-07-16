@@ -11,6 +11,8 @@ namespace ProjektRoguelike
     public class Player : Entity
     {
         McTimer timer;
+        public int HealthMax;
+        public bool Done = false;
 
         /// <summary>
         /// The walking animations of the Player.<br></br>
@@ -49,7 +51,10 @@ namespace ProjektRoguelike
         : base(texture: Globals.Content.Load<Texture2D>("Sprites/Playable Char/Herosheet_down"),
                position: position,
                sourceRectangle: new Rectangle(0, 0, 256, 256))
-        { timer = new McTimer(600, true); }
+        { 
+            timer = new McTimer(600, true);
+            HealthMax = Health;
+        }
 
         /// <summary>
         /// The Update method of a Player. Handles input and "stuff".
@@ -132,25 +137,29 @@ namespace ProjektRoguelike
             // up
             if (Globals.GetKey(Keys.Up) && timer.Test())
             {
-                GameGlobals.PassProjectile(new PlayerAttack(0 - 90, Position));
+                Level.CurrentRoom.Add(new BasicAttack(0 - 90, Position));
+                //GameGlobals.PassProjectile(new PlayerAttack(0 - 90, Position));
                 timer.ResetToZero();
             }
             // right
             if (Globals.GetKey(Keys.Right) && timer.Test())
             {
-                GameGlobals.PassProjectile(new PlayerAttack(90 - 90, Position));
+                Level.CurrentRoom.Add(new BasicAttack(90 - 90, Position));
+                //GameGlobals.PassProjectile(new PlayerAttack(90 - 90, Position));
                 timer.ResetToZero();
             }
             // down
             if (Globals.GetKey(Keys.Down) && timer.Test())
             {
-                GameGlobals.PassProjectile(new PlayerAttack(180 - 90, Position));
+                Level.CurrentRoom.Add(new BasicAttack(180 - 90, Position));
+                //GameGlobals.PassProjectile(new PlayerAttack(180 - 90, Position));
                 timer.ResetToZero();
             }
             // left
             if (Globals.GetKey(Keys.Left) && timer.Test())
             {
-                GameGlobals.PassProjectile(new PlayerAttack(270 - 90, Position));
+                Level.CurrentRoom.Add(new BasicAttack(270 - 90, Position));
+                //GameGlobals.PassProjectile(new PlayerAttack(270 - 90, Position));
                 timer.ResetToZero();
             }
 
@@ -233,11 +242,6 @@ namespace ProjektRoguelike
                 // Revert its position.
                 Position -= directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
             }
-        }
-
-        public override void IsDone()
-        {
-            
         }
     }
 }

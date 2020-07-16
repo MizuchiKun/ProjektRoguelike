@@ -39,22 +39,28 @@ namespace ProjektRoguelike
             timer = new McTimer(1000);
         }
 
-        public virtual void Update(List<Enemy> enemies)
+        public override void Update()
+        {
+            Update(Level.CurrentRoom.Enemies);
+            base.Update();
+        }
+
+        private void Update(List<Enemy> enemies)
         {
             timer.UpdateTimer();
             ChangePosition();
             if (timer.Test())
             {
-                Done = true;
+                Level.CurrentRoom.Remove(this);
             }
             if (HitWall())
             {
-                Done = true;
+                Level.CurrentRoom.Remove(this);
             }
             if (Collides(Level.Player) && (OwnerID == 2 || OwnerID == 0))
             {
                 Level.Player.GetHit(HitValue);
-                Done = true;
+                Level.CurrentRoom.Remove(this);
             }
             if (Collides(enemies) && (OwnerID == 1 || OwnerID == 0))
             {
@@ -62,14 +68,13 @@ namespace ProjektRoguelike
                 {
                     if (OwnerID == 1)
                     {
-                        enemies[i].GetHit(HitValue);
-                        Done = true;
+                        //enemies[i].GetHit(HitValue);
+                        Level.CurrentRoom.Enemies[i].GetHit(HitValue);
+                        Level.CurrentRoom.Remove(this);
                     }
                 }
             }
-            base.Update();
         }
-
         public virtual void ChangePosition()
         {
             Position += Speed * Direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
@@ -78,30 +83,23 @@ namespace ProjektRoguelike
         public virtual bool HitWall()
         {
             // up
-            if (Collides(Level.CurrentRoom.Walls[0])
-                         //|| Collides(Level.CurrentRoom.Entities)
-                         || ((Collides(Level.CurrentRoom.Doors[1]) || Collides(Level.CurrentRoom.Doors[3]))))
+            if (Collides(Level.CurrentRoom.Walls[0]))
+
             {
                 return true;
             }
             // right
-            else if (Collides(Level.CurrentRoom.Walls[1])
-                         //|| Collides(Level.CurrentRoom.Entities)
-                         || ((Collides(Level.CurrentRoom.Doors[0]) || Collides(Level.CurrentRoom.Doors[2]))))
+            else if (Collides(Level.CurrentRoom.Walls[1]))
             {
                 return true;
             }
             // down
-            else if (Collides(Level.CurrentRoom.Walls[2])
-                        // || Collides(Level.CurrentRoom.Entities)
-                         || ((Collides(Level.CurrentRoom.Doors[1]) || Collides(Level.CurrentRoom.Doors[3]))))
+            else if (Collides(Level.CurrentRoom.Walls[2]))
             {
                 return true;
             }
             // left
-            else if (Collides(Level.CurrentRoom.Walls[3])
-                         //|| Collides(Level.CurrentRoom.Entities)
-                         || ((Collides(Level.CurrentRoom.Doors[0]) || Collides(Level.CurrentRoom.Doors[2]))))
+            else if (Collides(Level.CurrentRoom.Walls[3]))
             {
                 return true;
             }

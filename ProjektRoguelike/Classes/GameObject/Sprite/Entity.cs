@@ -55,21 +55,8 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
-            // Update code.
-            IsDone();
-
             // Update the Layer.
             Layer = 0.9f - (Position.Y / 10e6f);
-        }
-
-        public virtual void IsDone()
-        {
-            if (Health <= 0)
-            {
-                //Entity is done/dying...
-                //Code, what happens when the entity is done
-                Done = true;
-            }
         }
 
         /// <summary>

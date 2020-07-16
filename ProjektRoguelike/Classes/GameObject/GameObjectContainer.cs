@@ -48,11 +48,12 @@ namespace ProjektRoguelike
             for (int i = 0; i < _gameObjects.Count; i++)
             {
                 _gameObjects[i].Update();
-
+                /*
                 if (_gameObjects[i].Done)
                 {
                     _gameObjects.RemoveAt(i);
-                }
+                    i--;
+                }*/
             }
             /*
             foreach (GameObject gameObject in _gameObjects)

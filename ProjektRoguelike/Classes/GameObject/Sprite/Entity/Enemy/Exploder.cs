@@ -8,9 +8,11 @@ namespace ProjektRoguelike
     /// <summary>
     /// An enemy
     /// </summary>
-    public class Floater : Enemy
+    public class Exploder : Enemy
     {
-        public Floater(Vector2? position = null,
+        McTimer timer;
+
+        public Exploder(Vector2? position = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
 
@@ -22,11 +24,25 @@ namespace ProjektRoguelike
         {
             Speed = 2f;
             Health = 3;
+
+            timer = new McTimer(200);
         }
 
         public override void Update()
         {
             base.Update();
+        }
+
+        public override void AI()
+        {
+            base.AI();
+
+            timer.UpdateTimer();
+            if (Collides(Level.Player))
+            {
+                new Explosion(Position);
+                Level.CurrentRoom.Remove(this);
+            }
         }
     }
 }

@@ -35,6 +35,8 @@ namespace ProjektRoguelike
                 Level.CurrentRoom.Remove(this);
             }
             */
+            
+
             base.Update();
 
             AI();
@@ -42,17 +44,33 @@ namespace ProjektRoguelike
 
         public virtual void ChangePosition()
         {
+            /*
+            if (Globals.Vector2ToDegrees(Level.Player.Position - Position) > 0 - 90 || Globals.Vector2ToDegrees(Level.Player.Position - Position) < 90 - 90)
+            {
+                Move(); 
+            }
+            else if (Globals.Vector2ToDegrees(Level.Player.Position - Position) > 90 - 90 || Globals.Vector2ToDegrees(Level.Player.Position - Position) < 180 - 90)
+            {
+                Move();
+            }
+            else if (Globals.Vector2ToDegrees(Level.Player.Position - Position) > 180 - 90 || Globals.Vector2ToDegrees(Level.Player.Position - Position) < 270 - 90)
+            {
+                Move();
+            }
+            else if (Globals.Vector2ToDegrees(Level.Player.Position - Position) > 270 - 90 || Globals.Vector2ToDegrees(Level.Player.Position - Position) < 360 - 90)
+            {
+                Move();
+            }
+            */
+
+            //Move(new Vector2(Level.Player.Position.X - Position.X, Level.Player.Position.Y - Position.Y));
+
             Position += Globals.RadialMovement(Level.Player.Position, Position, Speed);
         }
 
         public virtual void AI()
         {
             ChangePosition();
-
-            if (Collides(Level.Player))
-            {
-                //player.Health--;
-            }
         }
     }
 }

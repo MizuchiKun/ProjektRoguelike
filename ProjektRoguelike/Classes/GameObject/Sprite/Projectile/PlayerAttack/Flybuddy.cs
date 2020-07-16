@@ -9,16 +9,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ProjektRoguelike
 {
-    public class PlayerAttack : Projectile
+    public class Flybuddy : PlayerAttack
     {
-
-        public PlayerAttack(Texture2D texture,
-                            float angle,
-                            Vector2? position = null,
-                            Rectangle? sourceRectangle = null,
-                            float rotation = 0f,
-                            SpriteEffects effects = SpriteEffects.None)
-        : base(texture: texture,
+        public Flybuddy(Vector2? position = null,
+                        Rectangle? sourceRectangle = null,
+                        float rotation = 0f,
+                        SpriteEffects effects = SpriteEffects.None)
+        : base(angle: 0f,
+               texture: Globals.Content.Load<Texture2D>("Sprites/Enemies/Fly"),
                position: position,
                sourceRectangle: sourceRectangle,
                rotation: rotation,
@@ -29,10 +27,9 @@ namespace ProjektRoguelike
 
             timer = new McTimer(1000);
 
-            Direction = Globals.DegreesToVector2(angle);
-            Direction.Normalize();
-
             OwnerID = 1;
+
+            HitValue = 1;
         }
 
         public override void Update(/*List<Enemy> entities*/)
@@ -40,9 +37,9 @@ namespace ProjektRoguelike
             base.Update(/*entities*/);
         }
 
-        public override void Draw()
+        public override void ChangePosition()
         {
-            base.Draw();
+            Globals.RotateAboutOrigin(Position, Level.Player.Position, 0.1f);
         }
     }
 }

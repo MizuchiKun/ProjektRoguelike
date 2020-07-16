@@ -35,7 +35,8 @@ namespace ProjektRoguelike
             timer.UpdateTimer();
             if (timer.Test())
             {
-                GameGlobals.PassProjectile(new EnemyAttack(Globals.Vector2ToDegrees(Level.Player.Position), Position, null, Globals.Vector2ToDegrees(Level.Player.Position), SpriteEffects.None));
+                Level.CurrentRoom.Add(new EnemyAttack(Globals.Vector2ToDegrees(Level.Player.Position - Position), Position, null, Globals.Vector2ToDegrees(Level.Player.Position - Position), SpriteEffects.None));
+                //GameGlobals.PassProjectile(new EnemyAttack(Globals.Vector2ToDegrees(Level.Player.Position), Position, null, Globals.Vector2ToDegrees(Level.Player.Position), SpriteEffects.None));
                 timer.ResetToZero();
             }
         }

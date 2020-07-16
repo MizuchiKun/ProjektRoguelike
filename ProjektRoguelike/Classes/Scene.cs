@@ -44,7 +44,7 @@ namespace ProjektRoguelike
             {
                 _gameObjects[i].Update();
             }
-            for (int i = 0; i < projectiles.Count; i++)
+            /*for (int i = 0; i < projectiles.Count; i++)
             {
                 projectiles[i].Update(Level.CurrentRoom.Enemies);
 
@@ -52,7 +52,7 @@ namespace ProjektRoguelike
                 {
                     projectiles.RemoveAt(i);
                 }
-            }
+            }*/
         }
 
         /// <summary>
@@ -65,11 +65,11 @@ namespace ProjektRoguelike
             {
                 gameObject.Draw();
             }
-
+            /*
             for (int i = 0; i < projectiles.Count; i++)
             {
                 projectiles[i].Draw();
-            }
+            }*/
         }
 
         public virtual void AddProjectile(object info)
