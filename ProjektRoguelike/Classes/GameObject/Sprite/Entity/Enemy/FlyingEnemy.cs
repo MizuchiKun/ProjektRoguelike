@@ -21,5 +21,13 @@ namespace ProjektRoguelike
                rotation,
                effect)
         {  }
+
+        public override void Update()
+        {
+            base.Update();
+
+            // Update the Layer.
+            Layer = 0.6f - (Position.Y / 10e6f);
+        }
     }
 }

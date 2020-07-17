@@ -21,6 +21,11 @@ namespace ProjektRoguelike
         {
             Health = 3;
             HitValue = 1;
+
+            // Set the animation.
+            CurrentAnimation = new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Environment/Firesheet"),
+                                             frameDimensions: new Vector2(256),
+                                             frameDuration: TimeSpan.FromMilliseconds(100));
         }
 
         public override void Update()
@@ -29,7 +34,6 @@ namespace ProjektRoguelike
             {
                 Level.Player.GetHit(HitValue);
             }
-            base.Update();
         }
     }
 }

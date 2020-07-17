@@ -22,11 +22,17 @@ namespace ProjektRoguelike
         {
             Speed = 2f;
             Health = 3;
+
+            // Set the animation.
+            CurrentAnimation = new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/FLysheet"),
+                                             frameDimensions: new Vector2(256),
+                                             frameDuration: TimeSpan.FromSeconds(1f / 60f));
         }
 
         public override void Update()
         {
-            base.Update();
+            // This whole Update() method can be removed (if you don't plan on adding something to it).
+            //base.Update();
         }
 
         public override void ChangePosition()

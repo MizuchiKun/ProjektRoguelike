@@ -17,6 +17,11 @@ namespace ProjektRoguelike
         public Texture2D Texture { get; set; }
 
         /// <summary>
+        /// This <see cref="Sprite"/>'s current animation.
+        /// </summary>
+        public Animation CurrentAnimation { get; set; }
+
+        /// <summary>
         /// This <see cref="Sprite"/>'s position.
         /// </summary>
         public Vector2 Position { get; set; }
@@ -78,6 +83,7 @@ namespace ProjektRoguelike
         /// Creates a new Sprite with the given graphical parameters.
         /// </summary>
         /// <param name="texture">Its texture.</param>
+        /// <param name="animation">Its optional animation. If null, it won't be animated.</param>
         /// <param name="position">Its position. <br></br>If null, it will be <see cref="Vector2.Zero"/>.</param>
         /// <param name="origin">
         /// Its relative origin. <br></br>
@@ -91,6 +97,7 @@ namespace ProjektRoguelike
         /// <param name="colour">Its colour. <br></br>If null, it will be <see cref="Color.White"/>.</param>
         /// <param name="effects">Its sprite effects. <br></br>It's <see cref="SpriteEffects.None"/> by default.</param>
         public Sprite(Texture2D texture,
+                      Animation animation = null,
                       Vector2? position = null,
                       Vector2? origin = null,
                       Rectangle? sourceRectangle = null,
@@ -102,6 +109,7 @@ namespace ProjektRoguelike
         {
             // Store the parameters.
             Texture = texture;
+            CurrentAnimation = animation;
             Position = (position != null) ? position.Value : Vector2.Zero;
             Origin = (origin != null) ? origin.Value : Vector2.Zero;
             SourceRectangle = sourceRectangle;
@@ -123,6 +131,14 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Draw()
         {
+            // Apply the animation if it's not null.
+            if (CurrentAnimation != null)
+            {
+                Texture = CurrentAnimation.Sheet;
+                SourceRectangle = CurrentAnimation.CurrentFrame;
+                Effects = CurrentAnimation.Effects;
+            }
+
             // Draw the Sprite with its current graphical parameters.
             Globals.SpriteBatch.Draw(
                 texture: Texture,

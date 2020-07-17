@@ -12,13 +12,13 @@ namespace ProjektRoguelike
     public class Flybuddy : PlayerAttack
     {
         public Flybuddy(Vector2? position = null,
-                        Rectangle? sourceRectangle = null,
+                        /*Rectangle? sourceRectangle = null,*/
                         float rotation = 0f,
                         SpriteEffects effects = SpriteEffects.None)
         : base(angle: 0f,
-               texture: Globals.Content.Load<Texture2D>("Sprites/Enemies/Fly"),
+               texture: Globals.Content.Load<Texture2D>("Sprites/Enemies/Flysheet"),
                position: position,
-               sourceRectangle: sourceRectangle,
+               sourceRectangle: new Rectangle(0, 0, 256, 256)/*sourceRectangle*/,
                rotation: rotation,
                effects: effects)
         {
@@ -30,6 +30,11 @@ namespace ProjektRoguelike
             OwnerID = 1;
 
             HitValue = 1;
+
+            // Set the animation.
+            CurrentAnimation = new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/FLysheet"),
+                                             frameDimensions: new Vector2(256),
+                                             frameDuration: TimeSpan.FromSeconds(1f / 60f));
         }
 
         public override void Update(/*List<Enemy> entities*/)

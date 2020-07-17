@@ -128,8 +128,9 @@ namespace ProjektRoguelike
             }
 
             // Add enemies to test.
-            CurrentRoom.Add(new Floater(CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
-            CurrentRoom.Add(new Screamer(CurrentRoom.Position + (Room.Dimensions / 7) * Tile.Size * Globals.Scale));
+            //CurrentRoom.Add(new Floater(CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+            //CurrentRoom.Add(new Screamer(CurrentRoom.Position + (Room.Dimensions / 7) * Tile.Size * Globals.Scale));
+            CurrentRoom.Add(new Flybuddy(CurrentRoom.Position + (Room.Dimensions / 2.2f) * Tile.Size * Globals.Scale));
         }
 
         /// <summary>

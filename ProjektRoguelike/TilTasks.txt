@@ -1,4 +1,5 @@
-﻿// Finish the Doors! They i.a. have to be same on each side (of the Door)!
+﻿// Fix Lugga's problem!
+// Finish the Doors! They i.a. have to be same on each side (of the Door)!
 //? Sound.cs &/ SoundEffect.cs &/ Music.cs
 // Menus?
 // Create the level generation stuff.

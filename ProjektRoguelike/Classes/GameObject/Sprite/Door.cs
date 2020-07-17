@@ -46,11 +46,6 @@ namespace ProjektRoguelike
         };
 
         /// <summary>
-        /// The current animation of this door.
-        /// </summary>
-        private Animation _currentAnimation;
-
-        /// <summary>
         /// The direction in which the Door leads.
         /// </summary>
         private Directions _direction;
@@ -92,12 +87,21 @@ namespace ProjektRoguelike
             _state = doorState;
 
             // Set the initial animation.
-            _currentAnimation = _closeAnimations[(byte)Kind];
-            _currentAnimation.IsReversed = true;
+            CurrentAnimation = _closeAnimations[(byte)Kind];
+            CurrentAnimation.IsReversed = true;
         }
 
         public override void Update()
         {
+            // Unlock the door.
+            if (State == DoorState.Locked)
+            {
+                // if hidden and hit by bomb.
+                // OR if colliding with player and player has more than 0 keys.
+                    // change state to closed.
+                    // change state of counterpart (in next room) to closed. (maybe by public method of Level?)
+            }
+
             // If the door is open and there are enemies in the room.
             if (_state == DoorState.Open
                 && Level.CurrentRoom.Enemies.Count > 0)
@@ -105,9 +109,9 @@ namespace ProjektRoguelike
                 // Close the Door.
                 _state = DoorState.Closed;
                 // Start closing animation.
-                _currentAnimation.IsReversed = false;
-                _currentAnimation.Restart();
-                _currentAnimation.SelectFrame(1);
+                CurrentAnimation.IsReversed = false;
+                CurrentAnimation.Restart();
+                CurrentAnimation.SelectFrame(1);
             }
             // Else if the door is closed and there are no enemies in the room.
             else if (_state == DoorState.Closed
@@ -116,9 +120,9 @@ namespace ProjektRoguelike
                 // Open the door.
                 _state = DoorState.Open;
                 // Start opening animation.
-                _currentAnimation.IsReversed = true;
-                _currentAnimation.Restart();
-                _currentAnimation.SelectFrame(1);
+                CurrentAnimation.IsReversed = true;
+                CurrentAnimation.Restart();
+                CurrentAnimation.SelectFrame(1);
             }
 
             // If this Door is open.
@@ -160,11 +164,6 @@ namespace ProjektRoguelike
                     Level.SwitchRoom(_direction);
                 }
             }
-
-            // Get the current animation frame.
-            Texture = _currentAnimation.Sheet;
-            SourceRectangle = _currentAnimation.CurrentFrame;
-            Effects = _currentAnimation.Effects;
         }
     }
 }

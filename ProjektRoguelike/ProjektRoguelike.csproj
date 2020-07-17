@@ -45,9 +45,9 @@
     <Compile Include="Classes\GameObject\GameObjectContainer\Room.cs" />
     <Compile Include="Classes\GameObject\Sprite.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Enemy\Exploder.cs" />
-    <Compile Include="Classes\GameObject\Sprite\Entity\Enemy\Floating Enemy\Fly.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Enemy\FlyingEnemy\Fly.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Enemy\FlyingEnemy.cs" />
-    <Compile Include="Classes\GameObject\Sprite\Entity\Enemy\Floating Enemy\Floater.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Enemy\FlyingEnemy\Floater.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Enemy\Screamer.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\NeutralDamage\Bomb.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\NeutralDamage\Campfire.cs" />

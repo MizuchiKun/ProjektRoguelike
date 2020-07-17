@@ -34,10 +34,6 @@ namespace ProjektRoguelike
                           frameDimensions: new Vector2(256),
                           frameDuration: TimeSpan.FromMilliseconds(150))
         };
-        /// <summary>
-        /// The player's current animation.
-        /// </summary>
-        private Animation _currentAnimation = _walkingAnimations[2];
 
         /// <summary>
         /// Creates a Player with the given graphical parameters.
@@ -54,6 +50,9 @@ namespace ProjektRoguelike
         { 
             timer = new McTimer(600, true);
             HealthMax = Health;
+
+            // Set the initial animation.
+            CurrentAnimation = _walkingAnimations[2];
         }
 
         /// <summary>
@@ -96,12 +95,12 @@ namespace ProjektRoguelike
                 // If it moves left.
                 if (velocity.X < 0)
                 {
-                    _currentAnimation = _walkingAnimations[3];
+                    CurrentAnimation = _walkingAnimations[3];
                 }
                 // Else it moves right.
                 else
                 {
-                    _currentAnimation = _walkingAnimations[1];
+                    CurrentAnimation = _walkingAnimations[1];
                 }
             }
             // Else it moves up, down or diagonally.
@@ -110,24 +109,24 @@ namespace ProjektRoguelike
                 // If it moves up.
                 if (velocity.Y < 0)
                 {
-                    _currentAnimation = _walkingAnimations[0];
+                    CurrentAnimation = _walkingAnimations[0];
                 }
                 // Else it moves down.
                 else if (velocity.Y > 0)
                 {
-                    _currentAnimation = _walkingAnimations[2];
+                    CurrentAnimation = _walkingAnimations[2];
                 }
             }
             // Move it.
             if (velocity != Vector2.Zero)
             {
-                _currentAnimation.Resume();
+                CurrentAnimation.Resume();
                 Move(Globals.DegreesToVector2(Globals.Vector2ToDegrees(velocity)) * speed);
             }
             else
             {
-                _currentAnimation.Pause();
-                _currentAnimation.SelectFrame(0);
+                CurrentAnimation.Pause();
+                CurrentAnimation.SelectFrame(0);
             }
 
 
@@ -162,13 +161,6 @@ namespace ProjektRoguelike
                 //GameGlobals.PassProjectile(new PlayerAttack(270 - 90, Position));
                 timer.ResetToZero();
             }
-
-            // Get the current animation frame.
-            Texture = _currentAnimation.Sheet;
-            SourceRectangle = _currentAnimation.CurrentFrame;
-            Effects = _currentAnimation.Effects;
-
-            base.Update();
         }
 
         /// <summary>

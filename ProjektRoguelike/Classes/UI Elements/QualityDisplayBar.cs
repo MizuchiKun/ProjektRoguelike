@@ -17,12 +17,12 @@ namespace ProjektRoguelike
 
         public virtual void Update()
         {
-            //tbc
+            //tbc = tiny black cock
         }
 
         public virtual void Draw()
         {
-            //tbc
+            //tbc = tiny black cock
         }
     }
 }
