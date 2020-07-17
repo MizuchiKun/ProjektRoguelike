@@ -8,15 +8,15 @@ namespace ProjektRoguelike
     /// <summary>
     /// An enemy
     /// </summary>
-    public class Exploder : Enemy
+    public class Flytrap : Enemy
     {
         McTimer timer;
 
-        public Exploder(Vector2? position = null,
+        public Flytrap(Vector2? position = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
 
-        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Enemies/Floatersheet_front"),
+        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Enemies/Flytrapsheet_front"),
                position,
                sourceRectangle: new Rectangle(0, 0, 256, 256),
                rotation,
@@ -40,7 +40,20 @@ namespace ProjektRoguelike
             timer.UpdateTimer();
             if (Collides(Level.Player))
             {
-                Level.CurrentRoom.Add(new Explosion(Position));
+                Level.Player.GetHit(1);
+                for (int i = 0; i < 3; i++)
+                {
+                    Level.CurrentRoom.Add(new Fly(new Vector2(Position.X, Position.Y - 10 + (10 * i))));
+                }
+                Level.CurrentRoom.Remove(this);
+            }
+
+            if (Health >= 0)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Level.CurrentRoom.Add(new Fly(new Vector2(Position.X, Position.Y - 10 + (10 * i))));
+                }
                 Level.CurrentRoom.Remove(this);
             }
         }

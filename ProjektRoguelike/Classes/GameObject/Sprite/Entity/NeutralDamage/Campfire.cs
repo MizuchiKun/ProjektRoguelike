@@ -34,6 +34,10 @@ namespace ProjektRoguelike
             {
                 Level.Player.GetHit(HitValue);
             }
+            if (Health <= 0)
+            {
+                Level.CurrentRoom.Remove(this);
+            }
         }
     }
 }

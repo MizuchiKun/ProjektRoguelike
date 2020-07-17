@@ -10,6 +10,8 @@ namespace ProjektRoguelike
     {
         public int HitValue { get; } = 2;
 
+        McTimer timer;
+
         public Explosion(Vector2? position = null,
                          float rotation = 0f,
                          SpriteEffects effects = SpriteEffects.None)
@@ -30,15 +32,19 @@ namespace ProjektRoguelike
 
             // Restart the animation.
             CurrentAnimation.Restart();
+            timer = new McTimer(300);
         }
 
         public override void Update()
         {
-            base.Update();
-
+            timer.UpdateTimer();
             if (Collides(Level.Player))
             {
                 Level.Player.GetHit(HitValue);
+            }
+            if (timer.Test())
+            {
+                Level.CurrentRoom.Remove(this);
             }
         }
     }

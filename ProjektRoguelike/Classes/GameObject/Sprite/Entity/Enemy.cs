@@ -28,15 +28,6 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
-            /*
-             * Something of the past
-            if (Done == true)
-            {
-                Level.CurrentRoom.Remove(this);
-            }
-            */
-            
-
             base.Update();
 
             AI();

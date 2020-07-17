@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -10,6 +11,8 @@ namespace ProjektRoguelike
 {
     class NeutralDamage : Entity
     {
+        public int OwnerID { get; } = 0;
+
         public int HitValue { get; set; }
 
         public NeutralDamage(Texture2D texture,

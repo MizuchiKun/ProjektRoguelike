@@ -13,6 +13,7 @@ namespace ProjektRoguelike
         McTimer timer;
         public int HealthMax;
         public bool Done = false;
+        public ushort speed = 350;
 
         /// <summary>
         /// The walking animations of the Player.<br></br>
@@ -62,7 +63,7 @@ namespace ProjektRoguelike
         {
             // Handle movement input.
             // The movement speed.
-            ushort speed = 350;
+            //ushort speed = 350;
             // The velocity.
             Vector2 velocity = Vector2.Zero;
             // Up.

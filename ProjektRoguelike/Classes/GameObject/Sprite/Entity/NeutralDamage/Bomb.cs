@@ -33,7 +33,7 @@ namespace ProjektRoguelike
             timer.UpdateTimer();
             if (timer.Test())
             {
-                new Explosion(Position);
+                Level.CurrentRoom.Add(new Explosion(Position));
                 Level.CurrentRoom.Remove(this);
             }
 
