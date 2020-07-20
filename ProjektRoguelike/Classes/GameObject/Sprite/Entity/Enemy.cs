@@ -22,7 +22,7 @@ namespace ProjektRoguelike
                sourceRectangle,
                rotation,
                effect)
-        { 
+        {
             Speed = 2f;
         }
 
@@ -54,14 +54,59 @@ namespace ProjektRoguelike
             }
             */
 
-            //Move(new Vector2(Level.Player.Position.X - Position.X, Level.Player.Position.Y - Position.Y));
-
-            Position += Globals.RadialMovement(Level.Player.Position, Position, Speed);
+            //Move(Level.Player.Position - Position);
+            if (!HitWall())
+            {
+                Position += Globals.RadialMovement(Level.Player.Position, Position, Speed);
+            }
+            else
+            {
+                Position -= Globals.RadialMovement(Level.Player.Position, Position, Speed);
+            }
         }
 
         public virtual void AI()
         {
             ChangePosition();
+            CollidePlayer();
+        }
+
+        public virtual bool HitWall()
+        {
+            // up
+            if (Collides(Level.CurrentRoom.Walls[0]))
+
+            {
+                return true;
+            }
+            // right
+            else if (Collides(Level.CurrentRoom.Walls[1]))
+            {
+                return true;
+            }
+            // down
+            else if (Collides(Level.CurrentRoom.Walls[2]))
+            {
+                return true;
+            }
+            // left
+            else if (Collides(Level.CurrentRoom.Walls[3]))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public virtual void CollidePlayer()
+        {
+        if (Collides(Level.Player))
+            {
+                Position += -Globals.RadialMovement(Level.Player.Position, Position, Speed*10);
+                Level.Player.Position += -Globals.RadialMovement(Position, Level.Player.Position, Speed* 10);
+                Level.Player.GetHit(1);
+            }
         }
     }
 }

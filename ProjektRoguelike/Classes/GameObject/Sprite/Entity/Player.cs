@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,8 +13,15 @@ namespace ProjektRoguelike
     {
         McTimer timer;
         public int HealthMax;
-        public bool Done = false;
+        public bool Done = false, poopsicle = false;
         public ushort speed = 350;
+        public int HitValue { get; set; }
+
+        public int Gold { get; set; }
+        public int Bombs { get; set; }
+        public int PlayerKey { get; set; }
+
+        public List<Flybuddy> companions;
 
         /// <summary>
         /// The walking animations of the Player.<br></br>
@@ -50,6 +58,8 @@ namespace ProjektRoguelike
                sourceRectangle: new Rectangle(0, 0, 256, 256))
         { 
             timer = new McTimer(600, true);
+
+            Health = 5;
             HealthMax = Health;
 
             // Set the initial animation.
@@ -61,6 +71,13 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Update()
         {
+            if (poopsicle)
+            {
+                companions.Add(new Flybuddy(new Vector2(Position.X, Position.Y + 15), 0));
+                companions.Add(new Flybuddy(new Vector2(Position.X + 15, Position.Y - 15), 315));
+                companions.Add(new Flybuddy(new Vector2(Position.X - 15, Position.Y - 15), 225));
+                poopsicle = false;
+            }
             // Handle movement input.
             // The movement speed.
             //ushort speed = 350;

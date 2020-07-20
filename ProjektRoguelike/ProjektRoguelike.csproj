@@ -44,6 +44,8 @@
     <Compile Include="Classes\GameGlobals.cs" />
     <Compile Include="Classes\GameObject\GameObjectContainer\Room.cs" />
     <Compile Include="Classes\GameObject\Sprite.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Hole.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Chest.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Item.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Enemy\Flytrap.cs" />
@@ -56,6 +58,13 @@
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Poop.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Itemstone.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Rock.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupKey.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupCoin.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupBomb.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupHeart.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\Poopsicle.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\Heart.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\Shroom.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Item\Syringe.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\NeutralDamage\Bomb.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\NeutralDamage\Campfire.cs" />

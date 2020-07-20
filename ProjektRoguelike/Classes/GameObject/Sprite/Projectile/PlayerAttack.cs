@@ -32,6 +32,8 @@ namespace ProjektRoguelike
             Direction = Globals.DegreesToVector2(angle);
             Direction.Normalize();
 
+            HitValue = Level.Player.HitValue;
+
             OwnerID = 1;
         }
 

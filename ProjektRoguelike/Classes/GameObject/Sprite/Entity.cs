@@ -55,6 +55,10 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
+            if (Health <= 0)
+            {
+                Level.CurrentRoom.Remove(this);
+            }
             // Update the Layer.
             Layer = 0.9f - (Position.Y / 10e6f);
         }

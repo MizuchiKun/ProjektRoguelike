@@ -54,34 +54,5 @@ namespace ProjektRoguelike
                 Level.Player.GetHit(1);
             }
         }
-
-        private bool HitWall()
-        {
-            // up
-            if (Collides(Level.CurrentRoom.Walls[0]))
-
-            {
-                return true;
-            }
-            // right
-            else if (Collides(Level.CurrentRoom.Walls[1]))
-            {
-                return true;
-            }
-            // down
-            else if (Collides(Level.CurrentRoom.Walls[2]))
-            {
-                return true;
-            }
-            // left
-            else if (Collides(Level.CurrentRoom.Walls[3]))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 }

@@ -25,6 +25,7 @@ namespace ProjektRoguelike
                effect)
         {
             this.Item = item;
+            Health = 10000;
         }
 
         public override void Update()

@@ -8,23 +8,23 @@ namespace ProjektRoguelike
     /// <summary>
     /// An enemy
     /// </summary>
-    public class Syringe : Item
+    public class Poopsicle: Item
     {
-        public Syringe(Vector2? position = null,
+        public Poopsicle(Vector2? position = null,
                      Rectangle? sourceRectangle = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
-        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Items/Syringe"),
+        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Items/Poopice"),
                position,
                sourceRectangle,
                rotation,
                effect)
         {  }
 
-        // The syringe is made to speed up the player
+        // is made to create 3 flies orbiting the player
         public override void Effect()
         {
-            Level.Player.speed *= 3;
+            Level.Player.poopsicle = true;
         }
     }
 }

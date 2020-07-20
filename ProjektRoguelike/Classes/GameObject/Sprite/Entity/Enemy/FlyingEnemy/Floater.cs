@@ -21,7 +21,7 @@ namespace ProjektRoguelike
                effect)
         {
             Speed = 2f;
-            Health = 3;
+            Health = 5;
         }
 
         public override void Update()
@@ -32,11 +32,6 @@ namespace ProjektRoguelike
         public override void AI()
         {
             base.AI();
-
-            if (Collides(Level.Player))
-            {
-                Level.Player.GetHit(1);
-            }
         }
     }
 }

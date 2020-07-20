@@ -11,8 +11,7 @@ namespace ProjektRoguelike
     /// </summary>
     public class Pot : Environment
     {
-        public Pot(Texture2D texture,
-                     Vector2? position = null,
+        public Pot(Vector2? position = null,
                      Rectangle? sourceRectangle = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)

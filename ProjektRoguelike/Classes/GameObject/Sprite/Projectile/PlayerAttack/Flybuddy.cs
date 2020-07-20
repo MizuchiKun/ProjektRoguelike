@@ -11,6 +11,8 @@ namespace ProjektRoguelike
 {
     public class Flybuddy : PlayerAttack
     {
+        public bool isDestroyed;
+
         public Flybuddy(Vector2? position = null,
                         /*Rectangle? sourceRectangle = null,*/
                         float rotation = 0f,
@@ -31,6 +33,8 @@ namespace ProjektRoguelike
 
             HitValue = 1;
 
+            isDestroyed = false;
+
             // Set the animation.
             CurrentAnimation = new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/FLysheet"),
                                              frameDimensions: new Vector2(256),
@@ -39,12 +43,28 @@ namespace ProjektRoguelike
 
         public override void Update(/*List<Enemy> entities*/)
         {
-            base.Update(/*entities*/);
+            if (Collides(Level.CurrentRoom.Enemies))
+            {
+                isDestroyed = true;
+                //damage touching enemy
+            }
+            if (isDestroyed == false)
+            {
+                base.Update(/*entities*/);
+            }
         }
 
         public override void ChangePosition()
         {
             Globals.RotateAboutOrigin(Position, Level.Player.Position, 0.1f);
+        }
+
+        public override void Draw()
+        {
+            if (isDestroyed == false)
+            {
+                base.Draw();
+            }
         }
     }
 }

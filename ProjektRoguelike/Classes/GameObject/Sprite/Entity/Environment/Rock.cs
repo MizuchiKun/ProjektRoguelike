@@ -11,8 +11,7 @@ namespace ProjektRoguelike
     /// </summary>
     public class Rock : Environment
     {
-        public Rock(Texture2D texture,
-                     Vector2? position = null,
+        public Rock(Vector2? position = null,
                      Rectangle? sourceRectangle = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)

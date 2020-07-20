@@ -8,23 +8,24 @@ namespace ProjektRoguelike
     /// <summary>
     /// An enemy
     /// </summary>
-    public class Syringe : Item
+    public class Heart : Item
     {
-        public Syringe(Vector2? position = null,
+        public Heart(Vector2? position = null,
                      Rectangle? sourceRectangle = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
-        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Items/Syringe"),
+        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Items/Heart"),
                position,
                sourceRectangle,
                rotation,
                effect)
         {  }
 
-        // The syringe is made to speed up the player
+        // is made to increase players max healthpoints
         public override void Effect()
         {
-            Level.Player.speed *= 3;
+            Level.Player.HealthMax += 1;
+            Level.Player.Health += 1;
         }
     }
 }

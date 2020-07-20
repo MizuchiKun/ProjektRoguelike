@@ -36,7 +36,6 @@ namespace ProjektRoguelike
             if (timer.Test())
             {
                 Level.CurrentRoom.Add(new EnemyAttack(Globals.Vector2ToDegrees(Level.Player.Position - Position), Position, null, Globals.Vector2ToDegrees(Level.Player.Position - Position), SpriteEffects.None));
-                //GameGlobals.PassProjectile(new EnemyAttack(Globals.Vector2ToDegrees(Level.Player.Position), Position, null, Globals.Vector2ToDegrees(Level.Player.Position), SpriteEffects.None));
                 timer.ResetToZero();
             }
         }
@@ -46,23 +45,24 @@ namespace ProjektRoguelike
             //if you are not in range of the player, move towards them.
             if (Globals.GetDistance(Position, Level.Player.Position) >= 201)
             {
+                Speed = 2;
                 Position += Globals.RadialMovement(Level.Player.Position, Position, Speed);
             }
             //if the player closes in, move away from them
             else if (Globals.GetDistance(Position, Level.Player.Position) < 199)
             {
                 Position -= Globals.RadialMovement(Level.Player.Position, Position, Speed);
+                if (HitWall())
+                {
+                    Speed = 0;
+                }
             }
         }
 
         public override void AI()
         {
             ChangePosition();
-
-            if (Collides(Level.Player))
-            {
-                //player.Health--;
-            }
+            CollidePlayer();
         }
     }
 }

@@ -30,8 +30,6 @@ namespace ProjektRoguelike
         {
             // Store the parameters.
             _gameObjects = (gameObjects != null) ? gameObjects : new List<GameObject>();
-
-            GameGlobals.PassProjectile = AddProjectile;
         }
 
         /// <summary>

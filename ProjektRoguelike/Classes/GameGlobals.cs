@@ -11,6 +11,6 @@ namespace ProjektRoguelike
         /// <summary>
         /// A <see cref="Delegate"/> to pass <see cref="Object"/>s through the program.
         /// </summary>
-        public static PassObject PassProjectile;
+        
     }
 }

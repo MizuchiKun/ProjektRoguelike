@@ -29,7 +29,7 @@ namespace ProjektRoguelike
         {
             base.Update();
 
-            if (Health >= 0)
+            if (Health <= 0)
             {
                 // Use Random rand to look what drops
                 rand.Next(1, 10 +1);

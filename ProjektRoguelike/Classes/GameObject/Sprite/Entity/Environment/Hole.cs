@@ -5,26 +5,28 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ProjektRoguelike
 {
+    
     /// <summary>
     /// An enemy
     /// </summary>
-    public class Syringe : Item
+    public class Hole : Environment
     {
-        public Syringe(Vector2? position = null,
+        public Hole(Vector2? position = null,
                      Rectangle? sourceRectangle = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
-        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Items/Syringe"),
+        : base(texture: Globals.Content.Load<Texture2D>("Sprite/Environment/Hole"),
                position,
                sourceRectangle,
                rotation,
                effect)
-        {  }
+        { 
+            Health = 10000;
+        }
 
-        // The syringe is made to speed up the player
-        public override void Effect()
+        public override void Update()
         {
-            Level.Player.speed *= 3;
+            base.Update();
         }
     }
 }

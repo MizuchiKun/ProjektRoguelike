@@ -41,12 +41,10 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
+            /*
             Update(Level.CurrentRoom.Enemies);
             base.Update();
-        }
-
-        private void Update(List<Enemy> enemies)
-        {
+            */
             timer.UpdateTimer();
             ChangePosition();
             if (timer.Test())
@@ -62,19 +60,70 @@ namespace ProjektRoguelike
                 Level.Player.GetHit(HitValue);
                 Level.CurrentRoom.Remove(this);
             }
-            if (Collides(enemies) && (OwnerID == 1 || OwnerID == 0))
-            {
-                for (int i = 0; i < enemies.Count; i++)
+            /*
+            for (int i = 0; i < Level.CurrentRoom.Enemies.Count; i++)
+            { 
+                if (Collides(Level.CurrentRoom.Enemies) && (OwnerID == 1 || OwnerID == 0))
                 {
-                    if (OwnerID == 1)
-                    {
-                        //enemies[i].GetHit(HitValue);
-                        Level.CurrentRoom.Enemies[i].GetHit(HitValue);
-                        Level.CurrentRoom.Remove(this);
-                    }
+                    Level.CurrentRoom.Enemies[i].GetHit(HitValue);
+                    //Level.CurrentRoom.Enemies.ElementAt<Enemy>(i).GetHit(HitValue);
+                    Level.CurrentRoom.Remove(this);
                 }
             }
+            */
+            if (Collides(Level.CurrentRoom.Enemies) && (OwnerID == 1 || OwnerID == 0))
+{
+            bool isColliding = false;//NEW
+            for (int i = 0; i < Level.CurrentRoom.Enemies.Count; i++)
+            {
+                if (Collides(Level.CurrentRoom.Enemies[i])//NEW
+                    && OwnerID == 1)
+                {
+                    //enemies[i].GetHit(HitValue);
+                    Level.CurrentRoom.Enemies[i].GetHit(HitValue);
+                    /*Level.CurrentRoom.Remove(this);*/
+                    isColliding = true;
+                }
+            }
+            //NEW
+            if (isColliding)
+            {
+                Level.CurrentRoom.Remove(this);
+            }
+            }
         }
+        /*
+                private void Update(List<Enemy> enemies)
+                {
+                    timer.UpdateTimer();
+                    ChangePosition();
+                    if (timer.Test())
+                    {
+                        Level.CurrentRoom.Remove(this);
+                    }
+                    if (HitWall())
+                    {
+                        Level.CurrentRoom.Remove(this);
+                    }
+                    if (Collides(Level.Player) && (OwnerID == 2 || OwnerID == 0))
+                    {
+                        Level.Player.GetHit(HitValue);
+                        Level.CurrentRoom.Remove(this);
+                    }
+                    if (Collides(enemies) && (OwnerID == 1 || OwnerID == 0))
+                    {
+                        for (int i = 0; i < enemies.Count; i++)
+                        {
+                            if (OwnerID == 1)
+                            {
+                                Level.CurrentRoom.Enemies[i].GetHit(HitValue);
+                                //Level.CurrentRoom.Enemies.ElementAt<Enemy>(i).GetHit(HitValue);
+                                Level.CurrentRoom.Remove(this);
+                            }
+                        }
+                    }
+                }
+        */
         public virtual void ChangePosition()
         {
             Position += Speed * Direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;

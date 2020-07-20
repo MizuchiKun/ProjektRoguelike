@@ -11,8 +11,7 @@ namespace ProjektRoguelike
     /// </summary>
     public class Poop : Environment
     {
-        public Poop(Texture2D texture,
-                     Vector2? position = null,
+        public Poop(Vector2? position = null,
                      Rectangle? sourceRectangle = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
