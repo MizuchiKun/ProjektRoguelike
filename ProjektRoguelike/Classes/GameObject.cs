@@ -50,6 +50,36 @@ namespace ProjektRoguelike
         }
 
         /// <summary>
+        /// Gets whether this <see cref="GameObject"/> collides with any of the given other <see cref="GameObject"/>s.
+        /// </summary>
+        /// <param name="otherGameobjects">The other <see cref="GameObject"/>s.</param>
+        /// <param name="collidingGameObjects">The out parameter that will contain a List of all <see cref="GameObject"/>s that collide with this one.</param>
+        /// <returns>True if it collides with any of them, false otherwise.</returns>
+        public bool Collides(IEnumerable<GameObject> otherGameObjects, out List<GameObject> collidingGameObjects)
+        {
+            // The return variables.
+            List<GameObject> collidingObjects = new List<GameObject>();
+            bool collides = false;
+            
+            // Check every Sprite.
+            foreach (GameObject gameObject in otherGameObjects)
+            {
+                // If it collides with one of them.
+                if (Collides(gameObject))
+                {
+                    // Add this GameObject.
+                    collidingObjects.Add(gameObject);
+                    // This GameObject collides with one of the given.
+                    collides = true;
+                }
+            }
+
+            // Return the return variables.
+            collidingGameObjects = collidingObjects;
+            return collides;
+        }
+
+        /// <summary>
         /// Gets whether this <see cref="Sprite"/> is just touching the given other <see cref="Sprite"/>.
         /// </summary>
         /// <param name="otherSprite">The other <see cref="Sprite"/>.</param>
