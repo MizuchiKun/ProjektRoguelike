@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -53,12 +54,16 @@ namespace ProjektRoguelike
                effects: effects)
         { }
 
+        /// <summary>
+        /// An Entity's Update method.
+        /// </summary>
         public override void Update()
         {
             if (Health <= 0)
             {
                 Level.CurrentRoom.Remove(this);
             }
+
             // Update the Layer.
             Layer = 0.9f - (Position.Y / 10e6f);
         }
@@ -104,7 +109,7 @@ namespace ProjektRoguelike
         /// The direction in which the Entity shall move.
         /// </param>
         /// <param name="speed">The given speed.</param>
-        protected virtual void Move(Directions direction, float speed)
+        private void Move(Directions direction, float speed)
         {
             // Get the Vector of the direction.
             Vector2 directionVector = Vector2.Zero;
@@ -128,14 +133,39 @@ namespace ProjektRoguelike
             Position += directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
 
             // If it collides with the top wall or another Entity.
-            if (Collides(Level.CurrentRoom.Walls[(byte)direction])
-                || Collides(Level.CurrentRoom.Entities)
-                || Collides(Level.Player))
+            if (!CanMove(direction))
             {
                 // It's not allowed to move up.
                 // Revert its position.
                 Position -= directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
             }
+        }
+
+        /// <summary>
+        /// Returns whether the Entity can move to the current position.
+        /// </summary>
+        /// <param name="direction">The direction in which it moved.</param>
+        /// <returns></returns>
+        protected virtual bool CanMove(Directions direction)
+        {
+            // If it collides with an Enemy but itself.
+            List<Enemy> otherEnemies = Level.CurrentRoom.Enemies;
+            otherEnemies.Remove((Enemy)this);
+            if (Collides(otherEnemies))
+            {
+                // It can't move.
+                return false;
+            }
+            // Else if it collides with the wall or player.
+            else if (Collides(Level.CurrentRoom.Walls[(byte)direction])
+                     || Collides(Level.Player))
+            {
+                // It can't move.
+                return false;
+            }
+
+            // Default return.
+            return true;
         }
 
         public virtual void GetHit(int hitValue)

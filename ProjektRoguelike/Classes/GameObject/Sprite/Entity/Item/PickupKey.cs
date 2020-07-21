@@ -24,7 +24,7 @@ namespace ProjektRoguelike
         // is made to increase players amount of keys
         public override void Effect()
         {
-            Level.Player.PlayerKey += 1;
+            Level.Player.Keys += 1;
         }
     }
 }

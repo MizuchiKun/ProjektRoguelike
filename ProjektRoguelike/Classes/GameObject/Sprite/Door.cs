@@ -10,7 +10,9 @@ namespace ProjektRoguelike
     /// </summary>
     public enum DoorKind : byte
     {
-        Normal, Boss, Hidden
+        Normal, 
+        Boss, 
+        Hidden
     }
 
     /// <summary>
@@ -18,7 +20,9 @@ namespace ProjektRoguelike
     /// </summary>
     public enum DoorState : byte
     {
-        Open, Closed, Locked
+        Open, 
+        Closed, 
+        Locked
     }
 
     /// <summary>
@@ -29,7 +33,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// The closing animations of all kinds of rooms.
         /// </summary>
-        private static Animation[] _closeAnimations = 
+        private Animation[] _closeAnimations = 
         {
             new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Environment/DoorSheet"),
                           frameDimensions: new Vector2(256),
@@ -44,7 +48,20 @@ namespace ProjektRoguelike
                           frameDuration: TimeSpan.FromMilliseconds(125),
                           repetitions: 0)
         };
+        /// <summary>
+        /// The texture of a locked door.
+        /// </summary>
+        private static Texture2D _lockedDoor = Globals.Content.Load<Texture2D>("Sprites/Environment/LockedDoor");
 
+        /// <summary>
+        /// The inner width of a door.
+        /// </summary>
+        public static byte Width { get; } = 50;
+
+        /// <summary>
+        /// The direction in which the <see cref="Door"/> leads.
+        /// </summary>
+        public Directions Direction { get => _direction; }
         /// <summary>
         /// The direction in which the Door leads.
         /// </summary>
@@ -58,8 +75,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// The state of this <see cref="Door"/>.
         /// </summary>
-        public DoorState State { get => _state; }
-        private DoorState _state;
+        public DoorState State { get; set; }
 
         /// <summary>
         /// Creates a new <see cref="Door"/> with the given position, rotation and <see cref="Room"/>.
@@ -68,7 +84,11 @@ namespace ProjektRoguelike
         /// <param name="direction">
         /// The direction in which the <see cref="Door"/> leads.
         /// </param>
-        /// <param name="roomBehindDoor">The <see cref="Room"/> that lies behind this <see cref="Door"/>.</param>
+        /// <param name="kindOfDoor">The kind of this <see cref="Door"/>.</param>
+        /// <param name="doorState">
+        /// The initial state of this <see cref="Door"/>.<br></br>
+        /// Hidden doors are always closed initially.
+        /// </param>
         public Door(Vector2 position,
                     Directions direction,
                     DoorKind kindOfDoor = DoorKind.Normal,
@@ -83,42 +103,47 @@ namespace ProjektRoguelike
         {
             // Store the parameters. 
             _direction = direction;
-            Kind = kindOfDoor;
-            _state = doorState;
+            Kind = DoorKind.Normal;//kindOfDoor;
+            State = DoorState.Locked;//(Kind != DoorKind.Hidden) ? doorState : DoorState.Locked;
 
             // Set the initial animation.
             CurrentAnimation = _closeAnimations[(byte)Kind];
-            CurrentAnimation.IsReversed = true;
+            CurrentAnimation.IsReversed = (State == DoorState.Open);
         }
 
         public override void Update()
         {
-            // Unlock the door.
+            // If this door is locked.
             if (State == DoorState.Locked)
             {
-                // if hidden and hit by bomb.
-                // OR if colliding with player and player has more than 0 keys.
-                    // change state to closed.
-                    // change state of counterpart (in next room) to closed. (maybe by public method of Level?)
-            }
+                // If it's a normal door.
+                if (Kind == DoorKind.Normal)
+                {
+                    // There's no animation.
+                    CurrentAnimation = null;
 
-            // If the door is open and there are enemies in the room.
-            if (_state == DoorState.Open
+                    // Set the locked door texture.
+                    Texture = _lockedDoor;
+                    SourceRectangle = new Rectangle(0, 0, 256, 256);
+                }
+            }
+            // Else if the door is open and there are enemies in the room.
+            else if (State == DoorState.Open
                 && Level.CurrentRoom.Enemies.Count > 0)
             {
                 // Close the Door.
-                _state = DoorState.Closed;
+                State = DoorState.Closed;
                 // Start closing animation.
                 CurrentAnimation.IsReversed = false;
                 CurrentAnimation.Restart();
                 CurrentAnimation.SelectFrame(1);
             }
             // Else if the door is closed and there are no enemies in the room.
-            else if (_state == DoorState.Closed
+            else if (State == DoorState.Closed
                      && Level.CurrentRoom.Enemies.Count == 0)
             {
                 // Open the door.
-                _state = DoorState.Open;
+                State = DoorState.Open;
                 // Start opening animation.
                 CurrentAnimation.IsReversed = true;
                 CurrentAnimation.Restart();
@@ -163,6 +188,24 @@ namespace ProjektRoguelike
                 {
                     Level.SwitchRoom(_direction);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Unlocks this <see cref="Door"/>.
+        /// </summary>
+        public void Unlock(bool unlockCounterpart = false)
+        {
+            // Unlock this door.
+            State = DoorState.Closed;
+            // Set the animation.
+            CurrentAnimation = _closeAnimations[(byte)Kind];
+
+            // If the counterpart shall be unlocked.
+            if (unlockCounterpart)
+            {
+                // Unlock the counterpart in adjacent room.
+                Level.UnlockCounterpartDoor(this);
             }
         }
     }

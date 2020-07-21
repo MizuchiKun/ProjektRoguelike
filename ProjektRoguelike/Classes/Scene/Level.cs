@@ -55,8 +55,9 @@ namespace ProjektRoguelike
                     for (byte i = 0; i < 9; i++)
                     {
                         Vector2 position = new Vector2((i % 3), (i / 3));
-                        _rooms[(int)position.X, (int)position.Y] = new Room(i, position * Globals.WindowDimensions);
+                        _rooms[(int)position.X, (int)position.Y] = new Room(i, position * Globals.WindowDimensions, RoomKind.Normal);
                     }
+                    _rooms[1, 0] = new Room(1, new Vector2((1 % 3), (1 / 3)) * Globals.WindowDimensions, RoomKind.Hidden);
 
             // Choose the starting room.
             Vector2 startRoomPos = Vector2.Zero;
@@ -76,49 +77,158 @@ namespace ProjektRoguelike
                     {
                         // Add doors in all directions in which there is an adjacent room.
                         Door[] doors = new Door[4];
+                        DoorKind doorKind;
                         // Up.
                         if (y - 1 >= 0
                             && _rooms[x, y - 1] != null)
                         {
+                            // Choose the door kind.
+                            if (_rooms[x, y].Kind == RoomKind.Boss)
+                            {
+                                doorKind = DoorKind.Boss;
+                            }
+                            else if (_rooms[x, y].Kind == RoomKind.Hidden)
+                            {
+                                doorKind = DoorKind.Hidden;
+                            }
+                            else
+                            {
+                                if (_rooms[x, y - 1].Kind == RoomKind.Boss)
+                                {
+                                    doorKind = DoorKind.Boss;
+                                }
+                                else if (_rooms[x, y - 1].Kind == RoomKind.Hidden)
+                                {
+                                    doorKind = DoorKind.Hidden;
+                                }
+                                else
+                                {
+                                    doorKind = DoorKind.Normal;
+                                }
+                            }
+
+                            // Add the Door.
                             doors[(byte)Directions.Up] = new Door(position: (new Vector2(x, y) * Globals.WindowDimensions
                                                                              + new Vector2(1, 0.5f) * Tile.Size * Globals.Scale)
                                                                             + new Vector2((Room.Dimensions.X - 1) / 2,
                                                                                           0)
                                                                               * Tile.Size * Globals.Scale,
-                                                                  direction: Directions.Up);
+                                                                  direction: Directions.Up,
+                                                                  kindOfDoor: doorKind);
                         }
                         // Right.
                         if (x + 1 < _rooms.GetLength(0)
                             && _rooms[x + 1, y] != null)
                         {
+                            // Choose the door kind.
+                            if (_rooms[x, y].Kind == RoomKind.Boss)
+                            {
+                                doorKind = DoorKind.Boss;
+                            }
+                            else if (_rooms[x, y].Kind == RoomKind.Hidden)
+                            {
+                                doorKind = DoorKind.Hidden;
+                            }
+                            else
+                            {
+                                if (_rooms[x + 1, y].Kind == RoomKind.Boss)
+                                {
+                                    doorKind = DoorKind.Boss;
+                                }
+                                else if (_rooms[x + 1, y].Kind == RoomKind.Hidden)
+                                {
+                                    doorKind = DoorKind.Hidden;
+                                }
+                                else
+                                {
+                                    doorKind = DoorKind.Normal;
+                                }
+                            }
+
+                            // Add the Door.
                             doors[(byte)Directions.Right] = new Door(position: (new Vector2(x, y) * Globals.WindowDimensions
                                                                                 + new Vector2(1, 0.5f) * Tile.Size * Globals.Scale)
                                                                                + new Vector2(Room.Dimensions.X - 1,
                                                                                              (Room.Dimensions.Y - 1) / 2)
                                                                                  * Tile.Size * Globals.Scale,
-                                                                     direction: Directions.Right);
+                                                                     direction: Directions.Right,
+                                                                     kindOfDoor: doorKind);
                         }
                         // Down.
                         if (y + 1 < _rooms.GetLength(1)
                             && _rooms[x, y + 1] != null)
                         {
+                            // Choose the door kind.
+                            if (_rooms[x, y].Kind == RoomKind.Boss)
+                            {
+                                doorKind = DoorKind.Boss;
+                            }
+                            else if (_rooms[x, y].Kind == RoomKind.Hidden)
+                            {
+                                doorKind = DoorKind.Hidden;
+                            }
+                            else
+                            {
+                                if (_rooms[x, y + 1].Kind == RoomKind.Boss)
+                                {
+                                    doorKind = DoorKind.Boss;
+                                }
+                                else if (_rooms[x, y + 1].Kind == RoomKind.Hidden)
+                                {
+                                    doorKind = DoorKind.Hidden;
+                                }
+                                else
+                                {
+                                    doorKind = DoorKind.Normal;
+                                }
+                            }
+
+                            // Add the Door.
                             doors[(byte)Directions.Down] = new Door(position: (new Vector2(x, y) * Globals.WindowDimensions
                                                                                + new Vector2(1, 0.5f) * Tile.Size * Globals.Scale)
                                                                               + new Vector2((Room.Dimensions.X - 1) / 2,
                                                                                             Room.Dimensions.Y - 1)
                                                                                 * Tile.Size * Globals.Scale,
-                                                                    direction: Directions.Down);
+                                                                    direction: Directions.Down,
+                                                                    kindOfDoor: doorKind);
                         }
                         // Left.
                         if (x - 1 >= 0
                             && _rooms[x - 1, y] != null)
                         {
+                            // Choose the door kind.
+                            if (_rooms[x, y].Kind == RoomKind.Boss)
+                            {
+                                doorKind = DoorKind.Boss;
+                            }
+                            else if (_rooms[x, y].Kind == RoomKind.Hidden)
+                            {
+                                doorKind = DoorKind.Hidden;
+                            }
+                            else
+                            {
+                                if (_rooms[x - 1, y].Kind == RoomKind.Boss)
+                                {
+                                    doorKind = DoorKind.Boss;
+                                }
+                                else if (_rooms[x - 1, y].Kind == RoomKind.Hidden)
+                                {
+                                    doorKind = DoorKind.Hidden;
+                                }
+                                else
+                                {
+                                    doorKind = DoorKind.Normal;
+                                }
+                            }
+
+                            // Add the Door.
                             doors[(byte)Directions.Left] = new Door(position: (new Vector2(x, y) * Globals.WindowDimensions
                                                                                + new Vector2(1, 0.5f) * Tile.Size * Globals.Scale)
                                                                               + new Vector2(0,
                                                                                             (Room.Dimensions.Y - 1) / 2)
                                                                                 * Tile.Size * Globals.Scale,
-                                                                    direction: Directions.Left);
+                                                                    direction: Directions.Left,
+                                                                    kindOfDoor: doorKind);
                         }
 
                         // Add the doors to the room.
@@ -128,8 +238,8 @@ namespace ProjektRoguelike
             }
 
             // Add enemies to test.
-            CurrentRoom.Add(new Floater(CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
-            CurrentRoom.Add(new Screamer(CurrentRoom.Position + (Room.Dimensions / 7) * Tile.Size * Globals.Scale));
+                                //CurrentRoom.Add(new Floater(CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                                //CurrentRoom.Add(new Screamer(CurrentRoom.Position + (Room.Dimensions / 7) * Tile.Size * Globals.Scale));
         }
 
         /// <summary>
@@ -238,7 +348,7 @@ namespace ProjektRoguelike
         }
 
         /// <summary>
-        /// Switches the room to the one in the given direction.
+        /// Initiates the room switching transition.
         /// </summary>
         /// <param name="direction">The direction of the next room.</param>
         public static void SwitchRoom(Directions direction)
@@ -263,6 +373,38 @@ namespace ProjektRoguelike
                     _nextRoom = _rooms[(int)(currentRoomPos.X - 1), (int)(currentRoomPos.Y)];
                     break;
             }
+        }
+
+        /// <summary>
+        /// Unlocks the counterpart of the given door.
+        /// </summary>
+        /// <param name="originDoor">The given door.</param>
+        public static void UnlockCounterpartDoor(Door originDoor)
+        {
+            // Get the room indices.
+            Vector2 currentRoomPos = new Vector2((float)Math.Floor(originDoor.Position.X / Globals.WindowDimensions.X),
+                                                 (float)Math.Floor(originDoor.Position.Y / Globals.WindowDimensions.Y));
+
+            // Get the direction vector.
+            Vector2 directionVector = Vector2.Zero;
+            switch (originDoor.Direction)
+            {
+                case Directions.Up:
+                    directionVector = -Vector2.UnitY;
+                    break;
+                case Directions.Right:
+                    directionVector = Vector2.UnitX;
+                    break;
+                case Directions.Down:
+                    directionVector = Vector2.UnitY;
+                    break;
+                case Directions.Left:
+                    directionVector = -Vector2.UnitX;
+                    break;
+            }
+
+            // Unlock the counterpart.
+            _rooms[(int)(currentRoomPos.X + directionVector.X), (int)(currentRoomPos.Y + directionVector.Y)].Doors[((byte)originDoor.Direction + 2) % 4].Unlock();
         }
     }
 }

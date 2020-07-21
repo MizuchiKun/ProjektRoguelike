@@ -28,9 +28,9 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
-            base.Update();
-
             AI();
+
+            base.Update();
         }
 
         public virtual void ChangePosition()

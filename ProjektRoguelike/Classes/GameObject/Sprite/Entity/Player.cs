@@ -19,7 +19,7 @@ namespace ProjektRoguelike
 
         public int Gold { get; set; }
         public int Bombs { get; set; }
-        public int PlayerKey { get; set; }
+        public int Keys { get; set; }                   = 100;//////////////////////////////////////////
 
         public List<Flybuddy> companions;
 
@@ -71,6 +71,8 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Update()
         {
+
+                                                Console.WriteLine($"Keys: {Keys}");
             if (poopsicle)
             {
                 companions.Add(new Flybuddy(new Vector2(Position.X, Position.Y + 15), 0));
@@ -84,28 +86,92 @@ namespace ProjektRoguelike
             // The velocity.
             Vector2 velocity = Vector2.Zero;
             // Up.
-            if (Globals.GetKey(Keys.W))
+            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.W))
             {
                 // Move it up.
                 velocity += -Vector2.UnitY * speed;
+
+                // If there's a top door.
+                if (Level.CurrentRoom.Doors[(byte)Directions.Up] != null)
+                {
+                    // If it's close to the top door and the player has more than 0 keys.
+                    if ((Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Up].Position.Y - Position.Y) <= (0.5f * Tile.Size.Y * Globals.Scale.Y)
+                         && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Up].Position.X - Position.X) <= Door.Width * Scale.X)
+                        && Level.CurrentRoom.Doors[(byte)Directions.Up].State == DoorState.Locked
+                        && Keys > 0)
+                    {
+                        // The player uses a key.
+                        Keys--;
+                        // Unlock the door.
+                        Level.CurrentRoom.Doors[(byte)Directions.Up].Unlock(true);
+                    }
+                }
             }
             // Right.
-            if (Globals.GetKey(Keys.D))
+            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.D))
             {
                 // Move it right.
                 velocity += Vector2.UnitX * speed;
+
+                // If there's a right door.
+                if (Level.CurrentRoom.Doors[(byte)Directions.Right] != null)
+                {
+                    // If it's close to the right door and the player has more than 0 keys.
+                    if ((Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Right].Position.X - Position.X) <= (1.0f * Tile.Size.X * Globals.Scale.X)
+                         && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Right].Position.Y - Position.Y) <= Door.Width * Scale.Y)
+                        && Level.CurrentRoom.Doors[(byte)Directions.Right].State == DoorState.Locked
+                        && Keys > 0)
+                    {
+                        // The player uses a key.
+                        Keys--;
+                        // Unlock the door.
+                        Level.CurrentRoom.Doors[(byte)Directions.Right].Unlock(true);
+                    }
+                }
             }
             // Down.
-            if (Globals.GetKey(Keys.S))
+            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.S))
             {
                 // Move it down.
                 velocity += Vector2.UnitY * speed;
+
+                // If there's a bottom door.
+                if (Level.CurrentRoom.Doors[(byte)Directions.Down] != null)
+                {
+                    // If it's close to the bottom door and the player has more than 0 keys.
+                    if ((Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Down].Position.Y - Position.Y) <= (1.0f * Tile.Size.Y * Globals.Scale.Y)
+                         && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Down].Position.X - Position.X) <= Door.Width * Scale.X)
+                        && Level.CurrentRoom.Doors[(byte)Directions.Down].State == DoorState.Locked
+                        && Keys > 0)
+                    {
+                        // The player uses a key.
+                        Keys--;
+                        // Unlock the door.
+                        Level.CurrentRoom.Doors[(byte)Directions.Down].Unlock(true);
+                    }
+                }
             }
             // Left.
-            if (Globals.GetKey(Keys.A))
+            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.A))
             {
                 // Move it left.
                 velocity += -Vector2.UnitX * speed;
+
+                // If there's a left door.
+                if (Level.CurrentRoom.Doors[(byte)Directions.Left] != null)
+                {
+                    // If it's close to the left door and the player has more than 0 keys.
+                    if ((Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Left].Position.X - Position.X) <= (1.0f * Tile.Size.X * Globals.Scale.X)
+                         && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Left].Position.Y - Position.Y) <= Door.Width * Scale.Y)
+                        && Level.CurrentRoom.Doors[(byte)Directions.Left].State == DoorState.Locked
+                        && Keys > 0)
+                    {
+                        // The player uses a key.
+                        Keys--;
+                        // Unlock the door.
+                        Level.CurrentRoom.Doors[(byte)Directions.Left].Unlock(true);
+                    }
+                }
             }
             // Choose the proper antimation.
             if (Math.Abs(velocity.X) > Math.Abs(velocity.Y))
@@ -152,106 +218,104 @@ namespace ProjektRoguelike
 
             timer.UpdateTimer();
             // up
-            if (Globals.GetKey(Keys.Up) && timer.Test())
+            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Up) && timer.Test())
             {
                 Level.CurrentRoom.Add(new BasicAttack(0 - 90, Position));
                 //GameGlobals.PassProjectile(new PlayerAttack(0 - 90, Position));
                 timer.ResetToZero();
             }
             // right
-            if (Globals.GetKey(Keys.Right) && timer.Test())
+            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Right) && timer.Test())
             {
                 Level.CurrentRoom.Add(new BasicAttack(90 - 90, Position));
                 //GameGlobals.PassProjectile(new PlayerAttack(90 - 90, Position));
                 timer.ResetToZero();
             }
             // down
-            if (Globals.GetKey(Keys.Down) && timer.Test())
+            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Down) && timer.Test())
             {
                 Level.CurrentRoom.Add(new BasicAttack(180 - 90, Position));
                 //GameGlobals.PassProjectile(new PlayerAttack(180 - 90, Position));
                 timer.ResetToZero();
             }
             // left
-            if (Globals.GetKey(Keys.Left) && timer.Test())
+            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Left) && timer.Test())
             {
                 Level.CurrentRoom.Add(new BasicAttack(270 - 90, Position));
                 //GameGlobals.PassProjectile(new PlayerAttack(270 - 90, Position));
                 timer.ResetToZero();
             }
+
+            // Update the Player's layer and stuff.
+            base.Update();
         }
 
-        /// <summary>
-        /// Moves the Entity in the given direction with the given speed if possible.
-        /// </summary>
-        /// <param name="direciton">
-        /// The direction in which the Entity shall move.
-        /// </param>
-        /// <param name="speed">The given speed.</param>
-        protected override void Move(Directions direction, float speed)
+        protected override bool CanMove(Directions direction)
         {
-            // Get the Vector of the direction.
-            Vector2 directionVector = Vector2.Zero;
-            switch (direction)
-            {
-                case Directions.Up:
-                    directionVector = -Vector2.UnitY;
-                    break;
-                case Directions.Right:
-                    directionVector = Vector2.UnitX;
-                    break;
-                case Directions.Down:
-                    directionVector = Vector2.UnitY;
-                    break;
-                case Directions.Left:
-                    directionVector = -Vector2.UnitX;
-                    break;
-            }
-
-            // The width of a door.
-            byte doorWidth = 50;
-
-            // Move this Sprite.
-            Position += directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-
             // If it collides with a door and is within the door frame.
             if ((direction == Directions.Up
                  && ((Level.CurrentRoom.Doors[(byte)Directions.Up] != null
                       && Level.CurrentRoom.Doors[(byte)Directions.Up].State == DoorState.Open
-                      && Math.Abs(Position.X - Level.CurrentRoom.Doors[(byte)Directions.Up].Position.X) <= doorWidth * Scale.X)))
+                      && Math.Abs(Position.X - Level.CurrentRoom.Doors[(byte)Directions.Up].Position.X) <= Door.Width * Scale.X)))
                 || (direction == Directions.Right
                     && ((Level.CurrentRoom.Doors[(byte)Directions.Right] != null
                       && Level.CurrentRoom.Doors[(byte)Directions.Right].State == DoorState.Open
-                         && Math.Abs(Position.Y - Level.CurrentRoom.Doors[(byte)Directions.Right].Position.Y) <= doorWidth * Scale.Y)))
+                         && Math.Abs(Position.Y - Level.CurrentRoom.Doors[(byte)Directions.Right].Position.Y) <= Door.Width * Scale.Y)))
                 || (direction == Directions.Down
                  && ((Level.CurrentRoom.Doors[(byte)Directions.Down] != null
                       && Level.CurrentRoom.Doors[(byte)Directions.Down].State == DoorState.Open
-                      && Math.Abs(Position.X - Level.CurrentRoom.Doors[(byte)Directions.Down].Position.X) <= doorWidth * Scale.X)))
+                      && Math.Abs(Position.X - Level.CurrentRoom.Doors[(byte)Directions.Down].Position.X) <= Door.Width * Scale.X)))
                 || (direction == Directions.Left
                     && ((Level.CurrentRoom.Doors[(byte)Directions.Left] != null
                       && Level.CurrentRoom.Doors[(byte)Directions.Left].State == DoorState.Open
-                         && Math.Abs(Position.Y - Level.CurrentRoom.Doors[(byte)Directions.Left].Position.Y) <= doorWidth * Scale.Y))))
+                         && Math.Abs(Position.Y - Level.CurrentRoom.Doors[(byte)Directions.Left].Position.Y) <= Door.Width * Scale.Y))))
             {
                 // It's allowed to move.
+                return true;
             }
-            // Else if it collides with the top wall, another Entity or the frame of a door.
-            else if (Collides(Level.CurrentRoom.Walls[(byte)direction])
-                     || Collides(Level.CurrentRoom.Entities)
+            // Else if it collides with the top wall.
+            else if (Collides(Level.CurrentRoom.Walls[(byte)direction]))
+            {
+                // Adjust the position.
+                Vector2 position = Position;
+                switch (direction)
+                {
+                    case Directions.Up:
+                        position.Y = Level.CurrentRoom.Walls[(byte)Directions.Up][0].Position.Y + (0.5f * Tile.Size.Y);
+                        break;
+                    case Directions.Right:
+                        position.X = Level.CurrentRoom.Walls[(byte)Directions.Right][0].Position.X - (1.0f * Tile.Size.X);
+                        break;
+                    case Directions.Down:
+                        position.Y = Level.CurrentRoom.Walls[(byte)Directions.Down][0].Position.Y - (1.0f * Tile.Size.Y);
+                        break;
+                    case Directions.Left:
+                        position.X = Level.CurrentRoom.Walls[(byte)Directions.Left][0].Position.X + (1.0f * Tile.Size.X);
+                        break;
+                }
+                Position = position;
+                // Then it's allowed to move.
+                return true;
+            }
+            // Else if it collides with another Entity or the frame of a door.
+            else if (Collides(Level.CurrentRoom.Entities)
                      || ((byte)direction % 2 == 0
                          && ((Level.CurrentRoom.Doors[1] != null && Collides(Level.CurrentRoom.Doors[1])) 
                               || (Level.CurrentRoom.Doors[3] != null && Collides(Level.CurrentRoom.Doors[3])))
-                         && ((Level.CurrentRoom.Doors[1] != null && Math.Abs(Position.Y - Level.CurrentRoom.Doors[1].Position.Y) > doorWidth * Scale.Y)
-                             || (Level.CurrentRoom.Doors[3] != null && Math.Abs(Position.Y - Level.CurrentRoom.Doors[3].Position.Y) > doorWidth * Scale.Y)))
+                         && ((Level.CurrentRoom.Doors[1] != null && Math.Abs(Position.Y - Level.CurrentRoom.Doors[1].Position.Y) > Door.Width * Scale.Y)
+                             || (Level.CurrentRoom.Doors[3] != null && Math.Abs(Position.Y - Level.CurrentRoom.Doors[3].Position.Y) > Door.Width * Scale.Y)))
                      || ((byte)direction % 2 == 1
                          && ((Level.CurrentRoom.Doors[0] != null && Collides(Level.CurrentRoom.Doors[0]))
                               || (Level.CurrentRoom.Doors[2] != null && Collides(Level.CurrentRoom.Doors[2])))
-                         && ((Level.CurrentRoom.Doors[0] != null && Math.Abs(Position.X - Level.CurrentRoom.Doors[0].Position.X) > doorWidth * Scale.X)
-                             || (Level.CurrentRoom.Doors[2] != null && Math.Abs(Position.X - Level.CurrentRoom.Doors[2].Position.X) > doorWidth * Scale.X))))
+                         && ((Level.CurrentRoom.Doors[0] != null && Math.Abs(Position.X - Level.CurrentRoom.Doors[0].Position.X) > Door.Width * Scale.X)
+                             || (Level.CurrentRoom.Doors[2] != null && Math.Abs(Position.X - Level.CurrentRoom.Doors[2].Position.X) > Door.Width * Scale.X))))
             {
-                // It's not allowed to move up.
-                // Revert its position.
-                Position -= directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+                // It's not allowed to move.
+                return false;
             }
+
+            // Default return.
+            return true;
         }
     }
 }

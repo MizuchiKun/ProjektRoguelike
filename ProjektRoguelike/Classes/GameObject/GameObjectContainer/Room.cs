@@ -8,6 +8,17 @@ using Microsoft.Xna.Framework.Input;
 namespace ProjektRoguelike
 {
     /// <summary>
+    /// Contains the different kinds of rooms.
+    /// </summary>
+    public enum RoomKind : byte
+    {
+        Normal,
+        //Arcade,
+        Boss,
+        Hidden
+    }
+
+    /// <summary>
     /// A room of a <see cref="Level"/>.
     /// </summary>
     public class Room : GameObjectContainer
@@ -21,6 +32,11 @@ namespace ProjektRoguelike
         /// The position of the top-left corner of this <see cref="Room"/>.
         /// </summary>
         public Vector2 Position { get; }
+
+        /// <summary>
+        /// The kind of this <see cref="Room"/>.
+        /// </summary>
+        public RoomKind Kind { get; }
 
         /// <summary>
         /// The walls of this <see cref="Room"/>.<br></br>
@@ -122,10 +138,11 @@ namespace ProjektRoguelike
         /// Creates a new room by the given room index.
         /// </summary>
         /// <param name="roomIndex">The room's index.</param>
-        public Room(byte roomIndex, Vector2 position)
+        public Room(byte roomIndex, Vector2 position, RoomKind kind = RoomKind.Normal)
         {
             // Store the parameters.
             Position = position;
+            Kind = kind;
 
             // Load the Textures.
             Texture2D ground = Globals.Content.Load<Texture2D>("Sprites/Environment/Boden");
