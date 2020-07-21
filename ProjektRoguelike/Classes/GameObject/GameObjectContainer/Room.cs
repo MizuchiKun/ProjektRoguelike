@@ -250,16 +250,15 @@ namespace ProjektRoguelike
                         }
                         _gameObjects.Add(new Text(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"),
                                                   new StringBuilder(roomPos),
-                                                  Position + (Room.Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale,
+                                                  Position + (Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale,
                                                   new Vector2(0.5f),
                                                   layerDepth: 0.999f));
         }
 
         /// <summary>
-        /// A <b>temporary method</b> to add a GameObject to this Room.<br></br>
-        /// <b>Will be replaced by the level generation.</b>
+        /// A method to add a <see cref="GameObject"/> to this <see cref="Room"/>.
         /// </summary>
-        /// <param name="gameObject">The GameObject that will be added.</param>
+        /// <param name="gameObject">The <see cref="GameObject"/> that will be added.</param>
         public void Add(GameObject gameObject)
         {
             _gameObjects.Add(gameObject);

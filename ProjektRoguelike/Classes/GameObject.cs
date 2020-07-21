@@ -89,7 +89,7 @@ namespace ProjektRoguelike
             // Get an inflated copy of this Sprite's hitbox.
             Rectangle inflatedHitbox = Hitbox;
             inflatedHitbox.Location += new Point(-1);
-            inflatedHitbox.Size += new Point(1);
+            inflatedHitbox.Size += new Point(2);
 
             // It just touches if it isn't colliding unless this hitbox is inflated by 1.
             return (!Hitbox.Intersects(otherSprite.Hitbox)

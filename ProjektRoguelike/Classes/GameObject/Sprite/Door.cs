@@ -78,6 +78,15 @@ namespace ProjektRoguelike
         public DoorState State { get; set; }
 
         /// <summary>
+        /// A "poof" animation.
+        /// </summary>
+        private static readonly Animation _poofAnimation = new Animation(Globals.Content.Load<Texture2D>("Sprites/Effects/Poofsheet"),
+                                                                         new Vector2(256),
+                                                                         TimeSpan.FromMilliseconds(80),
+                                                                         repetitions: 0);
+        private Sprite _poofAnimationSprite = null;
+
+        /// <summary>
         /// Creates a new <see cref="Door"/> with the given position, rotation and <see cref="Room"/>.
         /// </summary>
         /// <param name="position">The position of the <see cref="Door"/>.</param>
@@ -103,8 +112,8 @@ namespace ProjektRoguelike
         {
             // Store the parameters. 
             _direction = direction;
-            Kind = DoorKind.Normal;//kindOfDoor;
-            State = DoorState.Locked;//(Kind != DoorKind.Hidden) ? doorState : DoorState.Locked;
+            Kind = kindOfDoor;
+            State = (Kind != DoorKind.Hidden) ? doorState : DoorState.Locked;
 
             // Set the initial animation.
             CurrentAnimation = _closeAnimations[(byte)Kind];
@@ -188,6 +197,14 @@ namespace ProjektRoguelike
                 {
                     Level.SwitchRoom(_direction);
                 }
+
+                // Remove _poofAnimationSprite if its animation is over.
+                if (_poofAnimationSprite != null
+                    && _poofAnimationSprite.CurrentAnimation.HasEnded)
+                {
+                    Level.CurrentRoom.Remove(_poofAnimationSprite);
+                    _poofAnimationSprite = null;
+                }
             }
         }
 
@@ -206,6 +223,19 @@ namespace ProjektRoguelike
             {
                 // Unlock the counterpart in adjacent room.
                 Level.UnlockCounterpartDoor(this);
+            }
+
+            // If this Door is hidden.
+            if (Kind == DoorKind.Hidden)
+            {
+                // Restart _poofAnimation.
+                _poofAnimation.Restart();
+                // Set and add _poofAnimationSprite.
+                _poofAnimationSprite = new Sprite(animation: _poofAnimation,
+                                                  position: Position,
+                                                  origin: new Vector2(0.5f),
+                                                  scale: Tile.Size / new Vector2(256));
+                Level.CurrentRoom.Add(_poofAnimationSprite);
             }
         }
     }

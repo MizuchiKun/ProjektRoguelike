@@ -82,7 +82,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// Creates a new Sprite with the given graphical parameters.
         /// </summary>
-        /// <param name="texture">Its texture.</param>
+        /// <param name="texture">Its texture. Is optional if an animation is given.</param>
         /// <param name="animation">Its optional animation. If null, it won't be animated.</param>
         /// <param name="position">Its position. <br></br>If null, it will be <see cref="Vector2.Zero"/>.</param>
         /// <param name="origin">
@@ -96,7 +96,7 @@ namespace ProjektRoguelike
         /// <param name="layerDepth">Its layer depth. <br></br>It's 0 by default.</param>
         /// <param name="colour">Its colour. <br></br>If null, it will be <see cref="Color.White"/>.</param>
         /// <param name="effects">Its sprite effects. <br></br>It's <see cref="SpriteEffects.None"/> by default.</param>
-        public Sprite(Texture2D texture,
+        public Sprite(Texture2D texture = null,
                       Animation animation = null,
                       Vector2? position = null,
                       Vector2? origin = null,
@@ -108,11 +108,11 @@ namespace ProjektRoguelike
                       SpriteEffects effects = SpriteEffects.None)
         {
             // Store the parameters.
-            Texture = texture;
+            Texture = (texture != null) ? texture : animation.Sheet;
             CurrentAnimation = animation;
             Position = (position != null) ? position.Value : Vector2.Zero;
             Origin = (origin != null) ? origin.Value : Vector2.Zero;
-            SourceRectangle = sourceRectangle;
+            SourceRectangle = (animation != null) ? animation.CurrentFrame : (sourceRectangle != null) ? sourceRectangle : texture.Bounds;
             Scale = (scale != null) ? scale.Value : Vector2.One;
             Rotation = rotation;
             Layer = layerDepth;

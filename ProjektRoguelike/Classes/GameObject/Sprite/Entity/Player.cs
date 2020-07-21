@@ -19,7 +19,7 @@ namespace ProjektRoguelike
 
         public int Gold { get; set; }
         public int Bombs { get; set; }
-        public int Keys { get; set; }                   = 100;//////////////////////////////////////////
+        public int Keys { get; set; }
 
         public List<Flybuddy> companions;
 
@@ -72,7 +72,25 @@ namespace ProjektRoguelike
         public override void Update()
         {
 
-                                                Console.WriteLine($"Keys: {Keys}");
+
+
+
+
+
+
+            if (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.Space))
+            {
+                Level.CurrentRoom.Add(new Explosion(Position));
+            }
+
+
+
+
+
+
+
+
+
             if (poopsicle)
             {
                 companions.Add(new Flybuddy(new Vector2(Position.X, Position.Y + 15), 0));
@@ -94,9 +112,10 @@ namespace ProjektRoguelike
                 // If there's a top door.
                 if (Level.CurrentRoom.Doors[(byte)Directions.Up] != null)
                 {
-                    // If it's close to the top door and the player has more than 0 keys.
-                    if ((Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Up].Position.Y - Position.Y) <= (0.5f * Tile.Size.Y * Globals.Scale.Y)
-                         && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Up].Position.X - Position.X) <= Door.Width * Scale.X)
+                    // If it touches the top door, it's hidden and the player has more than 0 keys.
+                    if (!(Level.CurrentRoom.Doors[(byte)Directions.Up].Kind == DoorKind.Hidden)
+                        && (Touches(Level.CurrentRoom.Doors[(byte)Directions.Up])
+                           && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Up].Position.X - Position.X) <= Door.Width * Scale.X)
                         && Level.CurrentRoom.Doors[(byte)Directions.Up].State == DoorState.Locked
                         && Keys > 0)
                     {
@@ -116,9 +135,10 @@ namespace ProjektRoguelike
                 // If there's a right door.
                 if (Level.CurrentRoom.Doors[(byte)Directions.Right] != null)
                 {
-                    // If it's close to the right door and the player has more than 0 keys.
-                    if ((Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Right].Position.X - Position.X) <= (1.0f * Tile.Size.X * Globals.Scale.X)
-                         && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Right].Position.Y - Position.Y) <= Door.Width * Scale.Y)
+                    // If it touches the right door, it's hidden and the player has more than 0 keys.
+                    if (!(Level.CurrentRoom.Doors[(byte)Directions.Right].Kind == DoorKind.Hidden)
+                        && (Touches(Level.CurrentRoom.Doors[(byte)Directions.Right])
+                           && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Right].Position.Y - Position.Y) <= Door.Width * Scale.Y)
                         && Level.CurrentRoom.Doors[(byte)Directions.Right].State == DoorState.Locked
                         && Keys > 0)
                     {
@@ -138,9 +158,10 @@ namespace ProjektRoguelike
                 // If there's a bottom door.
                 if (Level.CurrentRoom.Doors[(byte)Directions.Down] != null)
                 {
-                    // If it's close to the bottom door and the player has more than 0 keys.
-                    if ((Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Down].Position.Y - Position.Y) <= (1.0f * Tile.Size.Y * Globals.Scale.Y)
-                         && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Down].Position.X - Position.X) <= Door.Width * Scale.X)
+                    // If it touches the bottom door, it's hidden and the player has more than 0 keys.
+                    if (!(Level.CurrentRoom.Doors[(byte)Directions.Down].Kind == DoorKind.Hidden)
+                        && (Touches(Level.CurrentRoom.Doors[(byte)Directions.Down])
+                           && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Down].Position.X - Position.X) <= Door.Width * Scale.X)
                         && Level.CurrentRoom.Doors[(byte)Directions.Down].State == DoorState.Locked
                         && Keys > 0)
                     {
@@ -160,9 +181,10 @@ namespace ProjektRoguelike
                 // If there's a left door.
                 if (Level.CurrentRoom.Doors[(byte)Directions.Left] != null)
                 {
-                    // If it's close to the left door and the player has more than 0 keys.
-                    if ((Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Left].Position.X - Position.X) <= (1.0f * Tile.Size.X * Globals.Scale.X)
-                         && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Left].Position.Y - Position.Y) <= Door.Width * Scale.Y)
+                    // If it touches the left door, it's hidden and the player has more than 0 keys.
+                    if (!(Level.CurrentRoom.Doors[(byte)Directions.Left].Kind == DoorKind.Hidden)
+                        && (Touches(Level.CurrentRoom.Doors[(byte)Directions.Left])
+                           && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Left].Position.Y - Position.Y) <= Door.Width * Scale.Y)
                         && Level.CurrentRoom.Doors[(byte)Directions.Left].State == DoorState.Locked
                         && Keys > 0)
                     {

@@ -55,17 +55,16 @@ namespace ProjektRoguelike
                     for (byte i = 0; i < 9; i++)
                     {
                         Vector2 position = new Vector2((i % 3), (i / 3));
-                        _rooms[(int)position.X, (int)position.Y] = new Room(i, position * Globals.WindowDimensions, RoomKind.Normal);
+                        _rooms[(int)position.X, (int)position.Y] = new Room(i, position * Globals.WindowDimensions, RoomKind.Hidden);
                     }
-                    _rooms[1, 0] = new Room(1, new Vector2((1 % 3), (1 / 3)) * Globals.WindowDimensions, RoomKind.Hidden);
 
             // Choose the starting room.
-            Vector2 startRoomPos = Vector2.Zero;
+            Vector2 startRoomPos = Vector2.One;//Vector2.Zero;
             CurrentRoom = _rooms[(int)startRoomPos.X, (int)startRoomPos.Y];
             // Set the camera position accordingly.
             Camera.Position = startRoomPos * Globals.WindowDimensions;
             // Initialize the player.
-            _player = new Player(Vector2.Zero + (Room.Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale);
+            _player = new Player(CurrentRoom.Position + (Room.Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale);
 
             // Add the doors.
             for (byte x = 0; x < _rooms.GetLength(0); x++)
