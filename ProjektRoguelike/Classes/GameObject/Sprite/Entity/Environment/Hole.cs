@@ -15,7 +15,7 @@ namespace ProjektRoguelike
                      Rectangle? sourceRectangle = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
-        : base(texture: Globals.Content.Load<Texture2D>("Sprite/Environment/Hole"),
+        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Environment/Hole"),
                position,
                sourceRectangle,
                rotation,

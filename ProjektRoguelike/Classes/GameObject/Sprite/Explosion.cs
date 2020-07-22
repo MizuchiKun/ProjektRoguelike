@@ -13,6 +13,8 @@ namespace ProjektRoguelike
         /// </summary>
         private static readonly float BlastRadius = 1.1f;
 
+        public int OwnerID { get; }
+
         public int HitValue { get; } = 2;
 
         McTimer timer;
@@ -39,6 +41,8 @@ namespace ProjektRoguelike
 
             // Set the layer.
             Layer = 0.9f - (Position.Y / 10e6f);
+
+            OwnerID = 0;
 
             timer = new McTimer(300);
         }

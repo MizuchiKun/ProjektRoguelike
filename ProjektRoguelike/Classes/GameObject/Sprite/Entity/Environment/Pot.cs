@@ -15,7 +15,7 @@ namespace ProjektRoguelike
                      Rectangle? sourceRectangle = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
-        : base(texture: Globals.Content.Load<Texture2D>("Sprite/Environment/Pot"),
+        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Environment/Pot"),
                position,
                sourceRectangle,
                rotation,
@@ -34,20 +34,32 @@ namespace ProjektRoguelike
         {
             if (dropnumber <= 4)
             {
-                // Drop Gold
+                for (int i = 0; i < 5; i++)
+                {
+                    Level.CurrentRoom.Add(new PickupCoin(new Vector2(Position.X - (20 * i), Position.Y)));
+                }
             }
             else if (dropnumber > 4 && dropnumber <= 6)
             {
-                // Drop Key 
+                for (int i = 0; i < 2; i++)
+                {
+                    Level.CurrentRoom.Add(new PickupKey(new Vector2(Position.X - (20 * i), Position.Y)));
+                }
             }
             else if (dropnumber > 6 && dropnumber <= 8)
             {
-                // Drop Bomb
+                for (int i = 0; i < 1; i++)
+                {
+                    Level.CurrentRoom.Add(new PickupBomb(new Vector2(Position.X - (20 * i), Position.Y)));
+                }
             }
             else if (dropnumber > 8 && dropnumber <= 9)
             {
-                // Drop PickupHeart
-                
+                for (int i = 0; i < 1; i++)
+                {
+                    Level.CurrentRoom.Add(new PickupHeart(new Vector2(Position.X - (20 * i), Position.Y)));
+                }
+
             }
             else
             {

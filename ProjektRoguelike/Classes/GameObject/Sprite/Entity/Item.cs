@@ -25,8 +25,16 @@ namespace ProjektRoguelike
         public override void Update()
         {
             base.Update();
-            Effect();
-            Level.CurrentRoom.Remove(this);
+            //if (Globals.GetDistance(Position, Level.Player.Position) < 84)
+            if (Touches(Level.Player) && (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.W) || 
+                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.A) ||
+                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.S) ||
+                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.D)))
+            {
+                Effect();
+                Level.CurrentRoom.Remove(this);
+            }
+            
         }
 
         /// <summary>

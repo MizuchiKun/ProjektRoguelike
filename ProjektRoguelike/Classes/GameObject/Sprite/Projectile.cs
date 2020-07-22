@@ -72,24 +72,24 @@ namespace ProjektRoguelike
             }
             */
             if (Collides(Level.CurrentRoom.Enemies) && (OwnerID == 1 || OwnerID == 0))
-{
-            bool isColliding = false;//NEW
-            for (int i = 0; i < Level.CurrentRoom.Enemies.Count; i++)
             {
-                if (Collides(Level.CurrentRoom.Enemies[i])//NEW
-                    && OwnerID == 1)
+                bool isColliding = false;//NEW
+                for (int i = 0; i < Level.CurrentRoom.Enemies.Count; i++)
                 {
-                    //enemies[i].GetHit(HitValue);
-                    Level.CurrentRoom.Enemies[i].GetHit(HitValue);
-                    /*Level.CurrentRoom.Remove(this);*/
-                    isColliding = true;
+                    if (Collides(Level.CurrentRoom.Enemies[i])//NEW
+                        && OwnerID == 1)
+                    {
+                        //enemies[i].GetHit(HitValue);
+                        Level.CurrentRoom.Enemies[i].GetHit(HitValue);
+                        /*Level.CurrentRoom.Remove(this);*/
+                        isColliding = true;
+                    }
                 }
-            }
-            //NEW
-            if (isColliding)
-            {
-                Level.CurrentRoom.Remove(this);
-            }
+                //NEW
+                if (isColliding)
+                {
+                    Level.CurrentRoom.Remove(this);
+                }
             }
         }
         /*

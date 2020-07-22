@@ -78,12 +78,21 @@ namespace ProjektRoguelike
 
 
 
+            if (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.K))
+            {
+                poopsicle = true;
+            }
+
             if (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.Space))
             {
                 Level.CurrentRoom.Add(new Explosion(Position));
             }
 
-
+            if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.J))
+            {
+                Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
+                                                                Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+            }
 
 
 
@@ -93,9 +102,9 @@ namespace ProjektRoguelike
 
             if (poopsicle)
             {
-                companions.Add(new Flybuddy(new Vector2(Position.X, Position.Y + 15), 0));
-                companions.Add(new Flybuddy(new Vector2(Position.X + 15, Position.Y - 15), 315));
-                companions.Add(new Flybuddy(new Vector2(Position.X - 15, Position.Y - 15), 225));
+                Level.CurrentRoom.Add(new Flybuddy(new Vector2(Position.X, Position.Y + 55), 0));
+                Level.CurrentRoom.Add(new Flybuddy(new Vector2(Position.X + 40, Position.Y - 40)));
+                Level.CurrentRoom.Add(new Flybuddy(new Vector2(Position.X - 40, Position.Y - 40)));
                 poopsicle = false;
             }
             // Handle movement input.
@@ -338,6 +347,19 @@ namespace ProjektRoguelike
 
             // Default return.
             return true;
+        }
+
+        public override void Draw()
+        {
+            if (companions != null)
+            {
+                for (int i = 0; i < companions.Count; i++)
+                {
+                    companions[i].Draw();
+                }
+            }
+
+            base.Draw();
         }
     }
 }
