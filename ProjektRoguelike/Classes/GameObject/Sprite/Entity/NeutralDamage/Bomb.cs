@@ -12,6 +12,12 @@ namespace ProjektRoguelike
     {
         McTimer timer;
 
+        float angle, speed;
+        Vector2 direction;
+
+        private const float _maxSpeed = 25;
+        private const float _speedIncrease = 10;
+
         public Bomb(Vector2? position = null,
                     Rectangle? sourceRectangle = null,
                     float rotation = 0f,
@@ -25,7 +31,12 @@ namespace ProjektRoguelike
             Health = 3;
             HitValue = 1;
 
+            speed = 250f;
+
             timer = new McTimer(1500);
+
+            angle = Globals.Vector2ToDegrees(Level.Player.Position - Position);
+            direction = Globals.DegreesToVector2(-angle);
         }
 
         public override void Update()
@@ -35,6 +46,18 @@ namespace ProjektRoguelike
             {
                 Level.CurrentRoom.Add(new Explosion(Position));
                 Level.CurrentRoom.Remove(this);
+            }
+            if (Collides(Level.Player))
+            {
+                if (speed < _maxSpeed)
+                {
+                    speed += _speedIncrease;
+                }
+                Position += speed * direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (speed > 0)
+            {
+                speed -= _speedIncrease;
             }
 
             base.Update();

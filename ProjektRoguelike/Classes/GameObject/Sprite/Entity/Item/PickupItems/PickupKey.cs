@@ -8,23 +8,23 @@ namespace ProjektRoguelike
     /// <summary>
     /// An enemy
     /// </summary>
-    public class PickupCoin : Item
+    public class PickupKey : PickupItem
     {
-        public PickupCoin(Vector2? position = null,
+        public PickupKey(Vector2? position = null,
                      Rectangle? sourceRectangle = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
-        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Pickups/Coin"),
+        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Pickups/Key"),
                position,
                sourceRectangle,
                rotation,
                effect)
         {  }
 
-        // is made to increase players amount of bombs
+        // is made to increase players amount of keys
         public override void Effect()
         {
-            Level.Player.Gold += 1;
+            Level.Player.Keys += 1;
         }
     }
 }

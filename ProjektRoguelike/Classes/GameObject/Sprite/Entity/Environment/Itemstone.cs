@@ -28,26 +28,22 @@ namespace ProjektRoguelike
             this.Item = item;
             Health = 10000;
 
-            Scale = new Vector2(.3f);
+            //Scale = new Vector2(.3f);
         }
 
         public override void Update()
         {
             base.Update();
-            
-            if (Touches(Level.Player) && (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.W) ||
-                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.A) ||
-                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.S) ||
-                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.D)))
-            {
-                Item.Effect();
-                pickedUp = true;
-                //Level.CurrentRoom.Remove(Item);
-            }
 
-            if (pickedUp == true)
+            //if (Touches(Level.Player) && (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.W) ||
+            //                               Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.A) ||
+            //                               Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.S) ||
+            //                               Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.D)))
+            if (Globals.GetDistance(Position, Level.Player.Position) < 85 && !pickedUp)
             {
-                
+                    Item.Effect();
+                    pickedUp = true;
+                    Level.CurrentRoom.Remove(Item);
             }
         }
 

@@ -83,18 +83,25 @@ namespace ProjektRoguelike
                 poopsicle = true;
             }
 
-            if (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.Space))
+            if (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.Space) && Level.Player.Bombs > 0)
             {
-                Level.CurrentRoom.Add(new Explosion(Position));
+                //Level.CurrentRoom.Add(new Explosion(Position));
+                Level.CurrentRoom.Add(new Bomb(Position));
+                Level.Player.Bombs--;
             }
 
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.J))
             {
-                Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
-                                                                Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                //Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
+                //                                               Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+
+                Level.CurrentRoom.Add(new PickupBomb(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
             }
 
-
+            if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.L))
+            {
+                Level.CurrentRoom.Add(new Pot(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+            }
 
 
 

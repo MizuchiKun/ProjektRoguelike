@@ -29,7 +29,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// This <see cref="Sprite"/>'s relative origin.
         /// </summary>
-        public Vector2 Origin { get; }
+        public Vector2 Origin { get; } = new Vector2(.5f);
 
         /// <summary>
         /// This <see cref="Sprite"/>'s source rectangle.

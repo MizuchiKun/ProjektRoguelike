@@ -58,10 +58,11 @@
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Poop.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Itemstone.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Rock.cs" />
-    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupKey.cs" />
-    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupCoin.cs" />
-    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupBomb.cs" />
-    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupHeart.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupItem.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupItems\PickupKey.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupItems\PickupCoin.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupItems\PickupBomb.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Item\PickupItems\PickupHeart.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Item\Poopsicle.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Item\Heart.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Item\Shroom.cs" />

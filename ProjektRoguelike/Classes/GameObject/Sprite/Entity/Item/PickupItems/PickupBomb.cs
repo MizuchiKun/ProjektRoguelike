@@ -8,7 +8,7 @@ namespace ProjektRoguelike
     /// <summary>
     /// An enemy
     /// </summary>
-    public class PickupBomb : Item
+    public class PickupBomb : PickupItem
     {
         public PickupBomb(Vector2? position = null,
                      Rectangle? sourceRectangle = null,
