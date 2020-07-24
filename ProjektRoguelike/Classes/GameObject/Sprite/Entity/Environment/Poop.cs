@@ -20,8 +20,8 @@ namespace ProjektRoguelike
                sourceRectangle,
                rotation,
                effect)
-        { 
-
+        {
+            Health = 3;
         }
 
         public override void Update()

@@ -24,8 +24,6 @@ namespace ProjektRoguelike
         {
             Speed = 2f;
             Health = 3;
-
-            timer = new McTimer(200);
         }
 
         public override void Update()
@@ -37,25 +35,24 @@ namespace ProjektRoguelike
         {
             base.AI();
 
-            timer.UpdateTimer();
-            if (Collides(Level.Player))
+            if (Touches(Level.Player))
             {
-                Level.Player.GetHit(1);
-                for (int i = 0; i < 3; i++)
-                {
-                    Level.CurrentRoom.Add(new Fly(new Vector2(Position.X, Position.Y - 10 + (10 * i))));
-                }
-                Level.CurrentRoom.Remove(this);
+                SpawnFlyAndDie();
             }
 
-            if (Health >= 0)
+            if (Health <= 0)
             {
-                for (int i = 0; i < 3; i++)
-                {
-                    Level.CurrentRoom.Add(new Fly(new Vector2(Position.X, Position.Y - 10 + (10 * i))));
-                }
-                Level.CurrentRoom.Remove(this);
+                SpawnFlyAndDie();
             }
+        }
+
+        private void SpawnFlyAndDie()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Level.CurrentRoom.Add(new Fly(new Vector2(Position.X, Position.Y - 20 + (20 * i))));
+            }
+            Level.CurrentRoom.Remove(this);
         }
     }
 }

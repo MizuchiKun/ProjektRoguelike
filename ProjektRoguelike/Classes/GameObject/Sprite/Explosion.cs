@@ -15,6 +15,8 @@ namespace ProjektRoguelike
 
         public int OwnerID { get; }
 
+        bool damageDealt = false;
+
         public int HitValue { get; } = 2;
 
         McTimer timer;
@@ -98,10 +100,14 @@ namespace ProjektRoguelike
                 {
                     if (Collides(Level.CurrentRoom.Entities[i])//NEW
                         && OwnerID == 0
-                        && Level.CurrentRoom.Entities[i].GetType().IsSubclassOf(typeof(Environment)))
+                        && (Level.CurrentRoom.Entities[i].GetType().IsSubclassOf(typeof(Environment))
+                        || Level.CurrentRoom.Entities[i].GetType().IsSubclassOf(typeof(Enemy))
+                        || Level.CurrentRoom.Entities[i].GetType().Name == "Campfire")
+                        && damageDealt == false)
                     {
                         //enemies[i].GetHit(HitValue);
                         Level.CurrentRoom.Entities[i].GetHit(HitValue);
+                        damageDealt = true;
                         /*Level.CurrentRoom.Remove(this);*/
                         //isColliding = true;
                     }

@@ -91,6 +91,19 @@ namespace ProjektRoguelike
                     Level.CurrentRoom.Remove(this);
                 }
             }
+            if (Collides(Level.CurrentRoom.Entities))
+            {
+                for (int i = 0; i < Level.CurrentRoom.Entities.Count ; i++)
+                {
+                    if (Collides(Level.CurrentRoom.Entities[i]) 
+                        && (Level.CurrentRoom.Entities[i].GetType().Name == "Poop") 
+                        || Level.CurrentRoom.Entities[i].GetType().Name == "Campfire")
+                    {
+                        Level.CurrentRoom.Entities[i].GetHit(HitValue);
+                        Level.CurrentRoom.Remove(this);
+                    }
+                }
+            }
         }
         /*
                 private void Update(List<Enemy> enemies)

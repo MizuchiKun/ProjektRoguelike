@@ -11,7 +11,7 @@ namespace ProjektRoguelike
     /// </summary>
     public class Player : Entity
     {
-        McTimer timer;
+        McTimer timer, damageImunity;
         public int HealthMax;
         public bool Done = false, poopsicle = false;
         public ushort speed = 350;
@@ -58,6 +58,7 @@ namespace ProjektRoguelike
                sourceRectangle: new Rectangle(0, 0, 256, 256))
         { 
             timer = new McTimer(600, true);
+            damageImunity = new McTimer(500, true);
 
             Health = 5;
             HealthMax = Health;
@@ -83,6 +84,7 @@ namespace ProjektRoguelike
                 poopsicle = true;
             }
 
+            //just boomer things
             if (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.Space) && Level.Player.Bombs > 0)
             {
                 //Level.CurrentRoom.Add(new Explosion(Position));
@@ -90,17 +92,20 @@ namespace ProjektRoguelike
                 Level.Player.Bombs--;
             }
 
+            //testing items and such
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.J))
             {
                 //Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
                 //                                               Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
 
                 Level.CurrentRoom.Add(new PickupBomb(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                //Level.Player.Keys += 1;
             }
 
+            //testing environment and enemies
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.L))
             {
-                Level.CurrentRoom.Add(new Pot(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new Rock(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
             }
 
 
@@ -254,6 +259,7 @@ namespace ProjektRoguelike
 
             // handle combat inputs
 
+            damageImunity.UpdateTimer();
             timer.UpdateTimer();
             // up
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Up) && timer.Test())
@@ -356,15 +362,22 @@ namespace ProjektRoguelike
             return true;
         }
 
+        public override void GetHit(int hitValue)
+        {
+            if (damageImunity.Test())
+            {
+                base.GetHit(hitValue);
+                damageImunity.ResetToZero();
+            }
+            else
+            {
+                
+            }
+        }
+
         public override void Draw()
         {
-            if (companions != null)
-            {
-                for (int i = 0; i < companions.Count; i++)
-                {
-                    companions[i].Draw();
-                }
-            }
+            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Health.ToString(), new Vector2(Position.X, Position.Y - 75), Color.White);
 
             base.Draw();
         }

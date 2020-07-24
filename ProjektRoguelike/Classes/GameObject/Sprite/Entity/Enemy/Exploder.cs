@@ -16,7 +16,7 @@ namespace ProjektRoguelike
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
 
-        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Enemies/Floatersheet_front"),
+        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Enemies/Explodersheet_front"),
                position,
                sourceRectangle: new Rectangle(0, 0, 256, 256),
                rotation,
@@ -38,7 +38,7 @@ namespace ProjektRoguelike
             base.AI();
 
             timer.UpdateTimer();
-            if (Collides(Level.Player))
+            if (Touches(Level.Player))
             {
                 Level.CurrentRoom.Add(new Explosion(Position));
                 Level.CurrentRoom.Remove(this);
