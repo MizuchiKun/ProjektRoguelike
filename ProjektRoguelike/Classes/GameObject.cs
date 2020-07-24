@@ -21,7 +21,7 @@ namespace ProjektRoguelike
         /// </summary>
         /// <param name="otherGameObject">The other <see cref="GameObject"/>.</param>
         /// <returns>True if they collide, false otherwise.</returns>
-        public bool Collides(GameObject otherGameObject)
+        public virtual bool Collides(GameObject otherGameObject)
         {
             // They collide it their hitboxes intersect.
             return Hitbox.Intersects(otherGameObject.Hitbox);
@@ -78,22 +78,42 @@ namespace ProjektRoguelike
             collidingGameObjects = collidingObjects;
             return collides;
         }
+        
+        /// <summary>
+        /// Get whether this <see cref="GameObject"/> touches one of the other <see cref="GameObject"/>s.
+        /// </summary>
+        /// <param name="otherGameObjects">The other <see cref="GameObject"/>s.</param>
+        /// <returns>True if it touches (at least) one of the other <see cref="GameObject"/>s.</returns>
+        public bool Touches(IEnumerable<GameObject> otherGameObjects)
+        {
+            foreach (GameObject gameObject in otherGameObjects)
+            {
+                if (Touches(gameObject))
+                {
+                    // It touches one of the objects.
+                    return true;
+                }
+            }
+
+            // It seems that it doesn't touch any of the given objects.
+            return false;
+        }
 
         /// <summary>
-        /// Gets whether this <see cref="Sprite"/> is just touching the given other <see cref="Sprite"/>.
+        /// Gets whether this <see cref="GameObject"/> touches the given other <see cref="GameObject"/>.
         /// </summary>
-        /// <param name="otherSprite">The other <see cref="Sprite"/>.</param>
-        /// <returns>True if they are just touching, false otherwise.</returns>
-        public bool Touches(Sprite otherSprite)
+        /// <param name="otherGameObject">The other <see cref="GameObject"/>.</param>
+        /// <returns>True if they are touching, false otherwise.</returns>
+        public bool Touches(GameObject otherGameObject)
         {
-            // Get an inflated copy of this Sprite's hitbox.
+            // Get an inflated copy of the GameObject's hitbox.
             Rectangle inflatedHitbox = Hitbox;
             inflatedHitbox.Location += new Point(-1);
             inflatedHitbox.Size += new Point(2);
 
             // It just touches if it isn't colliding unless this hitbox is inflated by 1.
-            return (!Hitbox.Intersects(otherSprite.Hitbox)
-                    && inflatedHitbox.Intersects(otherSprite.Hitbox));
+            return (!Hitbox.Intersects(otherGameObject.Hitbox)
+                    && inflatedHitbox.Intersects(otherGameObject.Hitbox));
         }
     }
 }

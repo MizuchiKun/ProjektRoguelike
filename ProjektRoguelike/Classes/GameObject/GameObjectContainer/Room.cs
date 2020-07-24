@@ -255,6 +255,13 @@ namespace ProjektRoguelike
                                                   layerDepth: 0.999f));
         }
 
+        public override void Update()
+        {
+            Console.WriteLine($"Object in room: {_gameObjects.Count}");
+
+            base.Update();
+        }
+
         /// <summary>
         /// A method to add a <see cref="GameObject"/> to this <see cref="Room"/>.
         /// </summary>

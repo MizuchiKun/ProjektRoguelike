@@ -14,6 +14,10 @@ namespace ProjektRoguelike
         McTimer timer;
         public int HealthMax;
         public bool Done = false, poopsicle = false;
+        /// <summary>
+        /// The player's current velocity per second.
+        /// </summary>
+        private Vector2 _velocity = Vector2.Zero;
         public ushort speed = 350;
         public int HitValue { get; set; }
 
@@ -71,13 +75,6 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Update()
         {
-
-
-
-
-
-
-
             if (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.K))
             {
                 poopsicle = true;
@@ -100,7 +97,7 @@ namespace ProjektRoguelike
 
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.L))
             {
-                Level.CurrentRoom.Add(new Pot(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new Floater(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
             }
 
 
@@ -118,20 +115,20 @@ namespace ProjektRoguelike
             // The movement speed.
             //ushort speed = 350;
             // The velocity.
-            Vector2 velocity = Vector2.Zero;
+            _velocity = Vector2.Zero;
             // Up.
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.W))
             {
                 // Move it up.
-                velocity += -Vector2.UnitY * speed;
+                _velocity += -Vector2.UnitY * speed;
 
                 // If there's a top door.
                 if (Level.CurrentRoom.Doors[(byte)Directions.Up] != null)
                 {
                     // If it touches the top door, it's hidden and the player has more than 0 keys.
                     if (!(Level.CurrentRoom.Doors[(byte)Directions.Up].Kind == DoorKind.Hidden)
-                        && (Touches(Level.CurrentRoom.Doors[(byte)Directions.Up])
-                           && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Up].Position.X - Position.X) <= Door.Width * Scale.X)
+                        && (BumpsInto(Level.CurrentRoom.Doors[(byte)Directions.Up])
+                            && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Up].Position.X - Position.X) <= Door.Width * Scale.X)
                         && Level.CurrentRoom.Doors[(byte)Directions.Up].State == DoorState.Locked
                         && Keys > 0)
                     {
@@ -146,15 +143,15 @@ namespace ProjektRoguelike
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.D))
             {
                 // Move it right.
-                velocity += Vector2.UnitX * speed;
+                _velocity += Vector2.UnitX * speed;
 
                 // If there's a right door.
                 if (Level.CurrentRoom.Doors[(byte)Directions.Right] != null)
                 {
                     // If it touches the right door, it's hidden and the player has more than 0 keys.
                     if (!(Level.CurrentRoom.Doors[(byte)Directions.Right].Kind == DoorKind.Hidden)
-                        && (Touches(Level.CurrentRoom.Doors[(byte)Directions.Right])
-                           && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Right].Position.Y - Position.Y) <= Door.Width * Scale.Y)
+                        && (BumpsInto(Level.CurrentRoom.Doors[(byte)Directions.Right])
+                            && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Right].Position.Y - Position.Y) <= Door.Width * Scale.Y)
                         && Level.CurrentRoom.Doors[(byte)Directions.Right].State == DoorState.Locked
                         && Keys > 0)
                     {
@@ -169,15 +166,15 @@ namespace ProjektRoguelike
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.S))
             {
                 // Move it down.
-                velocity += Vector2.UnitY * speed;
+                _velocity += Vector2.UnitY * speed;
 
                 // If there's a bottom door.
                 if (Level.CurrentRoom.Doors[(byte)Directions.Down] != null)
                 {
                     // If it touches the bottom door, it's hidden and the player has more than 0 keys.
                     if (!(Level.CurrentRoom.Doors[(byte)Directions.Down].Kind == DoorKind.Hidden)
-                        && (Touches(Level.CurrentRoom.Doors[(byte)Directions.Down])
-                           && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Down].Position.X - Position.X) <= Door.Width * Scale.X)
+                        && (BumpsInto(Level.CurrentRoom.Doors[(byte)Directions.Down])
+                            && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Down].Position.X - Position.X) <= Door.Width * Scale.X)
                         && Level.CurrentRoom.Doors[(byte)Directions.Down].State == DoorState.Locked
                         && Keys > 0)
                     {
@@ -192,15 +189,15 @@ namespace ProjektRoguelike
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.A))
             {
                 // Move it left.
-                velocity += -Vector2.UnitX * speed;
+                _velocity += -Vector2.UnitX * speed;
 
                 // If there's a left door.
                 if (Level.CurrentRoom.Doors[(byte)Directions.Left] != null)
                 {
                     // If it touches the left door, it's hidden and the player has more than 0 keys.
                     if (!(Level.CurrentRoom.Doors[(byte)Directions.Left].Kind == DoorKind.Hidden)
-                        && (Touches(Level.CurrentRoom.Doors[(byte)Directions.Left])
-                           && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Left].Position.Y - Position.Y) <= Door.Width * Scale.Y)
+                        && (BumpsInto(Level.CurrentRoom.Doors[(byte)Directions.Left])
+                            && Math.Abs(Level.CurrentRoom.Doors[(byte)Directions.Left].Position.Y - Position.Y) <= Door.Width * Scale.Y)
                         && Level.CurrentRoom.Doors[(byte)Directions.Left].State == DoorState.Locked
                         && Keys > 0)
                     {
@@ -212,10 +209,10 @@ namespace ProjektRoguelike
                 }
             }
             // Choose the proper antimation.
-            if (Math.Abs(velocity.X) > Math.Abs(velocity.Y))
+            if (Math.Abs(_velocity.X) > Math.Abs(_velocity.Y))
             {
                 // If it moves left.
-                if (velocity.X < 0)
+                if (_velocity.X < 0)
                 {
                     CurrentAnimation = _walkingAnimations[3];
                 }
@@ -229,21 +226,22 @@ namespace ProjektRoguelike
             else
             {
                 // If it moves up.
-                if (velocity.Y < 0)
+                if (_velocity.Y < 0)
                 {
                     CurrentAnimation = _walkingAnimations[0];
                 }
                 // Else it moves down.
-                else if (velocity.Y > 0)
+                else if (_velocity.Y > 0)
                 {
                     CurrentAnimation = _walkingAnimations[2];
                 }
             }
             // Move it.
-            if (velocity != Vector2.Zero)
+            if (_velocity != Vector2.Zero)
             {
                 CurrentAnimation.Resume();
-                Move(Globals.DegreesToVector2(Globals.Vector2ToDegrees(velocity)) * speed);
+                _velocity = Globals.DegreesToVector2(Globals.Vector2ToDegrees(_velocity)) * speed;
+                Move(_velocity);
             }
             else
             {
@@ -286,6 +284,22 @@ namespace ProjektRoguelike
 
             // Update the Player's layer and stuff.
             base.Update();
+        }
+
+        /// <summary>
+        /// The <see cref="Player"/>'s Draw method.
+        /// </summary>
+        public override void Draw()
+        {
+            if (companions != null)
+            {
+                for (int i = 0; i < companions.Count; i++)
+                {
+                    companions[i].Draw();
+                }
+            }
+
+            base.Draw();
         }
 
         protected override bool CanMove(Directions direction)
@@ -356,17 +370,44 @@ namespace ProjektRoguelike
             return true;
         }
 
-        public override void Draw()
+        /// <summary>
+        /// Gets whether the <see cref="Player"/> "bumps into" one of the given <see cref="GameObject"/>s.
+        /// </summary>
+        /// <param name="otherGameObjects">The other <see cref="GameObject"/>s.</param>
+        /// <returns>True if it bumps into (at least) one of them, false otherwise.</returns>
+        public bool BumpsInto(IEnumerable<GameObject> otherGameObjects)
         {
-            if (companions != null)
+            foreach (GameObject gameObject in otherGameObjects)
             {
-                for (int i = 0; i < companions.Count; i++)
+                if (BumpsInto(gameObject))
                 {
-                    companions[i].Draw();
+                    // It bumped into one of the objects.
+                    return true;
                 }
             }
 
-            base.Draw();
+            // It seems that it doesn't bump into any of the given objects.
+            return false;
+        }
+
+        /// <summary>
+        /// Gets whether the <see cref="Player"/> would "bumps into" the given <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="otherGameObject">The other <see cref="GameObject"/>.</param>
+        /// <returns>True if it bumps into the given <see cref="GameObject"/>, false otherwise.</returns>
+        public bool BumpsInto(GameObject otherGameObject)
+        {
+            // Move the Player (temporarily).
+            Position += _velocity * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+
+            // Get whether it bumps into otherGameObject.
+            bool bumpsInto = base.Collides(otherGameObject);
+
+            // Restore the Player's previous position.
+            Position -= _velocity * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+
+            // Return whether it bumped into otherGameObject.
+            return bumpsInto;
         }
     }
 }

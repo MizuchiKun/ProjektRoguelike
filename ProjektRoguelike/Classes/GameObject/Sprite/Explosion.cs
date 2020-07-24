@@ -11,7 +11,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// The blast radius of an explosion.
         /// </summary>
-        private static readonly float BlastRadius = 1.1f;
+        private static readonly float BlastRadius = 1.25f;
 
         public int OwnerID { get; }
 
@@ -49,42 +49,78 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
-            // If it collides with a hidden, locked door.
+            // Unlocking / opening doors.
             // Top.
-            if ((Level.CurrentRoom.Doors[(byte)Directions.Up] != null 
-                 && (Position - Level.CurrentRoom.Doors[(byte)Directions.Up].Position).Length() <= (BlastRadius * Tile.Size.X))
-                && (Level.CurrentRoom.Doors[(byte)Directions.Up].Kind == DoorKind.Hidden
-                    && Level.CurrentRoom.Doors[(byte)Directions.Up].State == DoorState.Locked))
+            if ((Level.CurrentRoom.Doors[(byte)Directions.Up] != null
+                 && (Position - Level.CurrentRoom.Doors[(byte)Directions.Up].Position).Length() <= (BlastRadius * Tile.Size.X)))
             {
-                // Unlock the top door.
-                Level.CurrentRoom.Doors[(byte)Directions.Up].Unlock(true);
+                // If the door is closed.
+                if (Level.CurrentRoom.Doors[(byte)Directions.Up].State == DoorState.Closed)
+                {
+                    // Open the door.
+                    Level.CurrentRoom.Doors[(byte)Directions.Up].Open();
+                }
+                // Else if the door is hidden and locked.
+                else if (Level.CurrentRoom.Doors[(byte)Directions.Up].Kind == DoorKind.Hidden
+                    && Level.CurrentRoom.Doors[(byte)Directions.Up].State == DoorState.Locked)
+                {
+                    // Unlock the door.
+                    Level.CurrentRoom.Doors[(byte)Directions.Up].Unlock(true);
+                }
             }
             // Right.
             if ((Level.CurrentRoom.Doors[(byte)Directions.Right] != null
-                 && (Position - Level.CurrentRoom.Doors[(byte)Directions.Right].Position).Length() <= (BlastRadius * Tile.Size.X))
-                && (Level.CurrentRoom.Doors[(byte)Directions.Right].Kind == DoorKind.Hidden
-                    && Level.CurrentRoom.Doors[(byte)Directions.Right].State == DoorState.Locked))
+                 && (Position - Level.CurrentRoom.Doors[(byte)Directions.Right].Position).Length() <= (BlastRadius * Tile.Size.X)))
             {
-                // Unlock the right door.
-                Level.CurrentRoom.Doors[(byte)Directions.Right].Unlock(true);
+                // If the door is closed.
+                if (Level.CurrentRoom.Doors[(byte)Directions.Right].State == DoorState.Closed)
+                {
+                    // Open the door.
+                    Level.CurrentRoom.Doors[(byte)Directions.Right].Open();
+                }
+                // Else if the door is hidden and locked.
+                else if (Level.CurrentRoom.Doors[(byte)Directions.Right].Kind == DoorKind.Hidden
+                    && Level.CurrentRoom.Doors[(byte)Directions.Right].State == DoorState.Locked)
+                {
+                    // Unlock the door.
+                    Level.CurrentRoom.Doors[(byte)Directions.Right].Unlock(true);
+                }
             }
             // Bottom.
             if ((Level.CurrentRoom.Doors[(byte)Directions.Down] != null
-                 && (Position - Level.CurrentRoom.Doors[(byte)Directions.Down].Position).Length() <= (BlastRadius * Tile.Size.X))
-                && (Level.CurrentRoom.Doors[(byte)Directions.Down].Kind == DoorKind.Hidden
-                    && Level.CurrentRoom.Doors[(byte)Directions.Down].State == DoorState.Locked))
+                 && (Position - Level.CurrentRoom.Doors[(byte)Directions.Down].Position).Length() <= (BlastRadius * Tile.Size.X)))
             {
-                // Unlock the bottom door.
-                Level.CurrentRoom.Doors[(byte)Directions.Down].Unlock(true);
+                // If the door is closed.
+                if (Level.CurrentRoom.Doors[(byte)Directions.Down].State == DoorState.Closed)
+                {
+                    // Open the door.
+                    Level.CurrentRoom.Doors[(byte)Directions.Down].Open();
+                }
+                // Else if the door is hidden and locked.
+                else if (Level.CurrentRoom.Doors[(byte)Directions.Down].Kind == DoorKind.Hidden
+                    && Level.CurrentRoom.Doors[(byte)Directions.Down].State == DoorState.Locked)
+                {
+                    // Unlock the door.
+                    Level.CurrentRoom.Doors[(byte)Directions.Down].Unlock(true);
+                }
             }
             // Left.
             if ((Level.CurrentRoom.Doors[(byte)Directions.Left] != null
-                 && (Position - Level.CurrentRoom.Doors[(byte)Directions.Left].Position).Length() <= (BlastRadius * Tile.Size.X))
-                && (Level.CurrentRoom.Doors[(byte)Directions.Left].Kind == DoorKind.Hidden
-                    && Level.CurrentRoom.Doors[(byte)Directions.Left].State == DoorState.Locked))
+                 && (Position - Level.CurrentRoom.Doors[(byte)Directions.Left].Position).Length() <= (BlastRadius * Tile.Size.X)))
             {
-                // Unlock the left door.
-                Level.CurrentRoom.Doors[(byte)Directions.Left].Unlock(true);
+                // If the door is closed.
+                if (Level.CurrentRoom.Doors[(byte)Directions.Left].State == DoorState.Closed)
+                {
+                    // Open the door.
+                    Level.CurrentRoom.Doors[(byte)Directions.Left].Open();
+                }
+                // Else if the door is hidden and locked.
+                else if (Level.CurrentRoom.Doors[(byte)Directions.Left].Kind == DoorKind.Hidden
+                    && Level.CurrentRoom.Doors[(byte)Directions.Left].State == DoorState.Locked)
+                {
+                    // Unlock the door.
+                    Level.CurrentRoom.Doors[(byte)Directions.Left].Unlock(true);
+                }
             }
 
             timer.UpdateTimer();

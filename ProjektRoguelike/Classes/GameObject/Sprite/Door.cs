@@ -136,27 +136,12 @@ namespace ProjektRoguelike
                     SourceRectangle = new Rectangle(0, 0, 256, 256);
                 }
             }
-            // Else if the door is open and there are enemies in the room.
-            else if (State == DoorState.Open
-                && Level.CurrentRoom.Enemies.Count > 0)
-            {
-                // Close the Door.
-                State = DoorState.Closed;
-                // Start closing animation.
-                CurrentAnimation.IsReversed = false;
-                CurrentAnimation.Restart();
-                CurrentAnimation.SelectFrame(1);
-            }
             // Else if the door is closed and there are no enemies in the room.
             else if (State == DoorState.Closed
                      && Level.CurrentRoom.Enemies.Count == 0)
             {
-                // Open the door.
-                State = DoorState.Open;
-                // Start opening animation.
-                CurrentAnimation.IsReversed = true;
-                CurrentAnimation.Restart();
-                CurrentAnimation.SelectFrame(1);
+                // Open this door.
+                Open();
             }
 
             // If this Door is open.
@@ -206,6 +191,32 @@ namespace ProjektRoguelike
                     _poofAnimationSprite = null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Opens this <see cref="Door"/>.
+        /// </summary>
+        public void Open()
+        {
+            // Open the door.
+            State = DoorState.Open;
+            // Start opening animation.
+            CurrentAnimation.IsReversed = true;
+            CurrentAnimation.Restart();
+            CurrentAnimation.SelectFrame(1);
+        }
+
+        /// <summary>
+        /// Closes this <see cref="Door"/>.
+        /// </summary>
+        public void Close()
+        {
+            // Close the Door.
+            State = DoorState.Closed;
+            // Start closing animation.
+            CurrentAnimation.IsReversed = false;
+            CurrentAnimation.Restart();
+            CurrentAnimation.SelectFrame(1);
         }
 
         /// <summary>

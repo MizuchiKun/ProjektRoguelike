@@ -11,6 +11,15 @@ namespace ProjektRoguelike
 {
     public class Flybuddy : PlayerAttack
     {
+        /// <summary>
+        /// The shadow all Flybuddies have.
+        /// </summary>
+        private static readonly Texture2D _shadow = Globals.Content.Load<Texture2D>("Sprites/Enemies/Shadow");
+        /// <summary>
+        /// The shadow sprite of this flybuddy.
+        /// </summary>
+        private Sprite _shadowSprite;
+
         public bool isDestroyed;
         public Vector2 Velocity;
         float angle, DistanceToPlayer;
@@ -26,6 +35,8 @@ namespace ProjektRoguelike
                rotation: rotation,
                effects: effects)
         {
+            // Calculate its initial angle towards the player.
+            angle = Globals.Vector2ToDegrees(Position - Level.Player.Position);
 
             Speed = 250.0f;
 
@@ -40,6 +51,15 @@ namespace ProjektRoguelike
             isDestroyed = false;
 
             Scale = new Vector2(.1f, .1f);
+
+            // Initialize _shadowSprite.
+            _shadowSprite = new Sprite(texture: _shadow,
+                                       position: position,
+                                       origin: new Vector2(0.5f),
+                                       scale: Scale,
+                                       rotation: rotation,
+                                       layerDepth: 0.9999999f,
+                                       effects: effects);
 
             // Set the animation.
             CurrentAnimation = new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/FLysheet"),
@@ -77,46 +97,65 @@ namespace ProjektRoguelike
                     }
                 }
             }
+
+            // Update your shadow's position.
+            _shadowSprite.Position = Position;
+        }
+
+        public override void Draw()
+        {
+            // Draw yourself.
+            base.Draw();
+
+            // Draw your shadow.
+            _shadowSprite.Draw();
         }
 
         public override void ChangePosition()
         {
-            //angle = Globals.Vector2ToDegrees(Level.Player.Position - Position);
-            Position = Globals.RotateAboutOrigin(Position, Level.Player.Position, .05f);
+            // Change the angle to the player.
+            float rotationSpeed = 270f;
+            angle += rotationSpeed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
 
-            float SpeedFix;
-            if ((Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.A) && Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.S)) ||
-                (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.A) && Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.W)) ||
-                (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.D) && Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.S)) ||
-                (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.D) && Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.W)))
-            {
-                SpeedFix = 3f;
-            }
-            else
-            {
-                SpeedFix = 4f;
-            }
-            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.W))
-            {
-                Position = new Vector2(Position.X, Position.Y - ((Level.Player.speed / Speed) * SpeedFix));
-                Position.Normalize();
-            }
-            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.S))
-            {
-                Position = new Vector2(Position.X, Position.Y + ((Level.Player.speed / Speed) * SpeedFix));
-                Position.Normalize();
-            }
+            // Position it relative to the player's position.
+            Position = Level.Player.Position + DistanceToPlayer * Globals.DegreesToVector2(angle);
 
-            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.D))
-            {
-                Position = new Vector2(Position.X + ((Level.Player.speed / Speed) * SpeedFix), Position.Y);
-                Position.Normalize();
-            }
-            if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.A))
-            {
-                Position = new Vector2(Position.X - ((Level.Player.speed / Speed) * SpeedFix), Position.Y);
-                Position.Normalize();
-            }
+            ////angle = Globals.Vector2ToDegrees(Level.Player.Position - Position);
+            //Position = Globals.RotateAboutOrigin(Position, Level.Player.Position, .05f);
+
+            //float SpeedFix;
+            //if ((Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.A) && Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.S)) ||
+            //    (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.A) && Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.W)) ||
+            //    (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.D) && Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.S)) ||
+            //    (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.D) && Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.W)))
+            //{
+            //    SpeedFix = 3f;
+            //}
+            //else
+            //{
+            //    SpeedFix = 4f;
+            //}
+            //if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.W))
+            //{
+            //    Position = new Vector2(Position.X, Position.Y - ((Level.Player.speed / Speed) * SpeedFix));
+            //    Position.Normalize();
+            //}
+            //if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.S))
+            //{
+            //    Position = new Vector2(Position.X, Position.Y + ((Level.Player.speed / Speed) * SpeedFix));
+            //    Position.Normalize();
+            //}
+
+            //if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.D))
+            //{
+            //    Position = new Vector2(Position.X + ((Level.Player.speed / Speed) * SpeedFix), Position.Y);
+            //    Position.Normalize();
+            //}
+            //if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.A))
+            //{
+            //    Position = new Vector2(Position.X - ((Level.Player.speed / Speed) * SpeedFix), Position.Y);
+            //    Position.Normalize();
+            //}
         }
 
         protected void Move(Vector2 velocity)

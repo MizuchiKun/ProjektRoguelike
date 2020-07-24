@@ -55,7 +55,7 @@ namespace ProjektRoguelike
                     for (byte i = 0; i < 9; i++)
                     {
                         Vector2 position = new Vector2((i % 3), (i / 3));
-                        _rooms[(int)position.X, (int)position.Y] = new Room(i, position * Globals.WindowDimensions, RoomKind.Hidden);
+                        _rooms[(int)position.X, (int)position.Y] = new Room(i, position * Globals.WindowDimensions, RoomKind.Normal);
                     }
 
             // Choose the starting room.
@@ -160,7 +160,7 @@ namespace ProjektRoguelike
                             // Choose the door kind.
                             if (_rooms[x, y].Kind == RoomKind.Boss)
                             {
-                                doorKind = DoorKind.Boss;
+                                doorKind = DoorKind.Boss;  
                             }
                             else if (_rooms[x, y].Kind == RoomKind.Hidden)
                             {

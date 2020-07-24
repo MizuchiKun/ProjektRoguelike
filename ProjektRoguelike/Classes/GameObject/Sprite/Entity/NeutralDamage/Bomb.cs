@@ -10,6 +10,8 @@ namespace ProjektRoguelike
 {
     class Bomb : NeutralDamage
     {
+        public override Rectangle Hitbox => Rectangle.Empty;
+
         McTimer timer;
 
         float angle, speed;

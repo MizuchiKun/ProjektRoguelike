@@ -111,7 +111,7 @@ namespace ProjektRoguelike
             Texture = (texture != null) ? texture : animation.Sheet;
             CurrentAnimation = animation;
             Position = (position != null) ? position.Value : Vector2.Zero;
-            Origin = (origin != null) ? origin.Value : new Vector2(.5f);
+            Origin = (origin != null) ? origin.Value : new Vector2(0.5f);
             SourceRectangle = (animation != null) ? animation.CurrentFrame : (sourceRectangle != null) ? sourceRectangle : texture.Bounds;
             Scale = (scale != null) ? scale.Value : Vector2.One;
             Rotation = rotation;

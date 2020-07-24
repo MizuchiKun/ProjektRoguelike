@@ -1,3 +1,3 @@
-﻿// Finish the Doors! They i.a. have to be same on each side (of the Door)!
-// Create the level generation stuff.
-// Menus?
+﻿// Create the level generation stuff.
+// Menus.
+// Level transitions.
