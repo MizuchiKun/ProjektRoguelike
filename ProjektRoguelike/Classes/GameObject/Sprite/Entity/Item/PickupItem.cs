@@ -12,9 +12,9 @@ namespace ProjektRoguelike
     {
         Vector2 direction;
 
-        float speed, angle;
-        const float _maxSpeed = 25;
-        const float _speedIncrease = 10;
+        protected float speed, angle;
+        protected const float _maxSpeed = 25;
+        protected const float _speedIncrease = 10;
 
         public PickupItem(Texture2D texture,
                      Vector2? position = null,

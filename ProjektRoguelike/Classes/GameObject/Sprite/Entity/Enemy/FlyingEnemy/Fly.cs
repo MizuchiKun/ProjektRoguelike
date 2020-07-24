@@ -23,6 +23,8 @@ namespace ProjektRoguelike
             Speed = 2f;
             Health = 3;
 
+            Scale = new Vector2(.1f, .1f);
+
             // Set the animation.
             CurrentAnimation = new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/FLysheet"),
                                              frameDimensions: new Vector2(256),
@@ -31,27 +33,22 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
-            // This whole Update() method can be removed (if you don't plan on adding something to it).
-            //base.Update();
+            base.Update();
         }
 
         public override void ChangePosition()
         {
-            // Fly decides to turn around if it hits a wall
-            if (HitWall())
-            {
-                Speed = -Speed;
-            }
-            Position += new Vector2(Position.X + Speed, Position.Y + (Speed / 4));
+            Move((Level.Player.Position - Position) / 4);
         }
 
         public override void AI()
         {
-            base.AI();
+            ChangePosition();
 
-            if (Collides(Level.Player))
+            if (Touches(Level.Player))
             {
                 Level.Player.GetHit(1);
+                Level.CurrentRoom.Remove(this);
             }
         }
     }

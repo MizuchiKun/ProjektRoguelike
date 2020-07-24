@@ -64,15 +64,15 @@ namespace ProjektRoguelike
             }
             */
 
-            //Move(Level.Player.Position - Position);
-            if (!HitWall())
-            {
-                Position += Globals.RadialMovement(Level.Player.Position, Position, Speed);
-            }
-            else
-            {
-                Position -= Globals.RadialMovement(Level.Player.Position, Position, Speed);
-            }
+            Move(Level.Player.Position - Position);
+            //if (!HitWall())
+            //{
+            //    Position += Globals.RadialMovement(Level.Player.Position, Position, Speed);
+            //}
+            //else
+            //{
+            //    Position -= Globals.RadialMovement(Level.Player.Position, Position, Speed);
+            //}
         }
 
         public virtual void AI()
@@ -85,7 +85,6 @@ namespace ProjektRoguelike
         {
             // up
             if (Collides(Level.CurrentRoom.Walls[0]))
-
             {
                 return true;
             }
@@ -110,11 +109,70 @@ namespace ProjektRoguelike
             }
         }
         public virtual void CollidePlayer()
-        {
-        if (Collides(Level.Player))
+        {                                                                 
+        if (Touches(Level.Player))                                        
             {
-                Position += -Globals.RadialMovement(Level.Player.Position, Position, Speed*10);
-                Level.Player.Position += -Globals.RadialMovement(Position, Level.Player.Position, Speed* 10);
+                //if (!Level.Player.Collides(Level.CurrentRoom.Walls[1])  
+                //|| !Level.Player.Collides(Level.CurrentRoom.Walls[2])   
+                //|| !Level.Player.Collides(Level.CurrentRoom.Walls[3])   
+                //|| !Level.Player.Collides(Level.CurrentRoom.Walls[4]))
+                /*
+                //left
+                for (int i = 0; i < Level.CurrentRoom.Walls[(byte)Directions.Up].Length; i++)
+                {
+                    if (Globals.GetDistance(Level.Player.Position, Level.CurrentRoom.Walls[(byte)Directions.Up][i].Position) > (Level.Player.Hitbox.Height * 1.2))
+                    {
+                        Level.Player.Position += -Globals.RadialMovement(Position, Level.Player.Position, Speed * 10);
+                        Position += -Globals.RadialMovement(Level.Player.Position, Position, Speed * 10);
+                    }
+                    else
+                    {
+                        Position += -Globals.RadialMovement(Level.Player.Position, Position, Speed * 20);
+                    }
+                }
+
+                //right
+                for (int i = 0; i < Level.CurrentRoom.Walls[(byte)Directions.Right].Length; i++)
+                {
+                    if (Globals.GetDistance(Level.Player.Position, Level.CurrentRoom.Walls[(byte)Directions.Up][i].Position) > (Level.Player.Hitbox.Width * 1.2))
+                    {
+                        Level.Player.Position += -Globals.RadialMovement(Position, Level.Player.Position, Speed * 10);
+                        Position += -Globals.RadialMovement(Level.Player.Position, Position, Speed * 10);
+                    }
+                    else
+                    {
+                        Position += -Globals.RadialMovement(Level.Player.Position, Position, Speed * 20);
+                    }
+                }
+
+                //down
+                for (int i = 0; i < Level.CurrentRoom.Walls[(byte)Directions.Down].Length; i++)
+                {
+                    if (Globals.GetDistance(Level.Player.Position, Level.CurrentRoom.Walls[(byte)Directions.Up][i].Position) > (Level.Player.Hitbox.Height * 1.2))
+                    {
+                        Level.Player.Position += -Globals.RadialMovement(Position, Level.Player.Position, Speed * 10);
+                        Position += -Globals.RadialMovement(Level.Player.Position, Position, Speed * 10);
+                    }
+                    else
+                    {
+                        Position += -Globals.RadialMovement(Level.Player.Position, Position, Speed * 20);
+                    }
+                }
+
+                //left
+                for (int i = 0; i < Level.CurrentRoom.Walls[(byte)Directions.Left].Length; i++)
+                {
+                    if (Globals.GetDistance(Level.Player.Position, Level.CurrentRoom.Walls[(byte)Directions.Up][i].Position) > (Level.Player.Hitbox.Width * 1.2))
+                    {
+                        Level.Player.Position += -Globals.RadialMovement(Position, Level.Player.Position, Speed * 10);
+                        Position += -Globals.RadialMovement(Level.Player.Position, Position, Speed * 10);
+                    }
+                    else
+                    {
+                        Position += -Globals.RadialMovement(Level.Player.Position, Position, Speed * 20);
+                    }
+                }
+                */
                 Level.Player.GetHit(1);
             }
         }

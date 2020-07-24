@@ -26,7 +26,7 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
-            if (Collides(Level.Player) && Level.Player.Keys > 0)
+            if (Touches(Level.Player) && Level.Player.Keys > 0)
             {
                 Level.Player.Keys -= 1;
                 Health = 0;
