@@ -18,10 +18,28 @@ namespace ProjektRoguelike
     }
 
     /// <summary>
+    /// An enum containing the different states of the game: active, paused, mainmenu, dead.
+    /// </summary>
+    public enum Gamestate : byte
+    {
+        Active, Paused, Mainmenu, /*Cutsceen,*/ Dead
+    }
+
+    /// <summary>
     /// Contains information and functions of global importance.
     /// </summary>
     public static class Globals
     {
+        /// <summary>
+        /// The current <see cref="gamestate"> of this project.
+        /// </summary>
+        public static Gamestate gamestate { get; set; } = Gamestate.Active;
+
+        /// <summary>
+        /// The <see cref="UI"> of this project.
+        /// </summary>
+        public static UI ui { get; set; }
+
         /// <summary>
         /// The <see cref="Game1"/> of this project.
         /// </summary>

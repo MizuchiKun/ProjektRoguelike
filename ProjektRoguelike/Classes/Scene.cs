@@ -11,13 +11,10 @@ namespace ProjektRoguelike
     /// </summary>
     public abstract class Scene
     {
-        private UI ui = new UI();
         /// <summary>
         /// This Scene's <see cref="GameObject"/>s.
         /// </summary>
         protected List<GameObject> _gameObjects;
-
-        public List<Projectile> projectiles = new List<Projectile>();
 
         /// <summary>
         /// Creates a new <see cref="Scene"/> object with the given <see cref="GameObject"/>s.
@@ -42,15 +39,6 @@ namespace ProjektRoguelike
             {
                 _gameObjects[i].Update();
             }
-            /*for (int i = 0; i < projectiles.Count; i++)
-            {
-                projectiles[i].Update(Level.CurrentRoom.Enemies);
-
-                if (projectiles[i].Done)
-                {
-                    projectiles.RemoveAt(i);
-                }
-            }*/
         }
 
         /// <summary>
@@ -63,16 +51,6 @@ namespace ProjektRoguelike
             {
                 gameObject.Draw();
             }
-            /*
-            for (int i = 0; i < projectiles.Count; i++)
-            {
-                projectiles[i].Draw();
-            }*/
-        }
-
-        public virtual void AddProjectile(object info)
-        {
-            projectiles.Add((Projectile)info);
         }
     }
 }

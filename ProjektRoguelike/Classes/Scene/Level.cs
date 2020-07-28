@@ -342,6 +342,9 @@ namespace ProjektRoguelike
                 _nextRoom.Draw();
             }
 
+            // Draw the UI.
+            Globals.ui.Draw();
+
             // Draw the player.
             Player.Draw();
         }

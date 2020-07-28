@@ -38,6 +38,9 @@ namespace ProjektRoguelike
             // Set the SpriteBatch.
             Globals.SpriteBatch = new SpriteBatch(Globals.Graphics.GraphicsDevice);
 
+            // Set the UI.
+            Globals.ui = new UI();
+
             // Set the initial Scene.
             Globals.CurrentScene = new Level(0);
 
@@ -63,14 +66,35 @@ namespace ProjektRoguelike
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            
+
             // Save the current GameTime and states.
             Globals.GameTime = gameTime;
             Globals.CurrentKeyboardState = Keyboard.GetState();
             Globals.CurrentMouseState = Mouse.GetState();
             Globals.CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
+
+            switch (Globals.gamestate)
+            {
+                case Gamestate.Active:
+                    // Call the current Scene's Update method.
+                    Globals.CurrentScene.Update();
+                    break;
+                case Gamestate.Paused:
+                    if (Globals.GetKeyUp(Keys.P))
+                    {
+                        Globals.gamestate = Gamestate.Active;
+                    }
+                    break;
+                case Gamestate.Mainmenu:
+                    break;
+                case Gamestate.Dead:
+                    break;
+                default:
+                    break;
+            }
+
             
-            // Call the current Scene's Update method.
-            Globals.CurrentScene.Update();
 
             // Save the current states as the previous states (so they will be accessable as previous states in the next Update()).
             Globals.PreviousKeyboardState = Globals.CurrentKeyboardState;
@@ -87,7 +111,7 @@ namespace ProjektRoguelike
         protected override void Draw(GameTime gameTime)
         {
             // Clear the GraphicsDevice.
-            Globals.Graphics.GraphicsDevice.Clear(Color.Black);
+            Globals.Graphics.GraphicsDevice.Clear(Color.Blue);
 
             // Begin the SpriteBatch.
             Globals.SpriteBatch.Begin(
@@ -95,8 +119,24 @@ namespace ProjektRoguelike
                 transformMatrix: Matrix.CreateTranslation(new Vector3(-Camera.Position, 0))
                                  * Matrix.CreateScale(Camera.Scale));
 
-            // Call the current Scene's Draw method.
-            Globals.CurrentScene.Draw();
+            switch (Globals.gamestate)
+            {
+                case Gamestate.Active:
+                    // Call the current Scene's Draw method.
+                    Globals.CurrentScene.Draw();
+                    break;
+                case Gamestate.Paused:
+                    // Call the current Scene's Draw method.
+                    Globals.CurrentScene.Draw();
+                    break;
+                case Gamestate.Mainmenu:
+                    break;
+                case Gamestate.Dead:
+                    break;
+                default:
+                    break;
+            }
+            
 
             // End the SpriteBatch.
             Globals.SpriteBatch.End();

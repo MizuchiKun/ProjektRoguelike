@@ -14,6 +14,7 @@ namespace ProjektRoguelike
         McTimer timer, damageImunity;
         public int HealthMax;
         public bool Done = false, poopsicle = false;
+
         /// <summary>
         /// The player's current velocity per second.
         /// </summary>
@@ -25,7 +26,7 @@ namespace ProjektRoguelike
         public int Bombs { get; set; }
         public int Keys { get; set; }
 
-        public List<Flybuddy> companions;
+        public List<Item> items = new List<Item>();
 
         /// <summary>
         /// The walking animations of the Player.<br></br>
@@ -64,7 +65,7 @@ namespace ProjektRoguelike
             timer = new McTimer(600, true);
             damageImunity = new McTimer(500, true);
 
-            Health = 5;
+            Health = 15;
             HealthMax = Health;
 
             // Set the initial animation.
@@ -76,6 +77,12 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Update()
         {
+            if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.P))
+            {
+                Globals.gamestate = Gamestate.Paused;
+            }
+
+            //activating itemeffects on buttonpress for testing
             if (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.K))
             {
                 poopsicle = true;
@@ -92,17 +99,17 @@ namespace ProjektRoguelike
             //testing items and such
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.J))
             {
-                //Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
-                //                                               Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
+                                                               Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
 
-                Level.CurrentRoom.Add(new PickupBomb(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                //Level.CurrentRoom.Add(new PickupBomb(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
                 //Level.Player.Keys += 1;
             }
 
             //testing environment and enemies
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.L))
             {
-                Level.CurrentRoom.Add(new Rock(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new Hole(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
             }
 
 
@@ -297,7 +304,8 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Draw()
         {
-            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Health.ToString(), new Vector2(Position.X, Position.Y - 75), Color.White);
+            //testing string to look how much damage something does
+            //Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Health.ToString(), new Vector2(Position.X, Position.Y - 75), Color.White);
 
             base.Draw();
         }
@@ -306,12 +314,13 @@ namespace ProjektRoguelike
         {
             if (damageImunity.Test())
             {
+                // receive damage
                 base.GetHit(hitValue);
                 damageImunity.ResetToZero();
             }
             else
             {
-
+                //ignore it
             }
         }
 

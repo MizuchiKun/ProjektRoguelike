@@ -42,6 +42,7 @@ namespace ProjektRoguelike
             if (Globals.GetDistance(Position, Level.Player.Position) < 85 && !pickedUp)
             {
                     Item.Effect();
+                    Level.Player.items.Add(Item);
                     pickedUp = true;
                     Level.CurrentRoom.Remove(Item);
             }

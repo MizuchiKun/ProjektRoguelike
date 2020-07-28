@@ -1,28 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace ProjektRoguelike
 {
-    public class QualityDisplayBar
+    class Mainmenu
     {
-        
+        Texture2D bkg;
 
-        public QualityDisplayBar()
+        public Mainmenu()
         {
-            
+            //Mainmenu1 needs to be added to the project
+            //bkg = Globals.Content.Load<Texture2D>("Sprites/Misc/Mainmenu1");
         }
 
         public virtual void Update()
         {
-            //tbc = tiny black cock
+
         }
 
         public virtual void Draw()
         {
-            //tbc = tiny black cock
+
         }
     }
 }

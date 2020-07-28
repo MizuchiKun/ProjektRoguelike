@@ -81,6 +81,7 @@
     <Compile Include="Classes\GameObject\Sprite\Tile.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity.cs" />
     <Compile Include="Classes\GameObject\Sprite\Door.cs" />
+    <Compile Include="Classes\Screens\Mainmenu.cs" />
     <Compile Include="Classes\UI.cs" />
     <Compile Include="Classes\Globals.cs" />
     <Compile Include="Classes\McTimer.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="Classes\GameObject\GameObjectContainer.cs" />
     <Compile Include="Classes\GameObject\Text.cs" />
     <Compile Include="Classes\Animation.cs" />
-    <Compile Include="Classes\UI Elements\QualityDisplayBar.cs" />
     <Compile Include="Classes\_ClassTemplate.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Game1.cs" />
