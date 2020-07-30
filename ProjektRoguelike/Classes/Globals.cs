@@ -38,7 +38,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// The <see cref="UI"> of this project.
         /// </summary>
-        public static UI ui { get; set; }
+        public static UI UI { get; set; }
 
         /// <summary>
         /// The <see cref="Game1"/> of this project.

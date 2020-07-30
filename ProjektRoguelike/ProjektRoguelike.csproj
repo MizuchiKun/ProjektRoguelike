@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classes\Button.cs" />
     <Compile Include="Classes\GameGlobals.cs" />
     <Compile Include="Classes\GameObject\GameObjectContainer\Room.cs" />
     <Compile Include="Classes\GameObject\Sprite.cs" />

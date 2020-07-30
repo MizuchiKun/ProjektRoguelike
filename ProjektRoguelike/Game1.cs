@@ -39,7 +39,7 @@ namespace ProjektRoguelike
             Globals.SpriteBatch = new SpriteBatch(Globals.Graphics.GraphicsDevice);
 
             // Set the UI.
-            Globals.ui = new UI();
+            Globals.UI = new UI();
 
             // Set the initial Scene.
             Globals.CurrentScene = new Level(0);
@@ -79,6 +79,10 @@ namespace ProjektRoguelike
                 case Gamestate.Active:
                     // Call the current Scene's Update method.
                     Globals.CurrentScene.Update();
+                    if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
+                    {
+                        Globals.gamestate = Gamestate.Mainmenu;
+                    }
                     break;
                 case Gamestate.Paused:
                     if (Globals.GetKeyUp(Keys.P))
@@ -87,8 +91,14 @@ namespace ProjektRoguelike
                     }
                     break;
                 case Gamestate.Mainmenu:
+                    Globals.UI.Update();
+                    if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
+                    {
+                        System.Environment.Exit(0);
+                    }
                     break;
                 case Gamestate.Dead:
+                    Globals.UI.Update();
                     break;
                 default:
                     break;
@@ -130,13 +140,16 @@ namespace ProjektRoguelike
                     Globals.CurrentScene.Draw();
                     break;
                 case Gamestate.Mainmenu:
+                    Globals.UI.Draw();
                     break;
                 case Gamestate.Dead:
+                    Globals.CurrentScene.Draw();
+                    
                     break;
                 default:
                     break;
             }
-            
+
 
             // End the SpriteBatch.
             Globals.SpriteBatch.End();

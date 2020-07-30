@@ -343,7 +343,7 @@ namespace ProjektRoguelike
             }
 
             // Draw the UI.
-            Globals.ui.Draw();
+            Globals.UI.Draw();
 
             // Draw the player.
             Player.Draw();

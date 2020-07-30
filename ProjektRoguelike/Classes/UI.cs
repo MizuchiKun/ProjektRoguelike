@@ -12,12 +12,18 @@ namespace ProjektRoguelike
     /// </summary>
     public class UI : GameObject
     {
+        /// <summary>
+        /// The <see cref="Mainmenu"> of this project.
+        /// </summary>
+        public static Mainmenu Mainmenu { get; set; }
 
         public override Rectangle Hitbox => Rectangle.Empty;
 
-        public string gameOver = "Game Over";
-
         Texture2D heart, bomb, key, coin = new Texture2D(Globals.Graphics.GraphicsDevice, 256, 256);
+
+        Button restartButton;
+
+        PassObject resetObject;
 
         public UI()
         {
@@ -25,11 +31,36 @@ namespace ProjektRoguelike
             bomb = Globals.Content.Load<Texture2D>("Sprites/Pickups/Bomb");
             key = Globals.Content.Load<Texture2D>("Sprites/Pickups/Key");
             coin = Globals.Content.Load<Texture2D>("Sprites/Pickups/Coin");
+
+            Mainmenu = new Mainmenu();
+
+            resetObject = ResetWorld;
+
+            restartButton = new Button(Button.ButtonState.Selected, ResetWorld, null, new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2));
         }
 
         public override void Update()
         {
-            //tbc
+            switch (Globals.gamestate)
+            {
+                case Gamestate.Active:
+                    break;
+                case Gamestate.Paused:
+                    break;
+                case Gamestate.Mainmenu:
+                    Mainmenu.Update();
+                    break;
+                case Gamestate.Dead:
+                    restartButton.Update();
+                    if (restartButton.buttonState == Button.ButtonState.Activated)
+                    {
+                        ResetWorld(null);
+                        Globals.gamestate = Gamestate.Active;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         public override void Draw()
@@ -112,12 +143,22 @@ namespace ProjektRoguelike
                     Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Paused", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
                     break;
                 case Gamestate.Mainmenu:
+                    Mainmenu.Draw();
                     break;
                 case Gamestate.Dead:
+                    Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Game Over", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
+                    restartButton.Draw();
                     break;
                 default:
                     break;
             }
+        }
+
+
+        public virtual void ResetWorld(object info)
+        {
+            Level.CurrentRoom.Entities.Clear();
+            Globals.CurrentScene = new Level(0);
         }
     }
 }

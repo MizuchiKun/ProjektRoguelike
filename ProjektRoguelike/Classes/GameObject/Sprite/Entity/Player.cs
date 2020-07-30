@@ -77,6 +77,11 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Update()
         {
+            if (Health <= 0)
+            {
+                Globals.gamestate = Gamestate.Dead;
+            }
+
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.P))
             {
                 Globals.gamestate = Gamestate.Paused;
@@ -99,10 +104,10 @@ namespace ProjektRoguelike
             //testing items and such
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.J))
             {
-                Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
-                                                               Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                //Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
+                //                                               Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
 
-                //Level.CurrentRoom.Add(new PickupBomb(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new PickupBomb(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
                 //Level.Player.Keys += 1;
             }
 
