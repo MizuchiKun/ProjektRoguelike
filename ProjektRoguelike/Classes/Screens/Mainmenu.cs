@@ -29,7 +29,7 @@ namespace ProjektRoguelike
 
         public virtual void Draw()
         {
-            Globals.SpriteBatch.Draw(bkg, new Rectangle((int)Camera.Position.X, (int)Camera.Position.Y, 200, 200), null, Color.Black, 0, new Vector2(.5f), new SpriteEffects(), 0.1f);
+            Globals.SpriteBatch.Draw(bkg, new Rectangle((int)Camera.Position.X, (int)Camera.Position.Y, 200, 200), null, Color.White, 0, new Vector2(.5f), SpriteEffects.None, 0.1f);
         }
     }
 }
