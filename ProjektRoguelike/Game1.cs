@@ -92,10 +92,6 @@ namespace ProjektRoguelike
                     break;
                 case Gamestate.Mainmenu:
                     Globals.UI.Update();
-                    if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
-                    {
-                        System.Environment.Exit(0);
-                    }
                     break;
                 case Gamestate.Dead:
                     Globals.UI.Update();

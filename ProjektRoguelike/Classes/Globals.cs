@@ -33,7 +33,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// The current <see cref="gamestate"> of this project.
         /// </summary>
-        public static Gamestate gamestate { get; set; } = Gamestate.Active;
+        public static Gamestate gamestate { get; set; } = Gamestate.Mainmenu;
 
         /// <summary>
         /// The <see cref="UI"> of this project.

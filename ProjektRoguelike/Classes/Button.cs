@@ -32,7 +32,7 @@ namespace ProjektRoguelike
             buttonState = ButtonState;
             buttonActivated = ButtonActivated;
 
-            activated = Globals.Content.Load<Texture2D>("Sprites/Enemies/Shadow");
+            activated = Globals.Content.Load<Texture2D>("Sprites/Pickups/Coin");
         }
 
         public virtual void Update()
@@ -49,6 +49,7 @@ namespace ProjektRoguelike
                     break;
                 case ButtonState.Activated:
                     ButtonUse();
+                    buttonState = ButtonState.Selected;
                     break;
                 default:
                     break;
@@ -70,10 +71,10 @@ namespace ProjektRoguelike
                 case ButtonState.Unselected:
                     break;
                 case ButtonState.Selected:
-                    Globals.SpriteBatch.Draw(activated, new Rectangle((int)position.X, (int)position.Y, 40, 40), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
+                    Globals.SpriteBatch.Draw(activated, new Rectangle((int)position.X, (int)position.Y, 50, 50), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
                     break;
                 case ButtonState.Activated:
-                    Globals.SpriteBatch.Draw(activated, new Rectangle((int)position.X, (int)position.Y, 40, 40), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
+                    Globals.SpriteBatch.Draw(activated, new Rectangle((int)position.X, (int)position.Y, 50, 50), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
                     break;
                 default:
                     break;

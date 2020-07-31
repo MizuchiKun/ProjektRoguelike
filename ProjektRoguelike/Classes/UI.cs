@@ -17,6 +17,8 @@ namespace ProjektRoguelike
         /// </summary>
         public static Mainmenu Mainmenu { get; set; }
 
+        private bool created;
+
         public override Rectangle Hitbox => Rectangle.Empty;
 
         Texture2D heart, bomb, key, coin = new Texture2D(Globals.Graphics.GraphicsDevice, 256, 256);
@@ -32,8 +34,6 @@ namespace ProjektRoguelike
             key = Globals.Content.Load<Texture2D>("Sprites/Pickups/Key");
             coin = Globals.Content.Load<Texture2D>("Sprites/Pickups/Coin");
 
-            Mainmenu = new Mainmenu();
-
             resetObject = ResetWorld;
 
             restartButton = new Button(Button.ButtonState.Selected, ResetWorld, null, new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2));
@@ -48,6 +48,11 @@ namespace ProjektRoguelike
                 case Gamestate.Paused:
                     break;
                 case Gamestate.Mainmenu:
+                    if (created == false)
+                    {
+                        Mainmenu = new Mainmenu();
+                        created = true;
+                    }
                     Mainmenu.Update();
                     break;
                 case Gamestate.Dead:
@@ -143,11 +148,17 @@ namespace ProjektRoguelike
                     Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Paused", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
                     break;
                 case Gamestate.Mainmenu:
+                    if (created == false)
+                    {
+                        Mainmenu = new Mainmenu();
+                        created = true;
+                    }
                     Mainmenu.Draw();
                     break;
                 case Gamestate.Dead:
-                    Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Game Over", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
                     restartButton.Draw();
+                    Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Game Over", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
+                    
                     break;
                 default:
                     break;
