@@ -34,16 +34,6 @@ namespace ProjektRoguelike
             OwnerID = 2;
         }
 
-        public override void Update(/*List<Enemy> entities*/)
-        {
-            base.Update(/*entities*/);
-        }
-
-        public override void Draw()
-        {
-            base.Draw();
-        }
-
         public override void ChangePosition()
         {
             Position += Speed * Direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;

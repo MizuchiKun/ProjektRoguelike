@@ -30,7 +30,7 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
-            if (Touches(Level.Player))
+            if (Level.Player.BumpsInto(this))
             {
                 Level.Player.GetHit(HitValue);
             }

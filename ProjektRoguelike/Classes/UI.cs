@@ -60,7 +60,6 @@ namespace ProjektRoguelike
                     if (restartButton.buttonState == Button.ButtonState.Activated)
                     {
                         ResetWorld(null);
-                        Globals.gamestate = Gamestate.Active;
                     }
                     break;
                 default:
@@ -165,11 +164,15 @@ namespace ProjektRoguelike
             }
         }
 
-
+        /// <summary>
+        /// Empty the entities list, create a new level and set the gamestate to active.
+        /// </summary>
+        /// <param name="info"> Only here, so I can use my delegate. lol </param>
         public virtual void ResetWorld(object info)
         {
             Level.CurrentRoom.Entities.Clear();
             Globals.CurrentScene = new Level(0);
+            Globals.gamestate = Gamestate.Active;
         }
     }
 }

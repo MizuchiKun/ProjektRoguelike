@@ -128,7 +128,7 @@ namespace ProjektRoguelike
             timer.UpdateTimer();
 
 
-
+            // Deal Damage to any entity, that is not the player
             if (Collides(Level.CurrentRoom.Entities) && (OwnerID == 1 || OwnerID == 0))
             {
                 //bool isColliding = false;//NEW
@@ -156,7 +156,7 @@ namespace ProjektRoguelike
             }
 
 
-
+            // Deal damage to the player
             if (Collides(Level.Player))
             {
                 Level.Player.GetHit(HitValue);

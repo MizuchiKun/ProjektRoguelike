@@ -35,11 +35,8 @@ namespace ProjektRoguelike
         {
             base.Update();
 
-            //if (Touches(Level.Player) && (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.W) ||
-            //                               Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.A) ||
-            //                               Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.S) ||
-            //                               Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.D)))
-            if (Globals.GetDistance(Position, Level.Player.Position) < 85 && !pickedUp)
+            // if the player bumps into this object and the item is not picked up yet, give object, add it to the list for items and set the flag for being picked up.
+            if (Level.Player.BumpsInto(this) && !pickedUp)
             {
                     Item.Effect();
                     Level.Player.items.Add(Item);
@@ -50,6 +47,7 @@ namespace ProjektRoguelike
 
         public override void Draw()
         {
+            // only draw the item, if its not picked up yet, draw the itemstone regardless.
             if (pickedUp == false)
             {
                 Item.Draw();

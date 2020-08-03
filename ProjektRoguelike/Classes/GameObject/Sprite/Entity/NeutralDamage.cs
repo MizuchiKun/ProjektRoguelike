@@ -9,6 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ProjektRoguelike
 {
+    /// <summary>
+    /// Neutral damage, damaging the player, enemies and environmental objects.
+    /// </summary>
     class NeutralDamage : Entity
     {
         public int OwnerID { get; } = 0;

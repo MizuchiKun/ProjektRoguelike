@@ -26,7 +26,8 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
-            if (Touches(Level.Player) && Level.Player.Keys > 0)
+            // if the player has at least 1 key, open the chest by destroying it lul
+            if (Level.Player.BumpsInto(this) && Level.Player.Keys > 0)
             {
                 Level.Player.Keys -= 1;
                 Health = 0;

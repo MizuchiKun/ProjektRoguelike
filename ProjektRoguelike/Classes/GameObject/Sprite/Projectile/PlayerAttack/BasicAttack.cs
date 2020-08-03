@@ -31,15 +31,5 @@ namespace ProjektRoguelike
 
             HitValue = 1;
         }
-
-        public override void Update(/*List<Enemy> entities*/)
-        {
-            base.Update(/*entities*/);
-        }
-
-        public override void Draw()
-        {
-            base.Draw();
-        }
     }
 }

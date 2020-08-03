@@ -31,16 +31,20 @@ namespace ProjektRoguelike
 
             if (Health <= 0)
             {
-                // Use Random rand to look what drops
+                // Use Random rand to check what drops
                  Dropnumber = rand.Next(1, 10 +1);
                 // Drops item X with X% chance
                 Dropchance(Dropnumber);
 
-
+                // And disappear once youre done.
                 Level.CurrentRoom.Remove(this);
             }
         }
 
+        /// <summary>
+        /// Destroyable environmental items spawn pickupitems with a certain dropchance on destruction.
+        /// </summary>
+        /// <param name="dropnumber"> The dropchance with which certain items spawn. </param>
         protected virtual void Dropchance(int dropnumber) { }
     }
 }

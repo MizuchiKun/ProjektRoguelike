@@ -23,9 +23,11 @@ namespace ProjektRoguelike
                effect)
         {
             Speed = 2;
-            timer = new McTimer(1000);
+            timer = new McTimer(1000, true);
 
-            Health = 1;
+            HitValue = 1;
+
+            Health = 3;
         }
 
         public override void Update()
@@ -33,6 +35,8 @@ namespace ProjektRoguelike
             base.Update();
 
             timer.UpdateTimer();
+
+            // if your attackcooldown is over, shoot towards the player
             if (timer.Test())
             {
                 Level.CurrentRoom.Add(new EnemyAttack(Globals.Vector2ToDegrees(Level.Player.Position - Position), Position, null, Globals.Vector2ToDegrees(Level.Player.Position - Position), SpriteEffects.None));
@@ -57,12 +61,6 @@ namespace ProjektRoguelike
                     Speed = 0;
                 }
             }
-        }
-
-        public override void AI()
-        {
-            ChangePosition();
-            CollidePlayer();
         }
     }
 }

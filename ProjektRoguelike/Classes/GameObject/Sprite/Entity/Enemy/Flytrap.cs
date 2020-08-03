@@ -10,8 +10,6 @@ namespace ProjektRoguelike
     /// </summary>
     public class Flytrap : Enemy
     {
-        McTimer timer;
-
         public Flytrap(Vector2? position = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
@@ -24,6 +22,8 @@ namespace ProjektRoguelike
         {
             Speed = 2f;
             Health = 3;
+
+            HitValue = 1;
         }
 
         public override void Update()
@@ -35,11 +35,12 @@ namespace ProjektRoguelike
         {
             base.AI();
 
-            if (Touches(Level.Player))
+            // if you touch the player 
+            if (BumpsInto(Level.Player))
             {
                 SpawnFlyAndDie();
             }
-
+            // or if your HP is 0, spawn flies and disappear.
             if (Health <= 0)
             {
                 SpawnFlyAndDie();
@@ -48,10 +49,12 @@ namespace ProjektRoguelike
 
         private void SpawnFlyAndDie()
         {
+            // Spawn 3 flies
             for (int i = 0; i < 3; i++)
             {
                 Level.CurrentRoom.Add(new Fly(new Vector2(Position.X, Position.Y - 20 + (20 * i))));
             }
+            // and disappear
             Level.CurrentRoom.Remove(this);
         }
     }

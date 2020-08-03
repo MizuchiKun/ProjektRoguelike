@@ -11,6 +11,7 @@ namespace ProjektRoguelike
     public abstract class Enemy : Entity
     {
         protected float Speed;
+        public int HitValue { get; set; } = 1;
 
         public Enemy(Texture2D texture,
                      Vector2? position = null,
@@ -45,36 +46,15 @@ namespace ProjektRoguelike
 
         public virtual void ChangePosition()
         {
-            /*
-            if (Globals.Vector2ToDegrees(Level.Player.Position - Position) > 0 - 90 || Globals.Vector2ToDegrees(Level.Player.Position - Position) < 90 - 90)
-            {
-                Move(); 
-            }
-            else if (Globals.Vector2ToDegrees(Level.Player.Position - Position) > 90 - 90 || Globals.Vector2ToDegrees(Level.Player.Position - Position) < 180 - 90)
-            {
-                Move();
-            }
-            else if (Globals.Vector2ToDegrees(Level.Player.Position - Position) > 180 - 90 || Globals.Vector2ToDegrees(Level.Player.Position - Position) < 270 - 90)
-            {
-                Move();
-            }
-            else if (Globals.Vector2ToDegrees(Level.Player.Position - Position) > 270 - 90 || Globals.Vector2ToDegrees(Level.Player.Position - Position) < 360 - 90)
-            {
-                Move();
-            }
-            */
-
-            Move(Level.Player.Position - Position);
-            //if (!HitWall())
-            //{
-            //    Position += Globals.RadialMovement(Level.Player.Position, Position, Speed);
-            //}
-            //else
-            //{
-            //    Position -= Globals.RadialMovement(Level.Player.Position, Position, Speed);
-            //}
+            _velocity = Level.Player.Position - Position;
+            // move towards the player
+            Move(_velocity);
         }
 
+        /// <summary>
+        /// What the enemy is supposed to do. the only function in Update() is AI(), so change this to change Update().
+        /// Base AI includes ChangePosition and CollidePlayer.
+        /// </summary>
         public virtual void AI()
         {
             ChangePosition();
@@ -110,7 +90,7 @@ namespace ProjektRoguelike
         }
         public virtual void CollidePlayer()
         {                                                                 
-        if (Touches(Level.Player))                                        
+        if (BumpsInto(Level.Player))                                        
             {
                 //if (!Level.Player.Collides(Level.CurrentRoom.Walls[1])  
                 //|| !Level.Player.Collides(Level.CurrentRoom.Walls[2])   
@@ -173,7 +153,7 @@ namespace ProjektRoguelike
                     }
                 }
                 */
-                Level.Player.GetHit(1);
+                Level.Player.GetHit(HitValue);
             }
         }
     }

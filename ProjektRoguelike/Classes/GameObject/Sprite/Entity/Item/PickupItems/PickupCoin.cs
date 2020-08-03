@@ -21,7 +21,7 @@ namespace ProjektRoguelike
                effect)
         {  }
 
-        // is made to increase players amount of bombs
+        // is made to increase players amount of gold
         public override void Effect()
         {
             Level.Player.Gold += 1;

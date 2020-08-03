@@ -32,6 +32,8 @@ namespace ProjektRoguelike
             }
         }
 
+        public Vector2 _velocity { get; set; }
+
         /// <summary>
         /// Creates an Entity with the given graphical parameters.
         /// </summary>
@@ -168,9 +170,53 @@ namespace ProjektRoguelike
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hitValue">The amount of damage the entity is supposed to receive. </param>
         public virtual void GetHit(int hitValue)
         {
             Health -= hitValue;
+        }
+
+        /// <summary>
+        /// Gets whether the <see cref="Player"/> "bumps into" one of the given <see cref="GameObject"/>s.
+        /// </summary>
+        /// <param name="otherGameObjects">The other <see cref="GameObject"/>s.</param>
+        /// <returns>True if it bumps into (at least) one of them, false otherwise.</returns>
+        public bool BumpsInto(IEnumerable<GameObject> otherGameObjects)
+        {
+            foreach (GameObject gameObject in otherGameObjects)
+            {
+                if (BumpsInto(gameObject))
+                {
+                    // It bumped into one of the objects.
+                    return true;
+                }
+            }
+
+            // It didn't bump into anything.
+            return false;
+        }
+
+        /// <summary>
+        /// Gets whether the <see cref="Player"/> would "bumps into" the given <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="otherGameObject">The other <see cref="GameObject"/>.</param>
+        /// <returns>True if it bumps into the given <see cref="GameObject"/>, false otherwise.</returns>
+        public bool BumpsInto(GameObject otherGameObject)
+        {
+            // Move the Player (temporarily).
+            Position += _velocity * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+
+            // Get whether it bumps into otherGameObject.
+            bool bumpsInto = base.Collides(otherGameObject);
+
+            // Restore the Player's previous position.
+            Position -= _velocity * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+
+            // Return whether it bumped into otherGameObject.
+            return bumpsInto;
         }
     }
 }

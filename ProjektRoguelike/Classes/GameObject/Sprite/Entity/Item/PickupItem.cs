@@ -37,6 +37,7 @@ namespace ProjektRoguelike
         {
             base.Update();
 
+            // if the object spawn inside the players hitbox, they would get stuck, so move them away (also me testing for natural movement)
             if (Collides(Level.Player))
             {
                 if (speed < _maxSpeed)

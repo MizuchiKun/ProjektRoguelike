@@ -137,11 +137,19 @@ namespace ProjektRoguelike
                     }
                 }
         */
+
+        /// <summary>
+        /// Move the projectile.
+        /// </summary>
         public virtual void ChangePosition()
         {
             Position += Speed * Direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
         }
 
+        /// <summary>
+        /// Check for collision with the wall.
+        /// </summary>
+        /// <returns>Returns if a wall was hit. </returns>
         public virtual bool HitWall()
         {
             // up

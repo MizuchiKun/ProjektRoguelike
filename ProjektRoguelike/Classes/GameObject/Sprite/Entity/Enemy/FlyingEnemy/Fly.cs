@@ -21,7 +21,9 @@ namespace ProjektRoguelike
                effect)
         {
             Speed = 2f;
-            Health = 3;
+            Health = 1;
+
+            HitValue = 1;
 
             Scale = new Vector2(.1f, .1f);
 
@@ -38,14 +40,16 @@ namespace ProjektRoguelike
 
         public override void ChangePosition()
         {
-            Move((Level.Player.Position - Position) / 4);
+            _velocity = (Level.Player.Position - Position) / 4;
+            Move(_velocity);
         }
 
         public override void AI()
         {
             ChangePosition();
 
-            if (Touches(Level.Player))
+            // if you hit the player in the room, deal damage and disappear
+            if (BumpsInto(Level.Player))
             {
                 Level.Player.GetHit(1);
                 Level.CurrentRoom.Remove(this);

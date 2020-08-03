@@ -10,8 +10,6 @@ namespace ProjektRoguelike
     /// </summary>
     public class Exploder : Enemy
     {
-        McTimer timer;
-
         public Exploder(Vector2? position = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
@@ -25,20 +23,13 @@ namespace ProjektRoguelike
             Speed = 2f;
             Health = 3;
 
-            timer = new McTimer(200);
+            HitValue = 0;
         }
 
-        public override void Update()
+        public override void CollidePlayer()
         {
-            base.Update();
-        }
-
-        public override void AI()
-        {
-            base.AI();
-
-            timer.UpdateTimer();
-            if (Touches(Level.Player))
+            // if you touch the player, spawn an explosion and disappear
+            if (BumpsInto(Level.Player))
             {
                 Level.CurrentRoom.Add(new Explosion(Position));
                 Level.CurrentRoom.Remove(this);

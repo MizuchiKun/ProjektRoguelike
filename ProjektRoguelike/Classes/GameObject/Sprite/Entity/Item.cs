@@ -22,14 +22,14 @@ namespace ProjektRoguelike
                effect)
         {  }
 
+        /// <summary>
+        /// Will only be used for testing, items will always be on an itemstone.
+        /// </summary>
         public override void Update()
         {
             base.Update();
             //if (Globals.GetDistance(Position, Level.Player.Position) < 84)
-            if (Touches(Level.Player) && (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.W) || 
-                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.A) ||
-                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.S) ||
-                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.D)))
+            if (Level.Player.BumpsInto(this))
             {
                 Effect();
                 Level.CurrentRoom.Remove(this);
@@ -39,7 +39,6 @@ namespace ProjektRoguelike
 
         /// <summary>
         /// The effect that aquiring the item has on the player. 
-        /// Removing the item mustnt be done in this method.
         /// </summary>
         public virtual void Effect() { }
     }

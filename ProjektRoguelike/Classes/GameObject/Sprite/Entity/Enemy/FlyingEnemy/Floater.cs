@@ -22,6 +22,8 @@ namespace ProjektRoguelike
         {
             Speed = 2f;
             Health = 5;
+
+            HitValue = 1;
         }
 
         public override void Update()

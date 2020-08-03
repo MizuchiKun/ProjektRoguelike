@@ -15,17 +15,31 @@ namespace ProjektRoguelike
         public int HealthMax;
         public bool Done = false, poopsicle = false;
 
-        /// <summary>
-        /// The player's current velocity per second.
-        /// </summary>
-        private Vector2 _velocity = Vector2.Zero;
         public ushort speed = 350;
+
+        /// <summary>
+        /// The damage the player deals to entities
+        /// </summary>
         public int HitValue { get; set; }
 
+        /// <summary>
+        /// The gold the player owns. Might be used for shops etc. later.
+        /// </summary>
         public int Gold { get; set; }
+
+        /// <summary>
+        /// The bombs the player has at its disposal.
+        /// </summary>
         public int Bombs { get; set; }
+
+        /// <summary>
+        /// The keys the player owns. Used for certain doors and chests.
+        /// </summary>
         public int Keys { get; set; }
 
+        /// <summary>
+        /// The items the player has picked up this run.
+        /// </summary>
         public List<Item> items = new List<Item>();
 
         /// <summary>
@@ -65,6 +79,9 @@ namespace ProjektRoguelike
             timer = new McTimer(600, true);
             damageImunity = new McTimer(500, true);
 
+            // The players current velocity per second.
+            _velocity = Vector2.Zero;
+
             Health = 15;
             HealthMax = Health;
 
@@ -77,11 +94,13 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Update()
         {
+            // if the players HP is 0, thus is dead, change the gamestate to dead
             if (Health <= 0)
             {
                 Globals.gamestate = Gamestate.Dead;
             }
 
+            // pressing the P key will pause the game and thus stop updating the game (unpausing in Game1.Update())
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.P))
             {
                 Globals.gamestate = Gamestate.Paused;
@@ -107,20 +126,20 @@ namespace ProjektRoguelike
                 //Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
                 //                                               Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
 
-                Level.CurrentRoom.Add(new PickupBomb(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new PickupHeart(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
                 //Level.Player.Keys += 1;
             }
 
             //testing environment and enemies
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.L))
             {
-                Level.CurrentRoom.Add(new Hole(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new Flytrap(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
             }
 
 
 
 
-
+            // effect used, when the player picks up the Poopsicle item. Spawn 3 flies, that are orbiting around you.
             if (poopsicle)
             {
                 Level.CurrentRoom.Add(new Flybuddy(new Vector2(Position.X, Position.Y + 55), 0));
@@ -128,6 +147,7 @@ namespace ProjektRoguelike
                 Level.CurrentRoom.Add(new Flybuddy(new Vector2(Position.X - 40, Position.Y - 40)));
                 poopsicle = false;
             }
+
             // Handle movement input.
             // The movement speed.
             //ushort speed = 350;
@@ -275,28 +295,24 @@ namespace ProjektRoguelike
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Up) && timer.Test())
             {
                 Level.CurrentRoom.Add(new BasicAttack(0 - 90, Position));
-                //GameGlobals.PassProjectile(new PlayerAttack(0 - 90, Position));
                 timer.ResetToZero();
             }
             // right
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Right) && timer.Test())
             {
                 Level.CurrentRoom.Add(new BasicAttack(90 - 90, Position));
-                //GameGlobals.PassProjectile(new PlayerAttack(90 - 90, Position));
                 timer.ResetToZero();
             }
             // down
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Down) && timer.Test())
             {
                 Level.CurrentRoom.Add(new BasicAttack(180 - 90, Position));
-                //GameGlobals.PassProjectile(new PlayerAttack(180 - 90, Position));
                 timer.ResetToZero();
             }
             // left
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Left) && timer.Test())
             {
                 Level.CurrentRoom.Add(new BasicAttack(270 - 90, Position));
-                //GameGlobals.PassProjectile(new PlayerAttack(270 - 90, Position));
                 timer.ResetToZero();
             }
 
@@ -317,6 +333,7 @@ namespace ProjektRoguelike
 
         public override void GetHit(int hitValue)
         {
+            // check if you were hit in the last x seconds, and decide if youre ready to be hit again.
             if (damageImunity.Test())
             {
                 // receive damage
@@ -395,46 +412,6 @@ namespace ProjektRoguelike
 
             // Default return.
             return true;
-        }
-
-        /// <summary>
-        /// Gets whether the <see cref="Player"/> "bumps into" one of the given <see cref="GameObject"/>s.
-        /// </summary>
-        /// <param name="otherGameObjects">The other <see cref="GameObject"/>s.</param>
-        /// <returns>True if it bumps into (at least) one of them, false otherwise.</returns>
-        public bool BumpsInto(IEnumerable<GameObject> otherGameObjects)
-        {
-            foreach (GameObject gameObject in otherGameObjects)
-            {
-                if (BumpsInto(gameObject))
-                {
-                    // It bumped into one of the objects.
-                    return true;
-                }
-            }
-
-            // It didn't bump into anything.
-            return false;
-        }
-
-        /// <summary>
-        /// Gets whether the <see cref="Player"/> would "bumps into" the given <see cref="GameObject"/>.
-        /// </summary>
-        /// <param name="otherGameObject">The other <see cref="GameObject"/>.</param>
-        /// <returns>True if it bumps into the given <see cref="GameObject"/>, false otherwise.</returns>
-        public bool BumpsInto(GameObject otherGameObject)
-        {
-            // Move the Player (temporarily).
-            Position += _velocity * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-
-            // Get whether it bumps into otherGameObject.
-            bool bumpsInto = base.Collides(otherGameObject);
-
-            // Restore the Player's previous position.
-            Position -= _velocity * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-
-            // Return whether it bumped into otherGameObject.
-            return bumpsInto;
         }
     }
 }

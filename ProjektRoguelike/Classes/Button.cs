@@ -42,12 +42,14 @@ namespace ProjektRoguelike
                 case ButtonState.Unselected:
                     break;
                 case ButtonState.Selected:
+                    // press enter to activate the button
                     if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Enter))
                     {
                         buttonState = ButtonState.Activated;
                     }
                     break;
                 case ButtonState.Activated:
+                    // run the buttons effect and get back to being only selected
                     ButtonUse();
                     buttonState = ButtonState.Selected;
                     break;
@@ -56,6 +58,9 @@ namespace ProjektRoguelike
             }
         }
 
+        /// <summary>
+        /// If the delegate "buttonActivated" is not null, run the code in it.
+        /// </summary>
         public virtual void ButtonUse()
         {
             if (buttonActivated != null)
@@ -66,6 +71,7 @@ namespace ProjektRoguelike
 
         public virtual void Draw()
         {
+            // only draw the button, if it is either activated or selected.
             switch (buttonState)
             {
                 case ButtonState.Unselected:

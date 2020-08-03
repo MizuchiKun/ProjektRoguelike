@@ -11,7 +11,6 @@ namespace ProjektRoguelike
     public class PickupHeart : PickupItem
     {
         Vector2 direction;
-        float angle;
 
         bool healedPlayer;
 
@@ -30,10 +29,7 @@ namespace ProjektRoguelike
 
         public override void Update()
         {
-            if (Touches(Level.Player) && (Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.W) ||
-                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.A) ||
-                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.S) ||
-                                           Globals.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.D)))
+            if (Level.Player.BumpsInto(this))
             {
                 Effect();
                 if (healedPlayer == true)
@@ -41,9 +37,15 @@ namespace ProjektRoguelike
                     Level.CurrentRoom.Remove(this);
                 }
             }
-            
+
+            if (Level.Player.BumpsInto(this))
+            {
+                _velocity = Level.Player._velocity;
+            }
+
             if (Collides(Level.Player))
             {
+
                 if (speed < _maxSpeed)
                 {
                     speed += _speedIncrease;

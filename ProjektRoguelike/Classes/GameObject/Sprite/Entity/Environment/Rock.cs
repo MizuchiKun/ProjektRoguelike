@@ -22,7 +22,6 @@ namespace ProjektRoguelike
                effect)
         {
             Health = 2;
-            Dropnumber = 10;
         }
 
         public override void Update()

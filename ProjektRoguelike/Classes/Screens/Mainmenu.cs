@@ -45,6 +45,7 @@ namespace ProjektRoguelike
 
         public virtual void Update()
         {
+            // Update the buttons and check which button is supposed to be selected.
             for (int i = 0; i < buttons.Count; i++)
             {
                 buttons[i].Update();
@@ -61,8 +62,8 @@ namespace ProjektRoguelike
                     // does not work as intended
                 }
             }
-            // the buttons to continue
-            //for now a keyboardinput instead, while button doesnt exist.
+
+            // Close the game by hitting the escape key. 
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
                 System.Environment.Exit(0);
@@ -78,6 +79,10 @@ namespace ProjektRoguelike
             Globals.SpriteBatch.Draw(bkg, new Rectangle((int)Camera.Position.X, (int)Camera.Position.Y, Globals.Graphics.PreferredBackBufferWidth, Globals.Graphics.PreferredBackBufferHeight), null, Color.White, 0, new Vector2(.5f), SpriteEffects.None, 0.1f); 
         }
 
+        /// <summary>
+        /// Empty the Entities List, create a new level and set the gamestate to active.
+        /// </summary>
+        /// <param name="info"> Only here, so I can use my delegate. lol </param>
         private void NewGame(object info)
         {
             Level.CurrentRoom.Entities.Clear();
