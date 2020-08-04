@@ -15,8 +15,6 @@ namespace ProjektRoguelike
 
         public int OwnerID { get; }
 
-        bool damageDealt = false;
-
         public int HitValue { get; } = 2;
 
         McTimer timer;
@@ -129,35 +127,38 @@ namespace ProjektRoguelike
 
 
             // Deal Damage to any entity, that is not the player
-            if (Collides(Level.CurrentRoom.Entities) && (OwnerID == 1 || OwnerID == 0))
-            {
+            //if (Collides(Level.CurrentRoom.Entities) && (OwnerID == 1 || OwnerID == 0))
+            //{
                 //bool isColliding = false;//NEW
                 for (int i = 0; i < Level.CurrentRoom.Entities.Count; i++)
                 {
-                    if (Collides(Level.CurrentRoom.Entities[i])//NEW
+                    //if (Collides(Level.CurrentRoom.Entities[i])//NEW
+                    if (Globals.GetDistance(this.Position, Level.CurrentRoom.Entities[i].Position) <= (BlastRadius * Tile.Size.X)
                         && OwnerID == 0
                         && (Level.CurrentRoom.Entities[i].GetType().IsSubclassOf(typeof(Environment))
                         || Level.CurrentRoom.Entities[i].GetType().IsSubclassOf(typeof(Enemy))
                         || Level.CurrentRoom.Entities[i].GetType().Name == "Campfire")
-                        && damageDealt == false)
+                        && Level.CurrentRoom.Entities[i].damageDealt == false)
                     {
-                        //enemies[i].GetHit(HitValue);
-                        Level.CurrentRoom.Entities[i].GetHit(HitValue);
-                        damageDealt = true;
-                        /*Level.CurrentRoom.Remove(this);*/
-                        //isColliding = true;
-                    }
+                    //enemies[i].GetHit(HitValue);
+                    Level.CurrentRoom.Entities[i].damageDealt = false;
+                    Level.CurrentRoom.Entities[i].GetHit(HitValue);
+                    Level.CurrentRoom.Entities[i].damageDealt = true;
+                    /*Level.CurrentRoom.Remove(this);*/
+                    //isColliding = true;
                 }
-                //NEW
-                //if (isColliding)
-                //{
-                //    Level.CurrentRoom.Remove(this);
-                //}
-            }
+                }
+            //NEW
+            //if (isColliding)
+            //{
+            //    Level.CurrentRoom.Remove(this);
+            //}
+            //}
 
 
             // Deal damage to the player
-            if (Collides(Level.Player))
+            //if (Collides(Level.Player))
+            if (Globals.GetDistance(this.Position, Level.Player.Position) <= (BlastRadius * Tile.Size.X))
             {
                 Level.Player.GetHit(HitValue);
             }

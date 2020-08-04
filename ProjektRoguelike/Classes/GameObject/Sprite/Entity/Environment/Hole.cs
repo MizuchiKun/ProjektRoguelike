@@ -20,7 +20,7 @@ namespace ProjektRoguelike
                sourceRectangle,
                rotation,
                effect)
-        { 
+        {
             Health = 10000;
         }
 

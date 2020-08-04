@@ -126,14 +126,14 @@ namespace ProjektRoguelike
                 //Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
                 //                                               Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
 
-                Level.CurrentRoom.Add(new PickupHeart(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new PickupBomb(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
                 //Level.Player.Keys += 1;
             }
 
             //testing environment and enemies
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.L))
             {
-                Level.CurrentRoom.Add(new Flytrap(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new Screamer(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
             }
 
 
@@ -142,9 +142,9 @@ namespace ProjektRoguelike
             // effect used, when the player picks up the Poopsicle item. Spawn 3 flies, that are orbiting around you.
             if (poopsicle)
             {
-                Level.CurrentRoom.Add(new Flybuddy(new Vector2(Position.X, Position.Y + 55), 0));
-                Level.CurrentRoom.Add(new Flybuddy(new Vector2(Position.X + 40, Position.Y - 40)));
-                Level.CurrentRoom.Add(new Flybuddy(new Vector2(Position.X - 40, Position.Y - 40)));
+                Level.Companions.Add(new Flybuddy(new Vector2(Position.X, Position.Y + 55), 0));
+                Level.Companions.Add(new Flybuddy(new Vector2(Position.X + 40, Position.Y - 40)));
+                Level.Companions.Add(new Flybuddy(new Vector2(Position.X - 40, Position.Y - 40)));
                 poopsicle = false;
             }
 

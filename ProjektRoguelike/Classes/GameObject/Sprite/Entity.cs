@@ -14,6 +14,8 @@ namespace ProjektRoguelike
     {
         public int Health { get; set; } = 1;
 
+        public bool damageDealt = false;
+
         /// <summary>
         /// The hitbox of this <see cref="Entity"/>.
         /// </summary>
@@ -61,6 +63,7 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Update()
         {
+
             if (Health <= 0)
             {
                 Level.CurrentRoom.Remove(this);

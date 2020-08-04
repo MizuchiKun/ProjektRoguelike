@@ -38,18 +38,29 @@ namespace ProjektRoguelike
             base.Update();
 
             // if the object spawn inside the players hitbox, they would get stuck, so move them away (also me testing for natural movement)
-            if (Collides(Level.Player))
+            //if (Collides(Level.Player))
+            //{
+            //    if (speed < _maxSpeed)
+            //    {
+            //        speed += _speedIncrease;
+            //    }
+            //    Position += speed * direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+            //}
+            //if (speed > 0)
+            //{
+            //    speed -= _speedIncrease;
+            //}
+            ChangePosition();
+        }
+
+        protected virtual void ChangePosition()
+        {
+            if (Level.Player.BumpsInto(this))
             {
-                if (speed < _maxSpeed)
-                {
-                    speed += _speedIncrease;
-                }
-                Position += speed * direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+                _velocity = Level.Player._velocity;
+                Position += _velocity * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
             }
-            if (speed > 0)
-            {
-                speed -= _speedIncrease;
-            }
+
         }
 
         /// <summary>

@@ -12,6 +12,11 @@ namespace ProjektRoguelike
     public class Level : Scene
     {
         /// <summary>
+        /// List of all the companions aiding around the player
+        /// </summary>
+        public static List<Flybuddy> Companions { get; set; }
+
+        /// <summary>
         /// The generated <see cref="Room"/>s of this Level.
         /// </summary>
         private static Room[,] _rooms = new Room[6, 6];
@@ -45,6 +50,8 @@ namespace ProjektRoguelike
         /// <param name="levelIndex">The index of the level you want to create.</param>
         public Level(byte levelIndex)
         {
+            Companions = new List<Flybuddy>();
+
             //TESTTESTTESTROOM
             Camera.Position += new Vector2(0f, 1f) * (Room.Dimensions * Tile.Size);
             //_gameObjects.Add(new Room(0, Vector2.Zero));
@@ -254,6 +261,11 @@ namespace ProjektRoguelike
 
                 // Update the Player.
                 Player.Update();
+
+                for (int i = 0; i < Companions.Count; i++)
+                {
+                    Companions[i].Update();
+                }
             }
             // Else a transition is happening.
             else
@@ -347,6 +359,14 @@ namespace ProjektRoguelike
 
             // Draw the player.
             Player.Draw();
+
+            // Draw the list of companions
+            for (int i = 0; i < Companions.Count; i++)
+            {
+                Companions[i].Draw();
+            }
+            
+            
         }
 
         /// <summary>

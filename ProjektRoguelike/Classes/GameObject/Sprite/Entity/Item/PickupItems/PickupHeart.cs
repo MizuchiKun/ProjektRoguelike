@@ -38,24 +38,24 @@ namespace ProjektRoguelike
                 }
             }
 
-            if (Level.Player.BumpsInto(this))
-            {
-                _velocity = Level.Player._velocity;
-            }
-
-            if (Collides(Level.Player))
-            {
-
-                if (speed < _maxSpeed)
-                {
-                    speed += _speedIncrease;
-                }
-                Position += speed * direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (speed > 0)
-            {
-                speed -= _speedIncrease;
-            }
+            //if (Level.Player.BumpsInto(this))
+            //{
+            //    _velocity = Level.Player._velocity;
+            //}
+            //
+            //if (Collides(Level.Player))
+            //{
+            //
+            //    if (speed < _maxSpeed)
+            //    {
+            //        speed += _speedIncrease;
+            //    }
+            //    Position += speed * direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+            //}
+            //if (speed > 0)
+            //{
+            //    speed -= _speedIncrease;
+            //}
         }
 
         // is made to increase players current healthpoints
@@ -68,9 +68,10 @@ namespace ProjektRoguelike
             }
             else
             {
-                angle = Globals.Vector2ToDegrees(Position - Level.Player.Position);
-                direction = Globals.DegreesToVector2(-angle);
-                Position += Level.Player.speed * direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+                ChangePosition();
+                //angle = Globals.Vector2ToDegrees(Position - Level.Player.Position);
+                //direction = Globals.DegreesToVector2(-angle);
+                //Position += Level.Player.speed * direction * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
             }
         }
     }

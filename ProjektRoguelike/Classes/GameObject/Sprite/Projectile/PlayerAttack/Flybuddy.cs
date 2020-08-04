@@ -93,7 +93,7 @@ namespace ProjektRoguelike
                     //NEW
                     if (isColliding)
                     {
-                        Level.CurrentRoom.Remove(this);
+                        Level.Companions.Remove(this);
                     }
                 }
             }
