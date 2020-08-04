@@ -44,6 +44,7 @@
     <Compile Include="Classes\Button.cs" />
     <Compile Include="Classes\GameObject\GameObjectContainer\Room.cs" />
     <Compile Include="Classes\GameObject\Sprite.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Entity\Enemy\FlyingEnemy\Flyboss.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Hole.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Chest.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Item.cs" />

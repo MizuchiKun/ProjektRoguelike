@@ -32,7 +32,7 @@ namespace ProjektRoguelike
             buttonState = ButtonState;
             buttonActivated = ButtonActivated;
 
-            activated = Globals.Content.Load<Texture2D>("Sprites/Pickups/Coin");
+            activated = Globals.Content.Load<Texture2D>("Sprites/Misc/Arrowbutton");
         }
 
         public virtual void Update()

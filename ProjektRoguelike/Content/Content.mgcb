@@ -116,6 +116,30 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Enemies/Floatersheet_side.png
 
+#begin Sprites/Enemies/Flyboss_wo_shadow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Enemies/Flyboss_wo_shadow.png
+
+#begin Sprites/Enemies/Flyboss_wo_shadow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Enemies/Flyboss_wo_shadow.png
+
 #begin Sprites/Enemies/Flysheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -451,6 +475,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Items/Syringe.png
+
+#begin Sprites/Misc/Arrowbutton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Misc/Arrowbutton.png
 
 #begin Sprites/Misc/Mainmenu1.png
 /importer:TextureImporter

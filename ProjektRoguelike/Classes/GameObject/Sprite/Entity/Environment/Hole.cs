@@ -11,6 +11,21 @@ namespace ProjektRoguelike
     /// </summary>
     public class Hole : Environment
     {
+        public override Rectangle Hitbox
+        {
+            get
+            {
+                // Hitbox is bottom half of sprite.
+                Vector2 actualSize = ((SourceRectangle != null)
+                                     ? SourceRectangle.Value.Size.ToVector2()
+                                     : Texture.Bounds.Size.ToVector2())
+                                     * Scale * Globals.Scale;
+                Vector2 absOrigin = Origin * actualSize;
+                return new Rectangle(location: ((Position - absOrigin) + new Vector2(0f, 0f) * actualSize).ToPoint(),
+                                     size: (new Vector2(1f, 1f) * actualSize).ToPoint());
+            }
+        }
+
         public Hole(Vector2? position = null,
                      Rectangle? sourceRectangle = null,
                      float rotation = 0f,

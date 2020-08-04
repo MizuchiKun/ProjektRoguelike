@@ -30,7 +30,8 @@ namespace ProjektRoguelike
             foreach (Door door in Level.CurrentRoom.Doors)
             {
                 // If the door is not hidden.
-                if (!(door.Kind == DoorKind.Hidden))
+                if (!(door.Kind == DoorKind.Hidden)
+                    && door.State != DoorState.Closed)
                 {
                     door.Close();
                 }

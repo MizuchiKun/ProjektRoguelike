@@ -15,7 +15,7 @@ namespace ProjektRoguelike
         public int HealthMax;
         public bool Done = false, poopsicle = false;
 
-        public ushort speed = 350;
+        public ushort speed = 650; //350
 
         /// <summary>
         /// The damage the player deals to entities
@@ -133,7 +133,7 @@ namespace ProjektRoguelike
             //testing environment and enemies
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.L))
             {
-                Level.CurrentRoom.Add(new Screamer(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new Flyboss(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
             }
 
 
