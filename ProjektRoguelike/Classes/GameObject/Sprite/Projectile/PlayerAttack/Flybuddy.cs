@@ -55,7 +55,7 @@ namespace ProjektRoguelike
             // Initialize _shadowSprite.
             _shadowSprite = new Sprite(texture: _shadow,
                                        position: position,
-                                       origin: new Vector2(0.5f),
+                                       origin: new Vector2(0.5f, 1f),
                                        scale: Scale,
                                        rotation: rotation,
                                        layerDepth: 0.9999999f,
@@ -99,7 +99,7 @@ namespace ProjektRoguelike
             }
 
             // Update your shadow's position.
-            _shadowSprite.Position = Position;
+            _shadowSprite.Position = Position + new Vector2(0f, 0.5f * ((Texture.Height * Scale.Y >= Tile.Size.Y) ? Texture.Height * Scale.Y : Tile.Size.Y));
         }
 
         public override void Draw()
@@ -191,22 +191,7 @@ namespace ProjektRoguelike
         private void Move(Directions direction, float speed)
         {
             // Get the Vector of the direction.
-            Vector2 directionVector = Vector2.Zero;
-            switch (direction)
-            {
-                case Directions.Up:
-                    directionVector = -Vector2.UnitY;
-                    break;
-                case Directions.Right:
-                    directionVector = Vector2.UnitX;
-                    break;
-                case Directions.Down:
-                    directionVector = Vector2.UnitY;
-                    break;
-                case Directions.Left:
-                    directionVector = -Vector2.UnitX;
-                    break;
-            }
+            Vector2 directionVector = Globals.DirectionVectors[(byte)direction];
 
             // Move this Sprite.
             Position += directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;

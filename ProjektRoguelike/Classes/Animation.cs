@@ -70,6 +70,13 @@ namespace ProjektRoguelike
         {
             get
             {
+                // When the game is paused.
+                if (Globals.gamestate == Gamestate.Paused)
+                {
+                    // Update the frame start.
+                    _frameStart = DateTime.Now;
+                }
+
                 // Is the current frame over?
                 if (!_hasEnded 
                     && !_isPaused

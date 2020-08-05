@@ -117,22 +117,7 @@ namespace ProjektRoguelike
         private void Move(Directions direction, float speed)
         {
             // Get the Vector of the direction.
-            Vector2 directionVector = Vector2.Zero;
-            switch (direction)
-            {
-                case Directions.Up:
-                    directionVector = -Vector2.UnitY;
-                    break;
-                case Directions.Right:
-                    directionVector = Vector2.UnitX;
-                    break;
-                case Directions.Down:
-                    directionVector = Vector2.UnitY;
-                    break;
-                case Directions.Left:
-                    directionVector = -Vector2.UnitX;
-                    break;
-            }
+            Vector2 directionVector = Globals.DirectionVectors[(byte)direction];
 
             // Move this Sprite.
             Position += directionVector * speed * (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
