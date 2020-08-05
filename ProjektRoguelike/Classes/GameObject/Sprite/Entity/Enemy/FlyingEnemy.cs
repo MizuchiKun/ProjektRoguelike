@@ -17,7 +17,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// The shadow sprite of this flying enemy.
         /// </summary>
-        private Sprite _shadowSprite;
+        protected Sprite _shadowSprite;
 
         public FlyingEnemy(Texture2D texture,
                            Vector2? position = null,
@@ -33,7 +33,7 @@ namespace ProjektRoguelike
             // Initialize _shadowSprite.
             _shadowSprite = new Sprite(texture: _shadow,
                                        position: position,
-                                       origin: new Vector2(0.5f),
+                                       origin: new Vector2(0.5f, 1f),
                                        scale: Scale,
                                        rotation: rotation,
                                        layerDepth: 0.9999999f,
@@ -45,7 +45,7 @@ namespace ProjektRoguelike
             base.Update();
 
             // Update your shadow's position.
-            _shadowSprite.Position = Position;
+            _shadowSprite.Position = Position + new Vector2(0f, 0.5f * ((Texture.Height * Scale.Y >= Tile.Size.Y) ? Texture.Height * Scale.Y : Tile.Size.Y));
 
             // Update the Layer.
             Layer = 0.6f - (Position.Y / 10e6f);

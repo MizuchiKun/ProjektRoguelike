@@ -45,6 +45,12 @@ namespace ProjektRoguelike
         private static Player _player;
 
         /// <summary>
+        /// The seed that is used to generate the level.
+        /// </summary>
+        public static int Seed { get; }
+        private static int seed;
+
+        /// <summary>
         /// Creates a new Level by the given level index.
         /// </summary>
         /// <param name="levelIndex">The index of the level you want to create.</param>
@@ -52,26 +58,55 @@ namespace ProjektRoguelike
         {
             Companions = new List<Flybuddy>();
 
-            //TESTTESTTESTROOM
-            Camera.Position += new Vector2(0f, 1f) * (Room.Dimensions * Tile.Size);
-            //_gameObjects.Add(new Room(0, Vector2.Zero));
+            // Clear the level.
+            _rooms = new Room[6, 6];
 
-            //generate the level / rooms based on levelIndex
-            //......
-                    //TESTTESTLEVEL
-                    for (byte i = 0; i < 9; i++)
-                    {
-                        Vector2 position = new Vector2((i % 3), (i / 3));
-                        _rooms[(int)position.X, (int)position.Y] = new Room(i, position * Globals.WindowDimensions, RoomKind.Normal);
-                    }
+            // Generate the seed (maybe add "enter seed" feature).
+            seed = new Random().Next();
 
-            // Choose the starting room.
-            Vector2 startRoomPos = Vector2.One;//Vector2.Zero;
-            CurrentRoom = _rooms[(int)startRoomPos.X, (int)startRoomPos.Y];
-            // Set the camera position accordingly.
+            // Get the Random.
+            Random random = new Random(seed);
+
+            // Generate the start room.
+            Vector2 startRoomPos = new Vector2(random.Next(_rooms.GetLength(0)),
+                                               random.Next(_rooms.GetLength(1)));
+            CurrentRoom = _rooms[(int)startRoomPos.X, (int)startRoomPos.Y] = new Room(0, startRoomPos, RoomKind.Start);
+            // Place the camera.
             Camera.Position = startRoomPos * Globals.WindowDimensions;
             // Initialize the player.
             _player = new Player(CurrentRoom.Position + (Room.Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale);
+
+            // Generate the path to the boss.
+            Vector2 currentRoomPos = startRoomPos;
+            for (byte i = 0; i < 6 && HasAdjacentEmptyCell(currentRoomPos); i++)
+            {
+                // Choose a random, adjacent, empty grid cell.
+                byte chosenDirection;
+                Vector2 nextRoomPos;
+                do
+                {
+                    chosenDirection = (byte)random.Next(4);
+                    nextRoomPos = currentRoomPos + Globals.DirectionVectors[chosenDirection];
+                }
+                while (!((nextRoomPos.X > 0 && nextRoomPos.X < _rooms.GetLength(0))
+                        && (nextRoomPos.Y > 0 && nextRoomPos.Y < _rooms.GetLength(1)))
+                       || _rooms[(int)nextRoomPos.X, (int)nextRoomPos.Y] != null);
+
+                // The next room becomes the current room.
+                currentRoomPos = nextRoomPos;
+
+                // Add randomly chosen Room there.
+                _rooms[(int)currentRoomPos.X, (int)currentRoomPos.Y] =
+                    new Room(roomIndex: (byte)random.Next(byte.MaxValue + 1),
+                             gridPosition: currentRoomPos,
+                             kind: RoomKind.Normal);
+            }
+
+            // Replace the last room with the boss room.
+            _rooms[(int)currentRoomPos.X, (int)currentRoomPos.Y] =
+                new Room(roomIndex: 0,
+                         gridPosition: currentRoomPos,
+                         kind: RoomKind.Boss);
 
             // Add the doors.
             for (byte x = 0; x < _rooms.GetLength(0); x++)
@@ -242,10 +277,6 @@ namespace ProjektRoguelike
                     }
                 }
             }
-
-            // Add enemies to test.
-                                //CurrentRoom.Add(new Floater(CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
-                                //CurrentRoom.Add(new Screamer(CurrentRoom.Position + (Room.Dimensions / 7) * Tile.Size * Globals.Scale));
         }
 
         /// <summary>
@@ -271,22 +302,7 @@ namespace ProjektRoguelike
             else
             {
                 // Get the direction.
-                Vector2 direction = Vector2.Zero;
-                switch (_transitionDirection)
-                {
-                    case Directions.Up:
-                        direction = -Vector2.UnitY;
-                        break;
-                    case Directions.Right:
-                        direction = Vector2.UnitX;
-                        break;
-                    case Directions.Down:
-                        direction = Vector2.UnitY;
-                        break;
-                    case Directions.Left:
-                        direction = -Vector2.UnitX;
-                        break;
-                }
+                Vector2 direction = Globals.DirectionVectors[(byte)_transitionDirection];
 
                 // Place the player in the next room near the corresponding door.
                 Player.Position = _nextRoom.Doors[((byte)_transitionDirection + 2) % 4].Position + (direction * 0.5f * Tile.Size);
@@ -379,22 +395,8 @@ namespace ProjektRoguelike
             _transitionDirection = direction;
 
             // Set the next room.
-            Vector2 currentRoomPos = CurrentRoom.Position / Globals.WindowDimensions;
-            switch (direction)
-            {
-                case Directions.Up:
-                    _nextRoom = _rooms[(int)(currentRoomPos.X), (int)(currentRoomPos.Y - 1)];
-                    break;
-                case Directions.Right:
-                    _nextRoom = _rooms[(int)(currentRoomPos.X + 1), (int)(currentRoomPos.Y)];
-                    break;
-                case Directions.Down:
-                    _nextRoom = _rooms[(int)(currentRoomPos.X), (int)(currentRoomPos.Y + 1)];
-                    break;
-                case Directions.Left:
-                    _nextRoom = _rooms[(int)(currentRoomPos.X - 1), (int)(currentRoomPos.Y)];
-                    break;
-            }
+            Vector2 nextRoomPos = (CurrentRoom.Position / Globals.WindowDimensions) + Globals.DirectionVectors[(byte)direction];
+            _nextRoom = _rooms[(int)nextRoomPos.X, (int)nextRoomPos.Y];
         }
 
         /// <summary>
@@ -408,25 +410,55 @@ namespace ProjektRoguelike
                                                  (float)Math.Floor(originDoor.Position.Y / Globals.WindowDimensions.Y));
 
             // Get the direction vector.
-            Vector2 directionVector = Vector2.Zero;
-            switch (originDoor.Direction)
-            {
-                case Directions.Up:
-                    directionVector = -Vector2.UnitY;
-                    break;
-                case Directions.Right:
-                    directionVector = Vector2.UnitX;
-                    break;
-                case Directions.Down:
-                    directionVector = Vector2.UnitY;
-                    break;
-                case Directions.Left:
-                    directionVector = -Vector2.UnitX;
-                    break;
-            }
+            Vector2 directionVector = Globals.DirectionVectors[(byte)originDoor.Direction];
 
             // Unlock the counterpart.
             _rooms[(int)(currentRoomPos.X + directionVector.X), (int)(currentRoomPos.Y + directionVector.Y)].Doors[((byte)originDoor.Direction + 2) % 4].Unlock();
+        }
+
+        /// <summary>
+        /// Locks the counterpart of the given door.
+        /// </summary>
+        /// <param name="originDoor">The given door.</param>
+        public static void LockCounterpartDoor(Door originDoor)
+        {
+            // Get the room indices.
+            Vector2 currentRoomPos = new Vector2((float)Math.Floor(originDoor.Position.X / Globals.WindowDimensions.X),
+                                                 (float)Math.Floor(originDoor.Position.Y / Globals.WindowDimensions.Y));
+
+            // Get the direction vector.
+            Vector2 directionVector = Globals.DirectionVectors[(byte)originDoor.Direction];
+
+            // Lock the counterpart.
+            _rooms[(int)(currentRoomPos.X + directionVector.X), (int)(currentRoomPos.Y + directionVector.Y)].Doors[((byte)originDoor.Direction + 2) % 4].Lock();
+        }
+
+        /// <summary>
+        /// Gets whether the room at the given position has 1 or more adjacent, empty grid cells.
+        /// </summary>
+        /// <param name="roomPos">The position of the room.</param>
+        /// <returns>True if it has 1 or more adjacent, empty cells, false otherwise.</returns>
+        private bool HasAdjacentEmptyCell(Vector2 roomPos)
+        {
+            // Check for adjacent, empty cells in all directions
+            Vector2 adjacentRoomPos;
+            for (byte i = 0; i < 4; i++)
+            {
+                adjacentRoomPos = roomPos + Globals.DirectionVectors[i];
+                // If the position is inside the grid.
+                if ((adjacentRoomPos.X > 0 && adjacentRoomPos.X < _rooms.GetLength(0))
+                    && (adjacentRoomPos.Y > 0 && adjacentRoomPos.Y < _rooms.GetLength(1)))
+                {
+                    // If the adjacent cell is empty.
+                    if (_rooms[(int)adjacentRoomPos.X, (int)adjacentRoomPos.Y] == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            // There seems to be no adjacent, empty cell.
+            return false;
         }
     }
 }

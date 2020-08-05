@@ -249,5 +249,38 @@ namespace ProjektRoguelike
                 Level.CurrentRoom.Add(_poofAnimationSprite);
             }
         }
+
+        /// <summary>
+        /// Locks this <see cref="Door"/>.
+        /// </summary>
+        public void Lock(bool lockCounterpart = false)
+        {
+            // Lock this door.
+            State = DoorState.Locked;
+
+            // Set the animation.
+            // If it's a normal door.
+            if (Kind == DoorKind.Normal)
+            {
+                // There's no animation.
+                CurrentAnimation = null;
+
+                // Set the locked door texture.
+                Texture = _lockedDoor;
+                SourceRectangle = new Rectangle(0, 0, 256, 256);
+            }
+            else
+            {
+                // Set the animation.
+                CurrentAnimation = _closeAnimations[(byte)Kind];
+            }
+
+            // If the counterpart shall be locked.
+            if (lockCounterpart)
+            {
+                // Lock the counterpart in adjacent room.
+                Level.LockCounterpartDoor(this);
+            }
+        }
     }
 }

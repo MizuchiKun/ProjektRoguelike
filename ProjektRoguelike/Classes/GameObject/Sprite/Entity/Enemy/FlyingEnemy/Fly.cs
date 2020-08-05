@@ -27,8 +27,11 @@ namespace ProjektRoguelike
 
             Scale = new Vector2(.1f, .1f);
 
+            // Set the _shadowSprite.
+            _shadowSprite.Scale = Scale;
+
             // Set the animation.
-            CurrentAnimation = new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/FLysheet"),
+            CurrentAnimation = new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Flysheet"),
                                              frameDimensions: new Vector2(256),
                                              frameDuration: TimeSpan.FromSeconds(1f / 60f));
         }

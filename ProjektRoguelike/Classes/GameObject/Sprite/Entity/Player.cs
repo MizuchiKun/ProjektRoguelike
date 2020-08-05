@@ -139,6 +139,10 @@ namespace ProjektRoguelike
 
 
 
+
+
+
+
             // effect used, when the player picks up the Poopsicle item. Spawn 3 flies, that are orbiting around you.
             if (poopsicle)
             {

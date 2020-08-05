@@ -134,6 +134,21 @@ namespace ProjektRoguelike
         /// </summary>
         public static GamePadState CurrentGamePadState { get; set; }
 
+        /// <summary>
+        /// The four <see cref="Vector2"/>s that correspond to the four <see cref="Directions"/>.
+        /// </summary>
+        public static Vector2[] DirectionVectors { get; } =
+        {
+            // Up.
+            -Vector2.UnitY,
+            // Right.
+            Vector2.UnitX,
+            // Down.
+            Vector2.UnitY,
+            // Left.
+            -Vector2.UnitX
+        };
+
 
         /// <summary>
         /// Gets whether the given key is currently pressed.

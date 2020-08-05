@@ -12,10 +12,11 @@ namespace ProjektRoguelike
     /// </summary>
     public enum RoomKind : byte
     {
+        Start,
         Normal,
+        Hidden,
         //Arcade,
-        Boss,
-        Hidden
+        Boss
     }
 
     /// <summary>
@@ -135,13 +136,15 @@ namespace ProjektRoguelike
         }
 
         /// <summary>
-        /// Creates a new room by the given room index.
+        /// Creates a new room by the given paramters.
         /// </summary>
-        /// <param name="roomIndex">The room's index.</param>
-        public Room(byte roomIndex, Vector2 position, RoomKind kind = RoomKind.Normal)
+        /// <param name="roomIndex">The room's index which is used to load the room.</param>
+        /// <param name="position">The room's grid position in the level.</param>
+        /// <param name="kind">The kind of the door.</param>
+        public Room(byte roomIndex, Vector2 gridPosition, RoomKind kind)
         {
             // Store the parameters.
-            Position = position;
+            Position = gridPosition * Globals.WindowDimensions;
             Kind = kind;
 
             // Load the Textures.
@@ -150,18 +153,18 @@ namespace ProjektRoguelike
             Texture2D corner = Globals.Content.Load<Texture2D>("Sprites/Environment/Ecke");
 
             // Add the room background.
-            Vector2 topLeftCorner = position;
+            Vector2 topLeftCorner = Position;
             topLeftCorner += new Vector2(1, 0.5f) * Tile.Size * Globals.Scale;
             // The corners.
-            _gameObjects.Add(new Tile(corner, 
+            _gameObjects.Add(new Tile(corner,
                                       topLeftCorner));
-            _gameObjects.Add(new Tile(corner, 
+            _gameObjects.Add(new Tile(corner,
                                       topLeftCorner + new Vector2(Dimensions.X - 1, 0) * Tile.Size * Globals.Scale,
                                       rotation: 90f));
-            _gameObjects.Add(new Tile(corner, 
+            _gameObjects.Add(new Tile(corner,
                                       topLeftCorner + (Dimensions - Vector2.One) * Tile.Size * Globals.Scale,
                                       rotation: 180f));
-            _gameObjects.Add(new Tile(corner, 
+            _gameObjects.Add(new Tile(corner,
                                       topLeftCorner + new Vector2(0, Dimensions.Y - 1) * Tile.Size * Globals.Scale,
                                       rotation: -90f));
             // The walls.
@@ -174,16 +177,16 @@ namespace ProjektRoguelike
             for (byte x = 1; x < Dimensions.X - 1; x++)
             {
                 // Top.
-                Tile topWall = new Tile(wall, 
+                Tile topWall = new Tile(wall,
                                         topLeftCorner + new Vector2(x, 0) * Tile.Size * Globals.Scale,
                                         rotation: 0f);
-                Walls[0][x-1] = topWall;
+                Walls[0][x - 1] = topWall;
 
                 // Bottom.
                 Tile bottomWall = new Tile(wall,
                                            topLeftCorner + new Vector2(x, Dimensions.Y - 1) * Tile.Size * Globals.Scale,
                                            rotation: 180f);
-                Walls[2][x-1] = bottomWall;
+                Walls[2][x - 1] = bottomWall;
             }
             // Left and right.
             for (byte y = 1; y < Dimensions.Y - 1; y++)
@@ -214,52 +217,41 @@ namespace ProjektRoguelike
                 }
             }
 
-            //load room from file...
-            //...
+            // Add the room's content.
+            switch (Kind)
+            {
+                case RoomKind.Start:
+                    // Add controls instructions in the centre of the room.
+                    Texture2D controlsInstructions = Globals.Content.Load<Texture2D>("Sprites/Misc/ControlsInstructions");
+                    _gameObjects.Add(new Sprite(texture: controlsInstructions,
+                                                position: Position + (Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale,
+                                                scale: (controlsInstructions.Bounds.Size.ToVector2() / new Vector2(256) * Tile.Size) / controlsInstructions.Bounds.Size.ToVector2(),
+                                                layerDepth: 0.99999f));
+                    break;
+                case RoomKind.Normal:
+                    // Load the content from a file by using the roomIndex.
+                    //...
+                    Console.WriteLine($"Room.cs:234: Missing loading of content!");
+                    break;
+                case RoomKind.Hidden:
+                    // Load the content from a file by using the roomIndex.
+                    //...
+                    Console.WriteLine($"Room.cs:239: Missing loading of content!");
+                    break;
+                case RoomKind.Boss:
+                    // Add boss room stuff, like the boss and maybe some heal items.
+                    //...
+                    Console.WriteLine($"Room.cs:244: Missing boss room stuff / loading of it!");
+                    break;
+            }
                         //TESTROOMINDICATOR
-                        string roomPos = "";
-                        switch (roomIndex)
-                        {
-                            case 0:
-                                roomPos = "Top-left";
-                                break;
-                            case 1:
-                                roomPos = "Top";
-                                break;
-                            case 2:
-                                roomPos = "Top-right";
-                                break;
-                            case 3:
-                                roomPos = "Left";
-                                break;
-                            case 4:
-                                roomPos = "Centre";
-                                break;
-                            case 5:
-                                roomPos = "Right";
-                                break;
-                            case 6:
-                                roomPos = "Bottom-left";
-                                break;
-                            case 7:
-                                roomPos = "Bottom";
-                                break;
-                            case 8:
-                                roomPos = "Bottom-right";
-                                break;
-                        }
+                        Console.WriteLine($"Room.cs:248: Remove TestRoomIndicator, when not needed!");
+                        string roomPos = $"{roomIndex}";
                         _gameObjects.Add(new Text(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"),
                                                   new StringBuilder(roomPos),
-                                                  Position + (Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale,
+                                                  Position + (Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size,
                                                   new Vector2(0.5f),
                                                   layerDepth: 0.999f));
-        }
-
-        public override void Update()
-        {
-            Console.WriteLine($"Object in room: {_gameObjects.Count}");
-
-            base.Update();
         }
 
         /// <summary>

@@ -56,6 +56,9 @@ namespace ProjektRoguelike
             direction = Globals.DegreesToVector2(0);
 
             HitValue = 0;
+
+            // Set the _shadowSprite.
+            _shadowSprite.Scale = Scale;
         }
 
         public override void Update()

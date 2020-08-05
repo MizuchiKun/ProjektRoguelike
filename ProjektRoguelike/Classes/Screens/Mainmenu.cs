@@ -23,23 +23,23 @@ namespace ProjektRoguelike
             bkg = Globals.Content.Load<Texture2D>("Sprites/Misc/Mainmenu1");
 
             NewRunObject = NewGame;
-            NewRun = new Button(Button.ButtonState.Selected, NewRunObject, null, new Vector2(1680, 940));
+            NewRun = new Button(Button.ButtonState.Selected, NewRunObject, null, Camera.Position + new Vector2(380, 220));
             buttons.Add(NewRun);
 
             ContinueObject = null;
-            Continue = new Button(Button.ButtonState.Unselected, ContinueObject, null, new Vector2(1680, 1050));
+            Continue = new Button(Button.ButtonState.Unselected, ContinueObject, null, Camera.Position + new Vector2(380, 330));
             buttons.Add(Continue);
 
             ChallengeObject = null;
-            Challenges = new Button(Button.ButtonState.Unselected, null, null, new Vector2(1680, 1130));
+            Challenges = new Button(Button.ButtonState.Unselected, null, null, Camera.Position + new Vector2(380, 410));
             buttons.Add(Challenges);
 
             StatsObject = null;
-            Stats = new Button(Button.ButtonState.Unselected, null, null, new Vector2(1680, 1190));
+            Stats = new Button(Button.ButtonState.Unselected, null, null, Camera.Position + new Vector2(380, 470));
             buttons.Add(Stats);
 
             OptionsObject = null;
-            Options = new Button(Button.ButtonState.Unselected, null, null, new Vector2(1680, 1270));
+            Options = new Button(Button.ButtonState.Unselected, null, null, Camera.Position + new Vector2(380, 550));
             buttons.Add(Options);
         }
 
@@ -50,16 +50,20 @@ namespace ProjektRoguelike
             {
                 buttons[i].Update();
                 if (buttons[i].buttonState == Button.ButtonState.Selected && (Globals.GetKeyUp(Keys.W) || Globals.GetKeyUp(Keys.Up)) && i > 0)
-                {       
+                {
                     buttons[i - 1].buttonState = Button.ButtonState.Selected;
                     buttons[i].buttonState = Button.ButtonState.Unselected;
+
+                    // Break because the player can move the arrow only once per frame.
+                    break;
                 }
                 if (buttons[i].buttonState == Button.ButtonState.Selected && (Globals.GetKeyUp(Keys.S) || Globals.GetKeyUp(Keys.Down)) && i < buttons.Count - 1)
                 {
                     buttons[i + 1].buttonState = Button.ButtonState.Selected;
                     buttons[i].buttonState = Button.ButtonState.Unselected;
 
-                    // does not work as intended
+                    // Break because the player can move the arrow only once per frame.
+                    break;
                 }
             }
 
@@ -76,7 +80,7 @@ namespace ProjektRoguelike
             {
                 buttons[i].Draw();
             }
-            Globals.SpriteBatch.Draw(bkg, new Rectangle((int)Camera.Position.X, (int)Camera.Position.Y, Globals.Graphics.PreferredBackBufferWidth, Globals.Graphics.PreferredBackBufferHeight), null, Color.White, 0, new Vector2(.5f), SpriteEffects.None, 0.1f); 
+            Globals.SpriteBatch.Draw(bkg, new Rectangle(Camera.Position.ToPoint(), (Globals.WindowDimensions + Vector2.One).ToPoint()), null, Color.White, 0, new Vector2(0f), SpriteEffects.None, 0.1f);
         }
 
         /// <summary>
