@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using System.Xml.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace ProjektRoguelike
 {
-    public class Mainmenu
+    public class Mainmenu : Scene
     {
         Texture2D bkg;
 
@@ -26,7 +27,7 @@ namespace ProjektRoguelike
             NewRun = new Button(Button.ButtonState.Selected, NewRunObject, null, new Vector2(1680, 940));
             buttons.Add(NewRun);
 
-            ContinueObject = null;
+            ContinueObject = ContinueGame;
             Continue = new Button(Button.ButtonState.Unselected, ContinueObject, null, new Vector2(1680, 1050));
             buttons.Add(Continue);
 
@@ -88,6 +89,11 @@ namespace ProjektRoguelike
             Level.CurrentRoom.Entities.Clear();
             Globals.CurrentScene = new Level(0);
             Globals.gamestate = Gamestate.Active;
+        }
+
+        private void ContinueGame(object info)
+        {
+
         }
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-//using System.Xml.Linq;
+using System.Xml.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -129,7 +129,6 @@ namespace ProjektRoguelike
         /// <summary>
         /// Saves the timervalues in an XML file.<br></br>
         /// </summary>
-        /*
         public virtual XElement ReturnXML()
         {
             XElement xml = new XElement("Timer",
@@ -140,7 +139,6 @@ namespace ProjektRoguelike
 
             return xml;
         }
-        */
 
         /// <summary>
         /// Sets the time, which has passed to <paramref name="TIME"/>.<br></br>
