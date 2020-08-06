@@ -38,10 +38,11 @@ namespace ProjektRoguelike
             // if the player bumps into this object and the item is not picked up yet, give object, add it to the list for items and set the flag for being picked up.
             if (Level.Player.BumpsInto(this) && !pickedUp)
             {
-                    Item.Effect();
-                    Level.Player.items.Add(Item);
-                    pickedUp = true;
-                    Level.CurrentRoom.Remove(Item);
+                Item.Effect();
+                Level.Player.items.Add(Item);
+                Level.Player.itemcount += 1;
+                pickedUp = true;
+                Level.CurrentRoom.Remove(Item);
             }
         }
 

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
+using System.Xml.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.InteropServices;
 
 namespace ProjektRoguelike
 {
@@ -13,14 +16,16 @@ namespace ProjektRoguelike
     {
         McTimer timer, damageImunity;
         public int HealthMax;
-        public bool Done = false, poopsicle = false;
+        public bool poopsicle = false;
 
-        public ushort speed = 650; //350
+        public ushort speed = 350;
+
+        public int itemcount;
 
         /// <summary>
         /// The damage the player deals to entities
         /// </summary>
-        public int HitValue { get; set; }
+        public int HitValue { get; set; } = 1;
 
         /// <summary>
         /// The gold the player owns. Might be used for shops etc. later.
@@ -123,17 +128,19 @@ namespace ProjektRoguelike
             //testing items and such
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.J))
             {
-                //Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
-                //                                               Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale),
+                                                               Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
 
-                Level.CurrentRoom.Add(new PickupBomb(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
+                //Level.CurrentRoom.Add(new PickupBomb(Level.CurrentRoom.Position + (Room.Dimensions / 5) * Tile.Size * Globals.Scale));
                 //Level.Player.Keys += 1;
             }
 
             //testing environment and enemies
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.L))
             {
-                Level.CurrentRoom.Add(new Flyboss(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+                //Level.CurrentRoom.Add(new Flyboss(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new Itemstone(new Heart(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale),
+                                                               Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
             }
 
 
@@ -416,6 +423,98 @@ namespace ProjektRoguelike
 
             // Default return.
             return true;
+        }
+
+        public void SaveData()
+        {
+            XDocument xml = new XDocument(new XElement("Root",
+                                                        new XElement("Stats", "")));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                            new XElement("name", "HealthMax"),
+                                            new XElement("amount", HealthMax)));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                                        new XElement("name", "Health"),
+                                                        new XElement("amount", Health)));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                                        new XElement("name", "speed"),
+                                                        new XElement("amount", speed)));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                            new XElement("name", "HitValue"),
+                                            new XElement("amount", HitValue)));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                            new XElement("name", "Bombs"),
+                                            new XElement("amount", Bombs)));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                            new XElement("name", "Keys"),
+                                            new XElement("amount", Keys)));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                            new XElement("name", "Gold"),
+                                            new XElement("amount", Gold)));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                            new XElement("name", "itemcount"),
+                                            new XElement("amount", itemcount)));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                new XElement("name", "Seed"),
+                                new XElement("amount", Level.Seed)));
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                new XElement("name", "Item"),
+                                new XElement("amount", items[i].GetType())));
+            }
+
+            items.Clear();
+
+            Globals.save.HandleSaveFormates(xml, "stats.xml");
+        }
+
+        public void LoadData(XDocument data)
+        {
+            if (data != null)
+            {
+                List<XElement> statList = (from t in data.Element("Root").Element("Stats").Descendants("Stat")
+                                            //where t.Element("name").Value ==
+                                            select t).ToList<XElement>();
+
+                HealthMax = Convert.ToInt32(statList[0].Element("amount").Value, Globals.culture);
+                Health = Convert.ToInt32(statList[1].Element("amount").Value, Globals.culture);
+                speed = Convert.ToUInt16(statList[2].Element("amount").Value, Globals.culture);
+                HitValue = Convert.ToInt32(statList[3].Element("amount").Value, Globals.culture);
+                Bombs = Convert.ToInt32(statList[4].Element("amount").Value, Globals.culture);
+                Keys = Convert.ToInt32(statList[5].Element("amount").Value, Globals.culture);
+                Gold = Convert.ToInt32(statList[6].Element("amount").Value, Globals.culture);
+                itemcount = Convert.ToInt32(statList[7].Element("amount").Value, Globals.culture);
+                Level.Seed = Convert.ToInt32(statList[8].Element("amount").Value, Globals.culture);
+                for (int i = 9; i < itemcount + 9; i++)
+                {
+                    if (statList[i].Element("amount").Value == "ProjektRoguelike.Syringe")
+                    {
+                        items.Add(new Syringe());
+                    }
+                    if (statList[i].Element("amount").Value == "ProjektRoguelike.Heart")
+                    {
+                        items.Add(new Heart());
+                    }
+                    if (statList[i].Element("amount").Value == "ProjektRoguelike.Poopsicle")
+                    {
+                        items.Add(new Poopsicle());
+                    }
+                    if (statList[i].Element("amount").Value == "ProjektRoguelike.Shroom")
+                    {
+                        items.Add(new Shroom());
+                    }
+                }
+            }
         }
     }
 }

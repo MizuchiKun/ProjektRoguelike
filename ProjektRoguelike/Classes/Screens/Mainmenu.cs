@@ -18,6 +18,8 @@ namespace ProjektRoguelike
 
         List<Button> buttons = new List<Button>();
 
+        XDocument xmlPlayer, xmlLevel;
+
         public Mainmenu()
         {
             //Mainmenu1 needs to be added to the project
@@ -42,9 +44,12 @@ namespace ProjektRoguelike
             OptionsObject = null;
             Options = new Button(Button.ButtonState.Unselected, null, null, Camera.Position + new Vector2(380, 550));
             buttons.Add(Options);
+
+            xmlPlayer = Globals.save.GetFile("xml\\stats.xml");
+            xmlLevel = Globals.save.GetFile("xml\\level.xml");
         }
 
-        public virtual void Update()
+        public override void Update()
         {
             // Update the buttons and check which button is supposed to be selected.
             for (int i = 0; i < buttons.Count; i++)
@@ -75,7 +80,7 @@ namespace ProjektRoguelike
             }
         }
 
-        public virtual void Draw()
+        public override void Draw()
         {
             for (int i = 0; i < buttons.Count; i++)
             {
@@ -97,7 +102,9 @@ namespace ProjektRoguelike
 
         private void ContinueGame(object info)
         {
-
+            Level.Player.LoadData(xmlPlayer);
+            //Level.LoadData(xmlLevel);
+            Globals.gamestate = Gamestate.Active;
         }
     }
 }

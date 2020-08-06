@@ -29,7 +29,7 @@ namespace ProjektRoguelike
 
             timer = new McTimer(1000);
 
-            HitValue = 1;
+            HitValue = Level.Player.HitValue;
         }
     }
 }

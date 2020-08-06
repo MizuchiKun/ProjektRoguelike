@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Xml.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,7 +49,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// The seed that is used to generate the level.
         /// </summary>
-        public static int Seed { get; }
+        public static int Seed { get; set; }
         private static int seed;
 
         /// <summary>
@@ -202,7 +204,7 @@ namespace ProjektRoguelike
                             // Choose the door kind.
                             if (_rooms[x, y].Kind == RoomKind.Boss)
                             {
-                                doorKind = DoorKind.Boss;  
+                                doorKind = DoorKind.Boss;
                             }
                             else if (_rooms[x, y].Kind == RoomKind.Hidden)
                             {
@@ -381,8 +383,8 @@ namespace ProjektRoguelike
             {
                 Companions[i].Draw();
             }
-            
-            
+
+
         }
 
         /// <summary>
@@ -459,6 +461,30 @@ namespace ProjektRoguelike
 
             // There seems to be no adjacent, empty cell.
             return false;
+        }
+
+        public void SaveData()
+        {
+            XDocument xml = new XDocument(new XElement("Root",
+                                                        new XElement("Stats", "")));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                            new XElement("name", "Seed"),
+                                            new XElement("amount", Seed)));
+
+            Globals.save.HandleSaveFormates(xml, "level.xml");
+        }
+
+        public void LoadData(XDocument data)
+        {
+            if (data != null)
+            {
+                List<XElement> statList = (from t in data.Element("Root").Element("Stats").Descendants("Stat")
+                                               //where t.Element("name").Value ==
+                                           select t).ToList<XElement>();
+
+                Seed = Convert.ToInt32(statList[0].Element("amount").Value, Globals.culture);
+            }
         }
     }
 }

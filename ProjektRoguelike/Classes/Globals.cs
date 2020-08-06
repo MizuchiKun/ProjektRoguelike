@@ -30,12 +30,15 @@ namespace ProjektRoguelike
     /// </summary>
     public static class Globals
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static string gameName = "ProjektRoguelike";
 
         /// <summary>
-        /// The current <see cref="gamestate"> of this project.
+        /// 
         /// </summary>
-        public static Gamestate gamestate { get; set; } = Gamestate.Mainmenu;
+        public static Save save;
 
         /// <summary>
         /// 
@@ -46,6 +49,11 @@ namespace ProjektRoguelike
         /// 
         /// </summary>
         public static System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
+
+        /// <summary>
+        /// The current <see cref="gamestate"> of this project.
+        /// </summary>
+        public static Gamestate gamestate { get; set; } = Gamestate.Mainmenu;
 
         /// <summary>
         /// The <see cref="UI"> of this project.

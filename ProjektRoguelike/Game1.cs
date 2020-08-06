@@ -69,7 +69,11 @@ namespace ProjektRoguelike
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent() { }
+        protected override void LoadContent() 
+        {
+            // The save class.
+            Globals.save = new Save(1, Globals.gameName);
+        }
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -84,7 +88,7 @@ namespace ProjektRoguelike
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            
+
 
             // Save the current GameTime and states.
             Globals.GameTime = gameTime;
@@ -99,6 +103,8 @@ namespace ProjektRoguelike
                     Globals.CurrentScene.Update();
                     if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
                     {
+                        //Level.SaveData();
+                        Level.Player.SaveData();
                         Globals.gamestate = Gamestate.Mainmenu;
                     }
                     break;

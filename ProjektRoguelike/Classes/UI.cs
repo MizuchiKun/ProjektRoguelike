@@ -72,6 +72,7 @@ namespace ProjektRoguelike
             switch (Globals.gamestate)
             {
                 case Gamestate.Active:
+                    created = false;
                     #region Healthbar
                     for (int i = 0; i < Level.Player.HealthMax; i++)
                     {
