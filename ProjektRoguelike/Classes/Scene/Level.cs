@@ -499,10 +499,20 @@ namespace ProjektRoguelike
 
                 Seed = Convert.ToInt32(statList[0].Element("amount").Value, Globals.culture);
 
+                // Char array of all the possible chars, that are to trim.
+                char[] stuff = { ' ', '{', '}', 'X','Y', ':'};
 
-                string RoomPositionX = statList[1].Element("amount").Value.Substring(3);
-                string RoomPositionY = statList[1].Element("amount").Value.Substring(6 + Convert.ToInt32(RoomPositionX)).Replace("}", "");
+                // The location, where the RoomPositionX substring is supposed to stop.
+                int charLocation = statList[1].Element("amount").Value.IndexOf(" ", StringComparison.Ordinal);
+                
+                // The substring for the X-Coordinate in the position string.
+                // Start at index 3 (after "{X:") and go create the substring until the charLocation of the first white space.
+                string RoomPositionX = statList[1].Element("amount").Value.Substring(3, charLocation - 3);
+                // The substring for the Y-Coordinate in the position string.
+                // Start at the index of the length of RoomPositionX + 6 (for all the "non numbers"). Remove all possible non numbers, still included.
+                string RoomPositionY = statList[1].Element("amount").Value.Substring(6 + RoomPositionX.Length).Trim(stuff);
 
+                // Create a new vector2 and use the position values, defined above.
                 Level.CurrentRoom.Position = new Vector2(Convert.ToInt32(RoomPositionX), Convert.ToInt32(RoomPositionY));
             }
         }
