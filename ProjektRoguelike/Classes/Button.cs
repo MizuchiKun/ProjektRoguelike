@@ -19,7 +19,7 @@ namespace ProjektRoguelike
 
         public PassObject buttonActivated;
 
-        Texture2D activated;
+        protected Texture2D activated;
 
         public object Info;
 

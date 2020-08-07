@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Security.Cryptography.X509Certificates;
 #endregion
 
 namespace ProjektRoguelike
@@ -33,6 +34,7 @@ namespace ProjektRoguelike
             // Set Global's Graphics and Content.
             Globals.Content = Content;
             Globals.Content.RootDirectory = "Content";
+
 
             // Create the GraphicsDeviceManager.
             Globals.Graphics = new GraphicsDeviceManager(this)
@@ -88,8 +90,6 @@ namespace ProjektRoguelike
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
-
             // Save the current GameTime and states.
             Globals.GameTime = gameTime;
             Globals.CurrentKeyboardState = Keyboard.GetState();
@@ -103,7 +103,7 @@ namespace ProjektRoguelike
                     Globals.CurrentScene.Update();
                     if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
                     {
-                        //Level.SaveData();
+                        Level.SaveData();
                         Level.Player.SaveData();
                         Globals.gamestate = Gamestate.Mainmenu;
                     }
@@ -115,6 +115,9 @@ namespace ProjektRoguelike
                     }
                     break;
                 case Gamestate.Mainmenu:
+                    Globals.UI.Update();
+                    break;
+                case Gamestate.Optionsmenu:
                     Globals.UI.Update();
                     break;
                 case Gamestate.Dead:
@@ -162,9 +165,11 @@ namespace ProjektRoguelike
                 case Gamestate.Mainmenu:
                     Globals.UI.Draw();
                     break;
+                case Gamestate.Optionsmenu:
+                    Globals.UI.Draw();
+                    break;
                 case Gamestate.Dead:
                     Globals.CurrentScene.Draw();
-                    
                     break;
                 default:
                     break;

@@ -337,7 +337,7 @@ namespace ProjektRoguelike
         public override void Draw()
         {
             //testing string to look how much damage something does
-            //Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Health.ToString(), new Vector2(Position.X, Position.Y - 75), Color.White);
+            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Level.Seed.ToString(), new Vector2(Position.X, Position.Y - 75), Color.White);
 
             base.Draw();
         }
@@ -462,9 +462,9 @@ namespace ProjektRoguelike
                                             new XElement("name", "itemcount"),
                                             new XElement("amount", itemcount)));
 
-            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
-                                new XElement("name", "Seed"),
-                                new XElement("amount", Level.Seed)));
+            //xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+            //                    new XElement("name", "Seed"),
+            //                    new XElement("amount", Level.Seed)));
 
             for (int i = 0; i < items.Count; i++)
             {
@@ -494,8 +494,8 @@ namespace ProjektRoguelike
                 Keys = Convert.ToInt32(statList[5].Element("amount").Value, Globals.culture);
                 Gold = Convert.ToInt32(statList[6].Element("amount").Value, Globals.culture);
                 itemcount = Convert.ToInt32(statList[7].Element("amount").Value, Globals.culture);
-                Level.Seed = Convert.ToInt32(statList[8].Element("amount").Value, Globals.culture);
-                for (int i = 9; i < itemcount + 9; i++)
+                //Level.Seed = Convert.ToInt32(statList[8].Element("amount").Value, Globals.culture);
+                for (int i = 8; i < itemcount + 8; i++)
                 {
                     if (statList[i].Element("amount").Value == "ProjektRoguelike.Syringe")
                     {

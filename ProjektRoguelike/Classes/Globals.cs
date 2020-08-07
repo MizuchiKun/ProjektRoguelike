@@ -22,7 +22,7 @@ namespace ProjektRoguelike
     /// </summary>
     public enum Gamestate : byte
     {
-        Active, Paused, Mainmenu, /*Cutsceen,*/ Dead
+        Active, Paused, Mainmenu, Optionsmenu,/*Cutsceen,*/ Dead
     }
 
     /// <summary>
@@ -31,7 +31,12 @@ namespace ProjektRoguelike
     public static class Globals
     {
         /// <summary>
-        /// 
+        /// Make the window fullscreen, if the fullscreen option is chosen.
+        /// </summary>
+        public static bool Fullscreen = false;
+
+        /// <summary>
+        /// The name of the game.
         /// </summary>
         public static string gameName = "ProjektRoguelike";
 

@@ -14,6 +14,11 @@ namespace ProjektRoguelike
     public class Level : Scene
     {
         /// <summary>
+        /// Loading Document for Levelinformation. Currently: Seed.
+        /// </summary>
+        XDocument xmlLevel;
+
+        /// <summary>
         /// List of all the companions aiding around the player
         /// </summary>
         public static List<Flybuddy> Companions { get; set; }
@@ -50,7 +55,6 @@ namespace ProjektRoguelike
         /// The seed that is used to generate the level.
         /// </summary>
         public static int Seed { get; set; }
-        private static int seed;
 
         /// <summary>
         /// Creates a new Level by the given level index.
@@ -64,10 +68,17 @@ namespace ProjektRoguelike
             _rooms = new Room[6, 6];
 
             // Generate the seed (maybe add "enter seed" feature).
-            seed = new Random().Next();
+            Seed = new Random().Next();
 
             // Get the Random.
-            Random random = new Random(seed);
+            Random random = new Random(Seed);
+
+            if (xmlLevel != null)
+            {
+                xmlLevel = Globals.save.GetFile("xml\\level.xml");
+            }
+
+            LoadData(xmlLevel);
 
             // Generate the start room.
             Vector2 startRoomPos = new Vector2(random.Next(_rooms.GetLength(0)),
@@ -463,7 +474,7 @@ namespace ProjektRoguelike
             return false;
         }
 
-        public void SaveData()
+        public static void SaveData()
         {
             XDocument xml = new XDocument(new XElement("Root",
                                                         new XElement("Stats", "")));
@@ -471,6 +482,10 @@ namespace ProjektRoguelike
             xml.Element("Root").Element("Stats").Add(new XElement("Stat",
                                             new XElement("name", "Seed"),
                                             new XElement("amount", Seed)));
+
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                            new XElement("name", "Position"),
+                                            new XElement("amount", Level.CurrentRoom.Position)));
 
             Globals.save.HandleSaveFormates(xml, "level.xml");
         }
@@ -480,10 +495,15 @@ namespace ProjektRoguelike
             if (data != null)
             {
                 List<XElement> statList = (from t in data.Element("Root").Element("Stats").Descendants("Stat")
-                                               //where t.Element("name").Value ==
-                                           select t).ToList<XElement>();
+                                                select t).ToList<XElement>();
 
                 Seed = Convert.ToInt32(statList[0].Element("amount").Value, Globals.culture);
+
+
+                string RoomPositionX = statList[1].Element("amount").Value.Substring(3);
+                string RoomPositionY = statList[1].Element("amount").Value.Substring(6 + Convert.ToInt32(RoomPositionX)).Replace("}", "");
+
+                Level.CurrentRoom.Position = new Vector2(Convert.ToInt32(RoomPositionX), Convert.ToInt32(RoomPositionY));
             }
         }
     }

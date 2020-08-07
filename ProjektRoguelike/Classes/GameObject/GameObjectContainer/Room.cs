@@ -32,7 +32,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// The position of the top-left corner of this <see cref="Room"/>.
         /// </summary>
-        public Vector2 Position { get; }
+        public Vector2 Position { get; set; }
 
         /// <summary>
         /// The kind of this <see cref="Room"/>.

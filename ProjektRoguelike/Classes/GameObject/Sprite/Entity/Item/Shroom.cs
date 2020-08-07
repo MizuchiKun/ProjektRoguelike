@@ -24,7 +24,7 @@ namespace ProjektRoguelike
         // is made to increase players damage
         public override void Effect()
         {
-            Level.Player.HitValue *= 2;
+            Level.Player.HitValue += 1;
         }
     }
 }

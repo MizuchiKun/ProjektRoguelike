@@ -17,7 +17,12 @@ namespace ProjektRoguelike
         /// </summary>
         public static Mainmenu Mainmenu { get; set; }
 
-        private bool created;
+        /// <summary>
+        /// The <see cref="Optionsmenu"> of this project.
+        /// </summary>
+        public static Optionsmenu Optionsmenu { get; set; }
+
+        private bool mainCreated, optionCreated;
 
         public override Rectangle Hitbox => Rectangle.Empty;
 
@@ -36,6 +41,9 @@ namespace ProjektRoguelike
 
             resetObject = ResetWorld;
 
+            mainCreated = false;
+            optionCreated = false;
+
             restartButton = new Button(Button.ButtonState.Selected, ResetWorld, null, new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2));
         }
 
@@ -48,12 +56,20 @@ namespace ProjektRoguelike
                 case Gamestate.Paused:
                     break;
                 case Gamestate.Mainmenu:
-                    if (created == false)
+                    if (mainCreated == false)
                     {
                         Mainmenu = new Mainmenu();
-                        created = true;
+                        mainCreated = true;
                     }
                     Mainmenu.Update();
+                    break;
+                case Gamestate.Optionsmenu:
+                    if (optionCreated == false)
+                    {
+                        Optionsmenu = new Optionsmenu();
+                        optionCreated = true;
+                    }
+                    Optionsmenu.Update();
                     break;
                 case Gamestate.Dead:
                     restartButton.Update();
@@ -72,7 +88,8 @@ namespace ProjektRoguelike
             switch (Globals.gamestate)
             {
                 case Gamestate.Active:
-                    created = false;
+                    mainCreated = false;
+                    optionCreated = false;
                     #region Healthbar
                     for (int i = 0; i < Level.Player.HealthMax; i++)
                     {
@@ -148,17 +165,24 @@ namespace ProjektRoguelike
                     Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Paused", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
                     break;
                 case Gamestate.Mainmenu:
-                    if (created == false)
+                    if (mainCreated == false)
                     {
                         Mainmenu = new Mainmenu();
-                        created = true;
+                        mainCreated = true;
                     }
                     Mainmenu.Draw();
+                    break;
+                case Gamestate.Optionsmenu:
+                    if (optionCreated == false)
+                    {
+                        Optionsmenu = new Optionsmenu();
+                        optionCreated = true;
+                    }
+                    Optionsmenu.Draw();
                     break;
                 case Gamestate.Dead:
                     restartButton.Draw();
                     Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Game Over", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
-                    
                     break;
                 default:
                     break;

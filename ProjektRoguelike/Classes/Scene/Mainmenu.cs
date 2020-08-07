@@ -18,7 +18,7 @@ namespace ProjektRoguelike
 
         List<Button> buttons = new List<Button>();
 
-        XDocument xmlPlayer, xmlLevel;
+        XDocument xmlPlayer;
 
         public Mainmenu()
         {
@@ -41,12 +41,11 @@ namespace ProjektRoguelike
             Stats = new Button(Button.ButtonState.Unselected, null, null, Camera.Position + new Vector2(380, 470));
             buttons.Add(Stats);
 
-            OptionsObject = null;
-            Options = new Button(Button.ButtonState.Unselected, null, null, Camera.Position + new Vector2(380, 550));
+            OptionsObject = SwitchToOptions;
+            Options = new Button(Button.ButtonState.Unselected, OptionsObject, null, Camera.Position + new Vector2(380, 550));
             buttons.Add(Options);
 
             xmlPlayer = Globals.save.GetFile("xml\\stats.xml");
-            xmlLevel = Globals.save.GetFile("xml\\level.xml");
         }
 
         public override void Update()
@@ -105,6 +104,11 @@ namespace ProjektRoguelike
             Level.Player.LoadData(xmlPlayer);
             //Level.LoadData(xmlLevel);
             Globals.gamestate = Gamestate.Active;
+        }
+
+        private void SwitchToOptions(object info)
+        {
+            Globals.gamestate = Gamestate.Optionsmenu;
         }
     }
 }
