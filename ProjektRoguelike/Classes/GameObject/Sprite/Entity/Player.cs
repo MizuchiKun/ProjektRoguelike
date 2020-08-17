@@ -18,7 +18,7 @@ namespace ProjektRoguelike
         public int HealthMax;
         public bool poopsicle = false;
 
-        public ushort speed = 350;
+        public static ushort speed = 400;
 
         public int itemcount;
 

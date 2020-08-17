@@ -200,6 +200,8 @@ namespace ProjektRoguelike
         {
             // Open the door.
             State = DoorState.Open;
+            // Set the animation.
+            CurrentAnimation = _closeAnimations[(byte)Kind];
             // Start opening animation.
             CurrentAnimation.IsReversed = true;
             CurrentAnimation.Restart();
@@ -213,6 +215,8 @@ namespace ProjektRoguelike
         {
             // Close the Door.
             State = DoorState.Closed;
+            // Set the animation.
+            CurrentAnimation = _closeAnimations[(byte)Kind];
             // Start closing animation.
             CurrentAnimation.IsReversed = false;
             CurrentAnimation.Restart();

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
 
 namespace ProjektRoguelike
 {
@@ -57,12 +58,20 @@ namespace ProjektRoguelike
         public static int Seed { get; set; }
 
         /// <summary>
+        /// The index of this Level.
+        /// </summary>
+        public static byte LevelIndex;
+
+        /// <summary>
         /// Creates a new Level by the given level index.
         /// </summary>
         /// <param name="levelIndex">The index of the level you want to create.</param>
         public Level(byte levelIndex)
         {
             Companions = new List<Flybuddy>();
+
+            // Store the levelIndex.
+            LevelIndex = levelIndex;
 
             // Clear the level.
             _rooms = new Room[6, 6];
@@ -90,6 +99,7 @@ namespace ProjektRoguelike
             _player = new Player(CurrentRoom.Position + (Room.Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale);
 
             // Generate the path to the boss.
+            List<Vector2> roomPositions = new List<Vector2>();
             Vector2 currentRoomPos = startRoomPos;
             for (byte i = 0; i < 6 && HasAdjacentEmptyCell(currentRoomPos); i++)
             {
@@ -101,25 +111,90 @@ namespace ProjektRoguelike
                     chosenDirection = (byte)random.Next(4);
                     nextRoomPos = currentRoomPos + Globals.DirectionVectors[chosenDirection];
                 }
-                while (!((nextRoomPos.X > 0 && nextRoomPos.X < _rooms.GetLength(0))
-                        && (nextRoomPos.Y > 0 && nextRoomPos.Y < _rooms.GetLength(1)))
+                while (!((nextRoomPos.X >= 0 && nextRoomPos.X < _rooms.GetLength(0))
+                        && (nextRoomPos.Y >= 0 && nextRoomPos.Y < _rooms.GetLength(1)))
                        || _rooms[(int)nextRoomPos.X, (int)nextRoomPos.Y] != null);
 
                 // The next room becomes the current room.
                 currentRoomPos = nextRoomPos;
 
+                // Store it in the List.
+                roomPositions.Add(currentRoomPos);
+
+                // Get the number of .room files in the "Normal" directory.
+                byte roomCount = (byte)Directory.GetFiles(path: $"..\\..\\..\\..\\Content\\Rooms\\{RoomKind.Normal}", 
+                                                          searchPattern:"*", 
+                                                          searchOption: SearchOption.TopDirectoryOnly).Length;
+
                 // Add randomly chosen Room there.
                 _rooms[(int)currentRoomPos.X, (int)currentRoomPos.Y] =
-                    new Room(roomIndex: (byte)random.Next(byte.MaxValue + 1),
+                    new Room(roomIndex: (byte)random.Next(roomCount),
                              gridPosition: currentRoomPos,
                              kind: RoomKind.Normal);
             }
 
+            // Remove the last room's position from the List.
+            roomPositions.RemoveAt(roomPositions.Count - 1);
+
+            // Store the number of rooms before the boss.
+            byte roomsBeforeBoss = (byte)roomPositions.Count;
+
             // Replace the last room with the boss room.
             _rooms[(int)currentRoomPos.X, (int)currentRoomPos.Y] =
-                new Room(roomIndex: 0,
+                new Room(roomIndex: LevelIndex,
                          gridPosition: currentRoomPos,
                          kind: RoomKind.Boss);
+            
+            // Choose a Room randomly from which you can start.
+            do
+            {
+                currentRoomPos = roomPositions[random.Next(roomPositions.Count)];
+            }
+            while (!HasAdjacentEmptyCell(currentRoomPos));
+            // Generate additional, optional Rooms.
+            for (byte i = 0; i < 8 && HasAdjacentEmptyCell(currentRoomPos); i++)
+            {
+                // Choose a random, adjacent, empty grid cell.
+                byte chosenDirection;
+                Vector2 nextRoomPos;
+                do
+                {
+                    chosenDirection = (byte)random.Next(4);
+                    nextRoomPos = currentRoomPos + Globals.DirectionVectors[chosenDirection];
+                }
+                while (!((nextRoomPos.X >= 0 && nextRoomPos.X < _rooms.GetLength(0))
+                        && (nextRoomPos.Y >= 0 && nextRoomPos.Y < _rooms.GetLength(1)))
+                       || _rooms[(int)nextRoomPos.X, (int)nextRoomPos.Y] != null);
+
+                // The next room becomes the current room.
+                currentRoomPos = nextRoomPos;
+
+                // Store it in the List.
+                roomPositions.Add(currentRoomPos);
+
+                // Get the number of .room files in the "Normal" directory.
+                byte roomCount = (byte)Directory.GetFiles(path: $"..\\..\\..\\..\\Content\\Rooms\\{RoomKind.Normal}",
+                                                          searchPattern: "*",
+                                                          searchOption: SearchOption.TopDirectoryOnly).Length;
+
+                // Add randomly chosen Room there.
+                _rooms[(int)currentRoomPos.X, (int)currentRoomPos.Y] =
+                    new Room(roomIndex: (byte)random.Next(roomCount),
+                             gridPosition: currentRoomPos,
+                             kind: RoomKind.Normal);
+            }
+
+
+            // Get the number of .room files in the "Hidden" directory.
+            byte hiddenRoomCount = (byte)Directory.GetFiles(path: $"..\\..\\..\\..\\Content\\Rooms\\{RoomKind.Hidden}",
+                                                            searchPattern: "*",
+                                                            searchOption: SearchOption.TopDirectoryOnly).Length;
+
+            // Replace the last room with a randomly chosen, hidden room.
+            _rooms[(int)currentRoomPos.X, (int)currentRoomPos.Y] =
+                new Room(roomIndex: (byte)random.Next(hiddenRoomCount),
+                         gridPosition: currentRoomPos,
+                         kind: RoomKind.Hidden);
 
             // Add the doors.
             for (byte x = 0; x < _rooms.GetLength(0); x++)
@@ -287,6 +362,40 @@ namespace ProjektRoguelike
 
                         // Add the doors to the room.
                         _rooms[x, y].Doors = doors;
+                    }
+                }
+            }
+
+            // Add the locked Doors and their keys.
+            for (byte i = roomsBeforeBoss; i < roomPositions.Count; i++)
+            {
+                // Get the current position.
+                Vector2 currentPosition = roomPositions[i];
+
+                // There's a 20% chance that a Room contains a locked door.
+                if (random.Next(100) < 20)
+                {
+                    // Choose a random Door.
+                    Room currentRoom = _rooms[(int)currentPosition.X, (int)currentPosition.Y];
+                    byte direction;
+                    do
+                    {
+                        direction = (byte)random.Next(4);
+                    }
+                    while (currentRoom.Doors[direction] == null);
+                    // Lock that Door.
+                    _rooms[(int)currentPosition.X, (int)currentPosition.Y].Doors[direction].Lock(true);
+
+                    // There's a 80% chance that you can find the key in the Level.
+                    // (Otherwise you have to bring a key from the previous Level.)
+                    if (random.Next(100) < 80)
+                    {
+                        // Place the key in a random, previous Room.
+                        Vector2 chosenRoomPos = roomPositions[random.Next(i)];
+                        _rooms[(int)chosenRoomPos.X, (int)chosenRoomPos.Y].Add(
+                            new PickupKey((chosenRoomPos + new Vector2(0.5f)) * Globals.WindowDimensions)
+                        );
+                        Console.WriteLine($"Level.cs:398: Change how / where the keys are added to the Room! (Enemy drop, Pot, etc.)");
                     }
                 }
             }
@@ -459,8 +568,8 @@ namespace ProjektRoguelike
             {
                 adjacentRoomPos = roomPos + Globals.DirectionVectors[i];
                 // If the position is inside the grid.
-                if ((adjacentRoomPos.X > 0 && adjacentRoomPos.X < _rooms.GetLength(0))
-                    && (adjacentRoomPos.Y > 0 && adjacentRoomPos.Y < _rooms.GetLength(1)))
+                if ((adjacentRoomPos.X >= 0 && adjacentRoomPos.X < _rooms.GetLength(0))
+                    && (adjacentRoomPos.Y >= 0 && adjacentRoomPos.Y < _rooms.GetLength(1)))
                 {
                     // If the adjacent cell is empty.
                     if (_rooms[(int)adjacentRoomPos.X, (int)adjacentRoomPos.Y] == null)

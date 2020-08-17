@@ -24,7 +24,7 @@ namespace ProjektRoguelike
         // The syringe is made to speed up the player
         public override void Effect()
         {
-            Level.Player.speed *= 2;
+            Player.speed *= 2;
         }
     }
 }

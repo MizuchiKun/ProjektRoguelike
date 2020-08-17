@@ -25,6 +25,12 @@ namespace ProjektRoguelike
                rotation,
                effect)
         {
+            // Set the item's position to this position.
+            if (position != null)
+            {
+                item.Position = position.Value;
+            }
+
             this.Item = item;
             Health = 10000;
 

@@ -27,9 +27,9 @@ namespace ProjektRoguelike
         }
 
         public Hole(Vector2? position = null,
-                     Rectangle? sourceRectangle = null,
-                     float rotation = 0f,
-                     SpriteEffects effect = SpriteEffects.None)
+                    Rectangle? sourceRectangle = null,
+                    float rotation = 0f,
+                    SpriteEffects effect = SpriteEffects.None)
         : base(texture: Globals.Content.Load<Texture2D>("Sprites/Environment/Hole"),
                position,
                sourceRectangle,
@@ -42,6 +42,14 @@ namespace ProjektRoguelike
         public override void Update()
         {
             base.Update();
+        }
+
+        public override void Draw()
+        {
+            // Place it on the ground.
+            Layer = 0.9999999f;
+
+            base.Draw();
         }
     }
 }

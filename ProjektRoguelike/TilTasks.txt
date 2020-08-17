@@ -1,2 +1,1 @@
-﻿// Function to convert stored levels to Lists of GameObjects!
-// other stuff...
+﻿//? Optimise Level generation (the locked Door and key part).

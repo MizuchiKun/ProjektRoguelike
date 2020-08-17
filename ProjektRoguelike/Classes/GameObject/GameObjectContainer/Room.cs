@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -33,6 +34,11 @@ namespace ProjektRoguelike
         /// The position of the top-left corner of this <see cref="Room"/>.
         /// </summary>
         public Vector2 Position { get; set; }
+
+        /// <summary>
+        /// The position of the top-left corner.
+        /// </summary>
+        private Vector2 _topLeftCorner;
 
         /// <summary>
         /// The kind of this <see cref="Room"/>.
@@ -153,19 +159,19 @@ namespace ProjektRoguelike
             Texture2D corner = Globals.Content.Load<Texture2D>("Sprites/Environment/Ecke");
 
             // Add the room background.
-            Vector2 topLeftCorner = Position;
-            topLeftCorner += new Vector2(1, 0.5f) * Tile.Size * Globals.Scale;
+            _topLeftCorner = Position;
+            _topLeftCorner += new Vector2(1, 0.5f) * Tile.Size * Globals.Scale;
             // The corners.
             _gameObjects.Add(new Tile(corner,
-                                      topLeftCorner));
+                                      _topLeftCorner));
             _gameObjects.Add(new Tile(corner,
-                                      topLeftCorner + new Vector2(Dimensions.X - 1, 0) * Tile.Size * Globals.Scale,
+                                      _topLeftCorner + new Vector2(Dimensions.X - 1, 0) * Tile.Size * Globals.Scale,
                                       rotation: 90f));
             _gameObjects.Add(new Tile(corner,
-                                      topLeftCorner + (Dimensions - Vector2.One) * Tile.Size * Globals.Scale,
+                                      _topLeftCorner + (Dimensions - Vector2.One) * Tile.Size * Globals.Scale,
                                       rotation: 180f));
             _gameObjects.Add(new Tile(corner,
-                                      topLeftCorner + new Vector2(0, Dimensions.Y - 1) * Tile.Size * Globals.Scale,
+                                      _topLeftCorner + new Vector2(0, Dimensions.Y - 1) * Tile.Size * Globals.Scale,
                                       rotation: -90f));
             // The walls.
             // Initialize the Walls arrays.
@@ -178,13 +184,13 @@ namespace ProjektRoguelike
             {
                 // Top.
                 Tile topWall = new Tile(wall,
-                                        topLeftCorner + new Vector2(x, 0) * Tile.Size * Globals.Scale,
+                                        _topLeftCorner + new Vector2(x, 0) * Tile.Size * Globals.Scale,
                                         rotation: 0f);
                 Walls[0][x - 1] = topWall;
 
                 // Bottom.
                 Tile bottomWall = new Tile(wall,
-                                           topLeftCorner + new Vector2(x, Dimensions.Y - 1) * Tile.Size * Globals.Scale,
+                                           _topLeftCorner + new Vector2(x, Dimensions.Y - 1) * Tile.Size * Globals.Scale,
                                            rotation: 180f);
                 Walls[2][x - 1] = bottomWall;
             }
@@ -193,13 +199,13 @@ namespace ProjektRoguelike
             {
                 // Left.
                 Tile leftWall = new Tile(wall,
-                                         topLeftCorner + new Vector2(0, y) * Tile.Size * Globals.Scale,
+                                         _topLeftCorner + new Vector2(0, y) * Tile.Size * Globals.Scale,
                                          rotation: -90f);
                 Walls[3][y - 1] = leftWall;
 
                 // Right.
                 Tile rightWall = new Tile(wall,
-                                          topLeftCorner + new Vector2(Dimensions.X - 1, y) * Tile.Size * Globals.Scale,
+                                          _topLeftCorner + new Vector2(Dimensions.X - 1, y) * Tile.Size * Globals.Scale,
                                           rotation: 90f);
                 Walls[1][y - 1] = rightWall;
             }
@@ -213,7 +219,7 @@ namespace ProjektRoguelike
                 for (byte y = 1; y < Dimensions.Y - 1; y++)
                 {
                     _gameObjects.Add(new Tile(ground,
-                                              topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale));
+                                              _topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale));
                 }
             }
 
@@ -225,33 +231,22 @@ namespace ProjektRoguelike
                     Texture2D controlsInstructions = Globals.Content.Load<Texture2D>("Sprites/Misc/ControlsInstructions");
                     _gameObjects.Add(new Sprite(texture: controlsInstructions,
                                                 position: Position + (Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale,
-                                                scale: (controlsInstructions.Bounds.Size.ToVector2() / new Vector2(256) * Tile.Size) / controlsInstructions.Bounds.Size.ToVector2(),
+                                                scale: new Vector2(5) * (Tile.Size / controlsInstructions.Bounds.Size.ToVector2()) * Globals.Scale,
                                                 layerDepth: 0.99999f));
                     break;
                 case RoomKind.Normal:
                     // Load the content from a file by using the roomIndex.
-                    //...
-                    Console.WriteLine($"Room.cs:234: Missing loading of content!");
+                    _gameObjects.AddRange(RoomfileToList(RoomKind.Normal, roomIndex));
                     break;
                 case RoomKind.Hidden:
                     // Load the content from a file by using the roomIndex.
-                    //...
-                    Console.WriteLine($"Room.cs:239: Missing loading of content!");
+                    _gameObjects.AddRange(RoomfileToList(RoomKind.Hidden, roomIndex));
                     break;
                 case RoomKind.Boss:
-                    // Add boss room stuff, like the boss and maybe some heal items.
-                    //...
-                    Console.WriteLine($"Room.cs:244: Missing boss room stuff / loading of it!");
+                    // Load the content from a file by using the roomIndex.
+                    _gameObjects.AddRange(RoomfileToList(RoomKind.Boss, roomIndex));
                     break;
             }
-                        //TESTROOMINDICATOR
-                        Console.WriteLine($"Room.cs:248: Remove TestRoomIndicator, when not needed!");
-                        string roomPos = $"{roomIndex}";
-                        _gameObjects.Add(new Text(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"),
-                                                  new StringBuilder(roomPos),
-                                                  Position + (Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size,
-                                                  new Vector2(0.5f),
-                                                  layerDepth: 0.999f));
         }
 
         /// <summary>
@@ -270,6 +265,165 @@ namespace ProjektRoguelike
         public void Remove(GameObject gameObject)
         {
             _gameObjects.Remove(gameObject);
+        }
+
+        /// <summary>
+        /// Converts the .room file of the given <see cref="RoomKind"/> and number to a List of <see cref="GameObject"/>s.
+        /// </summary>
+        /// <param name="roomKind">The given room kind.</param>
+        /// <param name="roomIndex">The given room index</param>
+        /// <returns>A List of all GameObjects, that are specified in the .room file.</returns>
+        private List<GameObject> RoomfileToList(RoomKind roomKind, byte roomIndex)
+        {
+            // The list of GameObjects.
+            List<GameObject> gameObjects = new List<GameObject>();
+
+            // Get the lines of the file.
+            string[] lines = File.ReadAllLines($"..\\..\\..\\..\\Content\\Rooms\\{roomKind}\\{roomKind.ToString().ToLower()}_{roomIndex}.room");
+
+            // Go through all lines.
+            for (byte y = 0; y < 9; y++)
+            {
+                // Split the line in substrings at every space (' ').
+                string[] splittedLine = lines[y].Split(' ');
+
+                // Get and add all GameObjects of this line.
+                byte index, metadata;
+                GameObject loadedGameObject = null;
+                for (byte x = 0; x < 15; x++)
+                {
+                    // Get the index and metadata.
+                    // If the metadata is defined.
+                    if (splittedLine[x].Contains(":"))
+                    {
+                        // Split the string again.
+                        string[] values = splittedLine[x].Split(':');
+
+                        // Get the index and metadata.
+                        index = Byte.Parse(values[0]);
+                        metadata = Byte.Parse(values[1]);
+                    }
+                    // Else the metadata isn't defined.
+                    else
+                    {
+                        // Get the index and set the metadata to 0.
+                        index = Byte.Parse(splittedLine[x]);
+                        metadata = 0;
+                    }
+
+                    // Get the corresponding GameObject.
+                    switch (index)
+                    {
+                        // Nothing.
+                        case 0:
+                            // Add nothing.
+                            break;
+                        // Enemy.
+                        case 1:
+                            switch (metadata)
+                            {
+                                // Exploder.
+                                case 0:
+                                    loadedGameObject = new Exploder(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Floater.
+                                case 1:
+                                    loadedGameObject = new Floater(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Fly.
+                                case 2:
+                                    loadedGameObject = new Fly(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Flyboss.
+                                case 3:
+                                    loadedGameObject = new Flyboss(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Flytrap.
+                                case 4:
+                                    loadedGameObject = new Flytrap(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Screamer.
+                                case 5:
+                                    loadedGameObject = new Screamer(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                            }
+                            break;
+                        // Environment.
+                        case 2:
+                            switch (metadata)
+                            {
+                                // Campfire.
+                                case 0:
+                                    loadedGameObject = new Campfire(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Chest.
+                                case 1:
+                                    loadedGameObject = new Chest(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Hole.
+                                case 2:
+                                    loadedGameObject = new Hole(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Poop.
+                                case 3:
+                                    loadedGameObject = new Poop(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Pot.
+                                case 4:
+                                    loadedGameObject = new Pot(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Rock.
+                                case 5:
+                                    loadedGameObject = new Rock(_topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                            }
+                            break;
+                        // Itemstone.
+                        case 3:
+                            switch (metadata)
+                            {
+                                // Bomb.
+                                case 0:
+                                    loadedGameObject = new Itemstone(new PickupBomb(), _topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Coin.
+                                case 1:
+                                    loadedGameObject = new Itemstone(new PickupCoin(), _topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Heart.
+                                case 2:
+                                    loadedGameObject = new Itemstone(new PickupHeart(), _topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Key.
+                                case 3:
+                                    loadedGameObject = new Itemstone(new PickupKey(), _topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Poopsicle.
+                                case 4:
+                                    loadedGameObject = new Itemstone(new Poopsicle(), _topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Shroom.
+                                case 5:
+                                    loadedGameObject = new Itemstone(new Shroom(), _topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                                // Syringe.
+                                case 6:
+                                    loadedGameObject = new Itemstone(new Syringe(), _topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale);
+                                    break;
+                            }
+                            break;
+                    }
+
+                    // Add the GameObject to gameObjects.
+                    if (loadedGameObject != null)
+                    {
+                        gameObjects.Add(loadedGameObject);
+                    }
+                }
+            }
+
+            // Return the GameObject List.
+            return gameObjects;
         }
     }
 }

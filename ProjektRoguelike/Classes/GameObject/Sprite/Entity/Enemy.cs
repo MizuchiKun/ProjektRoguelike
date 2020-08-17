@@ -29,11 +29,15 @@ namespace ProjektRoguelike
             // Close all doors.
             foreach (Door door in Level.CurrentRoom.Doors)
             {
-                // If the door is not hidden.
-                if (!(door.Kind == DoorKind.Hidden)
-                    && door.State != DoorState.Closed)
+                // If there's a door.
+                if (door != null)
                 {
-                    door.Close();
+                    // If the door is not hidden.
+                    if (!(door.Kind == DoorKind.Hidden)
+                        && door.State != DoorState.Closed)
+                    {
+                        door.Close();
+                    }
                 }
             }
         }
