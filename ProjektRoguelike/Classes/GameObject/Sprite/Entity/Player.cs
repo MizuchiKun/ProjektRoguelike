@@ -35,12 +35,12 @@ namespace ProjektRoguelike
         /// <summary>
         /// The bombs the player has at its disposal.
         /// </summary>
-        public int Bombs { get; set; }
+        public int Bombs { get; set; } = 100;
 
         /// <summary>
         /// The keys the player owns. Used for certain doors and chests.
         /// </summary>
-        public int Keys { get; set; }
+        public int Keys { get; set; } = 100;
 
         /// <summary>
         /// The items the player has picked up this run.
@@ -138,9 +138,9 @@ namespace ProjektRoguelike
             //testing environment and enemies
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.L))
             {
-                //Level.CurrentRoom.Add(new Flyboss(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
-                Level.CurrentRoom.Add(new Itemstone(new Heart(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale),
-                                                               Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+                Level.CurrentRoom.Add(new Fly/*boss*/(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
+                //Level.CurrentRoom.Add(new Itemstone(new Heart(Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale),
+                //                                               Level.CurrentRoom.Position + (Room.Dimensions / 3) * Tile.Size * Globals.Scale));
             }
 
 

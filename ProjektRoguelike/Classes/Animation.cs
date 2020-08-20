@@ -44,6 +44,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// Whether the animation is paused.
         /// </summary>
+        public bool IsPaused { get => _isPaused; }
         private bool _isPaused = false;
         /// <summary>
         /// Whether this animation is playing in reversed order.
@@ -53,10 +54,12 @@ namespace ProjektRoguelike
         /// <summary>
         /// The current frame of this <see cref="Animation"/>.
         /// </summary>
+        public sbyte CurrentFrame { get => _currentFrame; }
         private sbyte _currentFrame;
         /// <summary>
         /// The count of frame of this <see cref="Animation"/>.
         /// </summary>
+        public sbyte FrameCount { get => _frameCount; }
         private sbyte _frameCount;
         /// <summary>
         /// The time when the current frame started.
@@ -66,7 +69,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// The source rectangle of the current frame.
         /// </summary>
-        public Rectangle CurrentFrame
+        public Rectangle CurrentFrameRect
         {
             get
             {
@@ -236,6 +239,30 @@ namespace ProjektRoguelike
         public void SelectFrame(sbyte frameIndex)
         {
             _currentFrame = (!IsReversed) ? frameIndex : (sbyte)((_frameCount - 1) - frameIndex);
+        }
+
+        /// <summary>
+        /// Returns the frame with the given index as individual <see cref="Texture2D"/>.
+        /// </summary>
+        /// <param name="frameIndex">The index of the frame.</param>
+        /// <returns>The Texture2D of the frame.</returns>
+        public Texture2D GetFrameTexture(byte frameIndex)
+        {
+            // Create the texture.
+            Texture2D frameTexture = new Texture2D(Globals.Graphics.GraphicsDevice, (int)_frameDimensions.X, (int)_frameDimensions.Y);
+
+            // Get the colour data.
+            Rectangle frameRect = new Rectangle(new Point((int)(frameIndex * _frameDimensions.X), 0),
+                                                _frameDimensions.ToPoint());
+            int pixelCount = frameRect.Width * frameRect.Height;
+            Color[] data = new Color[pixelCount];
+            Sheet.GetData(0, frameRect, data, 0, pixelCount);
+
+            // Set the colour data of the frame texture.
+            frameTexture.SetData(data);
+
+            // Return the frame texture.
+            return frameTexture;
         }
     }
 }

@@ -66,6 +66,29 @@ namespace ProjektRoguelike
 
             if (Health <= 0)
             {
+                // If this is an Enemy.
+                if (this.GetType().IsSubclassOf(typeof(Enemy)))
+                {
+                    // If this is the last Enemy in the current room.
+                    if (Level.CurrentRoom.Enemies.Count == 1)
+                    {
+                        // Open all doors.
+                        foreach (Door door in Level.CurrentRoom.Doors)
+                        {
+                            // If there's a door in that direction.
+                            if (door != null)
+                            {
+                                // If the door is not hidden and closed.
+                                if (!(door.Kind == DoorKind.Hidden)
+                                    && door.State == DoorState.Closed)
+                                {
+                                    door.Open();
+                                }
+                            }
+                        }
+                    }
+                }
+
                 Level.CurrentRoom.Remove(this);
             }
 

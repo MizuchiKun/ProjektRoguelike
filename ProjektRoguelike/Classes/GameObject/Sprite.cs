@@ -112,7 +112,7 @@ namespace ProjektRoguelike
             CurrentAnimation = animation;
             Position = (position != null) ? position.Value : Vector2.Zero;
             Origin = (origin != null) ? origin.Value : new Vector2(0.5f);
-            SourceRectangle = (animation != null) ? animation.CurrentFrame : (sourceRectangle != null) ? sourceRectangle : texture.Bounds;
+            SourceRectangle = (animation != null) ? animation.CurrentFrameRect : (sourceRectangle != null) ? sourceRectangle : texture.Bounds;
             Scale = (scale != null) ? scale.Value : Vector2.One;
             Rotation = rotation;
             Layer = layerDepth;
@@ -135,7 +135,7 @@ namespace ProjektRoguelike
             if (CurrentAnimation != null)
             {
                 Texture = CurrentAnimation.Sheet;
-                SourceRectangle = CurrentAnimation.CurrentFrame;
+                SourceRectangle = CurrentAnimation.CurrentFrameRect;
                 Effects = CurrentAnimation.Effects;
             }
 

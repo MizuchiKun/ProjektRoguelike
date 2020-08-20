@@ -115,13 +115,6 @@ namespace ProjektRoguelike
             Kind = kindOfDoor;
             State = (Kind != DoorKind.Hidden) ? doorState : DoorState.Locked;
 
-            // Set the initial animation.
-            CurrentAnimation = _closeAnimations[(byte)Kind];
-            CurrentAnimation.IsReversed = (State == DoorState.Open);
-        }
-
-        public override void Update()
-        {
             // If this door is locked.
             if (State == DoorState.Locked)
             {
@@ -135,15 +128,23 @@ namespace ProjektRoguelike
                     Texture = _lockedDoor;
                     SourceRectangle = new Rectangle(0, 0, 256, 256);
                 }
+                // Else if it's a hidden door.
+                else if (Kind == DoorKind.Hidden)
+                {
+                    // The hidden door closed frame.
+                    Texture = _closeAnimations[(byte)DoorKind.Hidden].GetFrameTexture(1);
+                }
             }
-            // Else if the door is closed and there are no enemies in the room.
-            else if (State == DoorState.Closed
-                     && Level.CurrentRoom.Enemies.Count == 0)
+            else
             {
-                // Open this door.
-                Open();
+                // Set the initial animation.
+                CurrentAnimation = _closeAnimations[(byte)Kind];
+                CurrentAnimation.IsReversed = (State == DoorState.Open);
             }
+        }
 
+        public override void Update()
+        {
             // If this Door is open.
             if (State == DoorState.Open)
             {
@@ -205,7 +206,6 @@ namespace ProjektRoguelike
             // Start opening animation.
             CurrentAnimation.IsReversed = true;
             CurrentAnimation.Restart();
-            CurrentAnimation.SelectFrame(1);
         }
 
         /// <summary>
@@ -220,7 +220,6 @@ namespace ProjektRoguelike
             // Start closing animation.
             CurrentAnimation.IsReversed = false;
             CurrentAnimation.Restart();
-            CurrentAnimation.SelectFrame(1);
         }
 
         /// <summary>
