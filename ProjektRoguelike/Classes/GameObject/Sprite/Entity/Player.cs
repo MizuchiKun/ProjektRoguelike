@@ -48,8 +48,8 @@ namespace ProjektRoguelike
         public List<Item> items = new List<Item>();
 
         /// <summary>
-        /// The walking animations of the Player.<br></br>
-        /// (0=up, 1=right, 2=down, 3=left)
+        /// The walking animations of the Player.<br></br><br></br>
+        /// Use <see cref="Directions"/> as indices.
         /// </summary>
         private static Animation[] _walkingAnimations =
         {

@@ -43,7 +43,7 @@ namespace ProjektRoguelike
                     break;
                 case ButtonState.Selected:
                     // press enter to activate the button
-                    if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Enter))
+                    if (Globals.GetKeyUp(Keys.Enter))
                     {
                         buttonState = ButtonState.Activated;
                     }
@@ -77,10 +77,8 @@ namespace ProjektRoguelike
                 case ButtonState.Unselected:
                     break;
                 case ButtonState.Selected:
-                    Globals.SpriteBatch.Draw(activated, new Rectangle((int)position.X, (int)position.Y, 50, 50), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
-                    break;
                 case ButtonState.Activated:
-                    Globals.SpriteBatch.Draw(activated, new Rectangle((int)position.X, (int)position.Y, 50, 50), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
+                    Globals.SpriteBatch.Draw(activated, new Rectangle(Camera.Position.ToPoint() + new Point((int)position.X, (int)position.Y), new Point(50, 50)), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
                     break;
                 default:
                     break;

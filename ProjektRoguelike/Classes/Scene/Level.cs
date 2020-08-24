@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace ProjektRoguelike
 {
@@ -14,11 +15,6 @@ namespace ProjektRoguelike
     /// </summary>
     public class Level : Scene
     {
-        /// <summary>
-        /// Loading Document for Levelinformation. Currently: Seed.
-        /// </summary>
-        XDocument xmlLevel;
-
         /// <summary>
         /// List of all the companions aiding around the player
         /// </summary>
@@ -47,7 +43,7 @@ namespace ProjektRoguelike
         private static Directions? _transitionDirection = null;
 
         /// <summary>
-        /// The <see cref="Player"/> of all levels.
+        /// The <see cref="ProjektRoguelike.Player"/> of all levels.
         /// </summary>
         public static Player Player { get => _player; }
         private static Player _player;
@@ -66,7 +62,7 @@ namespace ProjektRoguelike
         /// Creates a new Level by the given level index.
         /// </summary>
         /// <param name="levelIndex">The index of the level you want to create.</param>
-        public Level(byte levelIndex)
+        public Level(byte levelIndex, bool loadFromFile = false)
         {
             Companions = new List<Flybuddy>();
 
@@ -79,24 +75,25 @@ namespace ProjektRoguelike
             // Generate the seed (maybe add "enter seed" feature).
             Seed = new Random().Next();
 
-            // Get the Random.
-            Random random = new Random(Seed);
-
-            if (xmlLevel != null)
+            // Load the level.
+            if (loadFromFile)
             {
-                xmlLevel = Globals.save.GetFile("xml\\level.xml");
+                LoadData(Mainmenu.xmlLevel);
             }
 
-            LoadData(xmlLevel);
+            // Get the Random.
+            Random random = new Random(Seed);
 
             // Generate the start room.
             Vector2 startRoomPos = new Vector2(random.Next(_rooms.GetLength(0)),
                                                random.Next(_rooms.GetLength(1)));
-            CurrentRoom = _rooms[(int)startRoomPos.X, (int)startRoomPos.Y] = new Room(0, startRoomPos, RoomKind.Start);
-            // Place the camera.
-            Camera.Position = startRoomPos * Globals.WindowDimensions;
-            // Initialize the player.
-            _player = new Player(CurrentRoom.Position + (Room.Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale);
+            // Set the start room.
+            _rooms[(int)startRoomPos.X, (int)startRoomPos.Y] = new Room(0, startRoomPos, RoomKind.Start);
+            // Set the camera position.
+            if (!loadFromFile)
+            {
+                Camera.Position = startRoomPos * Globals.WindowDimensions;
+            }
 
             // Generate the path to the boss.
             List<Vector2> roomPositions = new List<Vector2>();
@@ -195,6 +192,14 @@ namespace ProjektRoguelike
                 new Room(roomIndex: (byte)random.Next(hiddenRoomCount),
                          gridPosition: currentRoomPos,
                          kind: RoomKind.Hidden);
+
+            // Set the current room.
+            currentRoomPos = Convert.ToInt32(loadFromFile) * (Camera.Position / Globals.WindowDimensions) +
+                             Convert.ToInt32(!loadFromFile) * startRoomPos;
+            CurrentRoom = _rooms[(int)currentRoomPos.X, (int)currentRoomPos.Y];
+
+            // Initialize the player.
+            _player = new Player(CurrentRoom.Position + (Room.Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale);
 
             // Add the doors.
             for (byte x = 0; x < _rooms.GetLength(0); x++)
@@ -479,6 +484,21 @@ namespace ProjektRoguelike
                     _transitionDirection = null;
                 }
             }
+
+
+
+
+
+
+
+
+
+
+            Console.WriteLine(Camera.Position);
+
+
+
+
         }
 
         public override void Draw()
@@ -622,7 +642,7 @@ namespace ProjektRoguelike
                 string RoomPositionY = statList[1].Element("amount").Value.Substring(6 + RoomPositionX.Length).Trim(stuff);
 
                 // Create a new vector2 and use the position values, defined above.
-                Level.CurrentRoom.Position = new Vector2(Convert.ToInt32(RoomPositionX), Convert.ToInt32(RoomPositionY));
+                /*Level.CurrentRoom*/Camera.Position = new Vector2(Convert.ToInt32(RoomPositionX), Convert.ToInt32(RoomPositionY));
             }
         }
     }

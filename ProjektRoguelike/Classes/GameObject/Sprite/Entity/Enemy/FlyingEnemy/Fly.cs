@@ -10,6 +10,13 @@ namespace ProjektRoguelike
     /// </summary>
     public class Fly : FlyingEnemy
     {
+        protected override Animation[] _walkingAnimations { get; } =
+        {
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Flysheet"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(1f / 60f))
+        };
+
         public Fly(Vector2? position = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
@@ -31,9 +38,7 @@ namespace ProjektRoguelike
             _shadowSprite.Scale = Scale;
 
             // Set the animation.
-            CurrentAnimation = new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Flysheet"),
-                                             frameDimensions: new Vector2(256),
-                                             frameDuration: TimeSpan.FromSeconds(1f / 60f));
+            CurrentAnimation = _walkingAnimations[0];
         }
 
         public override void Update()

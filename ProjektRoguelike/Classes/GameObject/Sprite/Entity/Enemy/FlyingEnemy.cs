@@ -10,6 +10,7 @@ namespace ProjektRoguelike
     /// </summary>
     public class FlyingEnemy : Enemy
     {
+        protected override Animation[] _walkingAnimations { get; }
         /// <summary>
         /// The shadow all flying enemies have.
         /// </summary>

@@ -228,9 +228,11 @@ namespace ProjektRoguelike
         public void Unlock(bool unlockCounterpart = false)
         {
             // Unlock this door.
-            State = DoorState.Closed;
+            State = DoorState.Open;
             // Set the animation.
             CurrentAnimation = _closeAnimations[(byte)Kind];
+            CurrentAnimation.IsReversed = true;
+            CurrentAnimation.Restart();
 
             // If the counterpart shall be unlocked.
             if (unlockCounterpart)
