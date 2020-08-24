@@ -11,6 +11,13 @@ namespace ProjektRoguelike
     /// </summary>
     public class Flyboss : FlyingEnemy
     {
+        protected override Animation[] _walkingAnimations { get; } =
+        {
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Flyboss_wo_shadow"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(1000))
+        };
+
         McTimer AttackTimer, SpawnTimer, MovementTimer;
 
         const float _maxSpeed = 145;

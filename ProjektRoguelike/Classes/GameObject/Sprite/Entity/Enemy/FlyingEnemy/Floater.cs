@@ -10,6 +10,23 @@ namespace ProjektRoguelike
     /// </summary>
     public class Floater : FlyingEnemy
     {
+        protected override Animation[] _walkingAnimations { get; } =
+        {
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Floatersheet_up"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(150)),
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Floatersheet_left"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(150),
+                          effects: SpriteEffects.FlipHorizontally),
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Floatersheet_down"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(150)),
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Floatersheet_left"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(150))
+        };
+
         public Floater(Vector2? position = null,
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)

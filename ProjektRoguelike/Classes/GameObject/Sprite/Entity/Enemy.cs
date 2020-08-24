@@ -10,6 +10,12 @@ namespace ProjektRoguelike
     /// </summary>
     public abstract class Enemy : Entity
     {
+        /// <summary>
+        /// The walking animations of the <see cref="Enemy"/>.<br></br>
+        /// Use <see cref="Directions"/> as indices.
+        /// </summary>
+        protected abstract Animation[] _walkingAnimations { get; }
+
         protected float Speed;
         public int HitValue { get; set; } = 1;
 
@@ -49,6 +55,8 @@ namespace ProjektRoguelike
         public override void Update()
         {
             AI();
+
+            ChooseAnimation();
 
             base.Update();
         }
@@ -97,6 +105,53 @@ namespace ProjektRoguelike
                 return false;
             }
         }
+
+        /// <summary>
+        /// Chooses the current animation.
+        /// </summary>
+        protected void ChooseAnimation()
+        {
+            // If there are 4 animations.
+            if (_walkingAnimations.GetLength(0) == 4)
+            {
+                // Choose the proper animation.
+                // If the horizontal velocity is dominant.
+                if (Math.Abs(_velocity.X) > Math.Abs(_velocity.Y))
+                {
+                    // If it moves left.
+                    if (_velocity.X < 0)
+                    {
+                        CurrentAnimation = _walkingAnimations[3];
+                    }
+                    // Else it moves right.
+                    else
+                    {
+                        CurrentAnimation = _walkingAnimations[1];
+                    }
+                }
+                // Else the vertical velocity is dominant.
+                else
+                {
+                    // If it moves up.
+                    if (_velocity.Y < 0)
+                    {
+                        CurrentAnimation = _walkingAnimations[0];
+                    }
+                    // Else it moves down.
+                    else if (_velocity.Y > 0)
+                    {
+                        CurrentAnimation = _walkingAnimations[2];
+                    }
+                }
+            }
+            // Else if there's only one.
+            else if (_walkingAnimations.GetLength(0) == 1)
+            {
+                // Just choose that animation.
+                CurrentAnimation = _walkingAnimations[0];
+            }
+        }
+
         public virtual void CollidePlayer()
         {                                                                 
         if (BumpsInto(Level.Player))                                        

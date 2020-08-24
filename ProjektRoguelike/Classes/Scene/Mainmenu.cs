@@ -18,7 +18,7 @@ namespace ProjektRoguelike
 
         List<Button> buttons = new List<Button>();
 
-        XDocument xmlPlayer;
+        public static XDocument xmlPlayer, xmlLevel;
 
         public Mainmenu()
         {
@@ -26,23 +26,23 @@ namespace ProjektRoguelike
             bkg = Globals.Content.Load<Texture2D>("Sprites/Misc/Mainmenu1");
 
             NewRunObject = NewGame;
-            NewRun = new Button(Button.ButtonState.Selected, NewRunObject, null, Camera.Position + new Vector2(380, 220));
+            NewRun = new Button(Button.ButtonState.Selected, NewRunObject, null, /*Camera.Position + */new Vector2(380, 220));
             buttons.Add(NewRun);
 
             ContinueObject = ContinueGame;
-            Continue = new Button(Button.ButtonState.Unselected, ContinueObject, null, Camera.Position + new Vector2(380, 330));
+            Continue = new Button(Button.ButtonState.Unselected, ContinueObject, null, /*Camera.Position + */new Vector2(380, 330));
             buttons.Add(Continue);
 
             ChallengeObject = null;
-            Challenges = new Button(Button.ButtonState.Unselected, null, null, Camera.Position + new Vector2(380, 410));
+            Challenges = new Button(Button.ButtonState.Unselected, null, null, /*Camera.Position + */new Vector2(380, 410));
             buttons.Add(Challenges);
 
             StatsObject = null;
-            Stats = new Button(Button.ButtonState.Unselected, null, null, Camera.Position + new Vector2(380, 470));
+            Stats = new Button(Button.ButtonState.Unselected, null, null, /*Camera.Position + */new Vector2(380, 470));
             buttons.Add(Stats);
 
             OptionsObject = SwitchToOptions;
-            Options = new Button(Button.ButtonState.Unselected, OptionsObject, null, Camera.Position + new Vector2(380, 550));
+            Options = new Button(Button.ButtonState.Unselected, OptionsObject, null, /*Camera.Position + */new Vector2(380, 550));
             buttons.Add(Options);
 
             xmlPlayer = Globals.save.GetFile("xml\\stats.xml");
@@ -73,7 +73,7 @@ namespace ProjektRoguelike
             }
 
             // Close the game by hitting the escape key. 
-            if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
+            if (Globals.GetKeyDown(Keys.Escape))
             {
                 System.Environment.Exit(0);
             }
@@ -94,17 +94,25 @@ namespace ProjektRoguelike
         /// <param name="info"> Only here, so I can use my delegate. lol </param>
         private void NewGame(object info)
         {
-            Level.CurrentRoom.Entities.Clear();
+            //Level.CurrentRoom.Entities.Clear();
             Globals.CurrentScene = new Level(0);
             Globals.gamestate = Gamestate.Active;
         }
 
         private void ContinueGame(object info)
         {
-            Level.Player.LoadData(xmlPlayer);
-            //Level.LoadData(xmlLevel);
-            Globals.gamestate = Gamestate.Active;
+            // Try to get the file.
+            Mainmenu.xmlLevel = Globals.save.GetFile("xml\\level.xml");
+
+            // If there is a Level to load.
+            if (xmlLevel != null)
+            {
+                Globals.CurrentScene = new Level(0, true);
+                Level.Player.LoadData(xmlPlayer);
+                //Level.LoadData(xmlLevel);
+                Globals.gamestate = Gamestate.Active;
         }
+    }
 
         private void SwitchToOptions(object info)
         {

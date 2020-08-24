@@ -10,6 +10,23 @@ namespace ProjektRoguelike
     /// </summary>
     public class Screamer : Enemy
     {
+        protected override Animation[] _walkingAnimations { get; } =
+        {
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Screamersheet_up"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(150)),
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Screamersheet_left"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(150),
+                          effects: SpriteEffects.FlipHorizontally),
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Screamersheet_down"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(150)),
+            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Enemies/Screamersheet_left"),
+                          frameDimensions: new Vector2(256),
+                          frameDuration: TimeSpan.FromMilliseconds(150))
+        };
+
         McTimer timer;
 
         public Screamer(Vector2? position = null,

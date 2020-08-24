@@ -61,8 +61,11 @@ namespace ProjektRoguelike
             // Set the UI.
             Globals.UI = new UI();
 
+            // The save class.
+            Globals.save = new Save(1, Globals.gameName);
+
             // Set the initial Scene.
-            Globals.CurrentScene = new Level(0);
+            Globals.CurrentScene = new Mainmenu();
 
             base.Initialize();
         }
@@ -71,11 +74,7 @@ namespace ProjektRoguelike
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent() 
-        {
-            // The save class.
-            Globals.save = new Save(1, Globals.gameName);
-        }
+        protected override void LoadContent() { }
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -101,10 +100,11 @@ namespace ProjektRoguelike
                 case Gamestate.Active:
                     // Call the current Scene's Update method.
                     Globals.CurrentScene.Update();
-                    if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
+                    if (Globals.GetKeyDown(Keys.Escape))
                     {
                         Level.SaveData();
                         Level.Player.SaveData();
+                        Globals.CurrentScene = new Mainmenu();
                         Globals.gamestate = Gamestate.Mainmenu;
                     }
                     break;

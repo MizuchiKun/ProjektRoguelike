@@ -44,7 +44,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Effects/Poofsheet.png
 
-#begin Sprites/Enemies/Explodersheet_back.png
+#begin Sprites/Enemies/Explodersheet_down.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -54,9 +54,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Explodersheet_back.png
+/build:Sprites/Enemies/Explodersheet_down.png
 
-#begin Sprites/Enemies/Explodersheet_front.png
+#begin Sprites/Enemies/Explodersheet_left.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -66,9 +66,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Explodersheet_front.png
+/build:Sprites/Enemies/Explodersheet_left.png
 
-#begin Sprites/Enemies/Explodersheet_side.png
+#begin Sprites/Enemies/Explodersheet_up.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -78,9 +78,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Explodersheet_side.png
+/build:Sprites/Enemies/Explodersheet_up.png
 
-#begin Sprites/Enemies/Floatersheet_back.png
+#begin Sprites/Enemies/Floatersheet_down.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -90,9 +90,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Floatersheet_back.png
+/build:Sprites/Enemies/Floatersheet_down.png
 
-#begin Sprites/Enemies/Floatersheet_front.png
+#begin Sprites/Enemies/Floatersheet_left.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -102,9 +102,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Floatersheet_front.png
+/build:Sprites/Enemies/Floatersheet_left.png
 
-#begin Sprites/Enemies/Floatersheet_side.png
+#begin Sprites/Enemies/Floatersheet_up.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -114,7 +114,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Floatersheet_side.png
+/build:Sprites/Enemies/Floatersheet_up.png
 
 #begin Sprites/Enemies/Flyboss_wo_shadow.png
 /importer:TextureImporter
@@ -140,7 +140,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Enemies/Flysheet.png
 
-#begin Sprites/Enemies/Flytrapsheet_back.png
+#begin Sprites/Enemies/Flytrapsheet_down.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -150,9 +150,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Flytrapsheet_back.png
+/build:Sprites/Enemies/Flytrapsheet_down.png
 
-#begin Sprites/Enemies/Flytrapsheet_front.png
+#begin Sprites/Enemies/Flytrapsheet_left.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -162,9 +162,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Flytrapsheet_front.png
+/build:Sprites/Enemies/Flytrapsheet_left.png
 
-#begin Sprites/Enemies/Flytrapsheet_side.png
+#begin Sprites/Enemies/Flytrapsheet_up.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -174,9 +174,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Flytrapsheet_side.png
+/build:Sprites/Enemies/Flytrapsheet_up.png
 
-#begin Sprites/Enemies/Screamersheet_back.png
+#begin Sprites/Enemies/Screamersheet_down.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -186,9 +186,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Screamersheet_back.png
+/build:Sprites/Enemies/Screamersheet_down.png
 
-#begin Sprites/Enemies/Screamersheet_front.png
+#begin Sprites/Enemies/Screamersheet_left.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -198,9 +198,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Screamersheet_front.png
+/build:Sprites/Enemies/Screamersheet_left.png
 
-#begin Sprites/Enemies/Screamersheet_side.png
+#begin Sprites/Enemies/Screamersheet_up.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -210,7 +210,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Enemies/Screamersheet_side.png
+/build:Sprites/Enemies/Screamersheet_up.png
 
 #begin Sprites/Enemies/Shadow.png
 /importer:TextureImporter

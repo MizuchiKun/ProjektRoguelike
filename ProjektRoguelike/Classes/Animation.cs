@@ -73,81 +73,84 @@ namespace ProjektRoguelike
         {
             get
             {
-                // When the game is paused.
-                if (Globals.gamestate == Gamestate.Paused)
+                // If there are more than 1 frame.
+                if (_frameCount > 1)
                 {
-                    // Update the frame start.
-                    _frameStart = DateTime.Now;
+                    // Is the current frame over?
+                    if (!_hasEnded 
+                        && !(_isPaused || !(Globals.gamestate == Gamestate.Active))
+                        && Globals.HasTimePassed(_frameDuration, _frameStart))
+                    {
+                        // If it's not reversed.
+                        if (!IsReversed)
+                        {
+                            // It's the next frame.
+                            _currentFrame++;
+
+                            // If the current repetition ended.
+                            if (_currentFrame == _frameCount)
+                            {
+                                // And it shall repeat.
+                                if (_repetitions < 0
+                                    || (_repetitions > 0
+                                        && _currentRepetition < _repetitions))
+                                {
+                                    // Start from the beginning.
+                                    _currentFrame = 0;
+                                    // A new repetition starts.
+                                    if (_repetitions > 0)
+                                    {
+                                        _currentRepetition++;
+                                    }
+                                }
+                                // Else it shall not repeat.
+                                else
+                                {
+                                    _currentFrame = (sbyte)(_frameCount - 1);
+                                    _hasEnded = true;
+                                }
+                            }
+                        }
+                        // Else it is reversed.
+                        else
+                        {
+                            // It's the next frame.
+                            _currentFrame--;
+
+                            // If the current repetition ended.
+                            if (_currentFrame == -1)
+                            {
+                                // And it shall repeat.
+                                if (_repetitions < 0
+                                    || (_repetitions > 0
+                                        && _currentRepetition < _repetitions))
+                                {
+                                    // Start from the beginning.
+                                    _currentFrame = (sbyte)(_frameCount - 1);
+                                    // A new repetition starts.
+                                    if (_repetitions > 0)
+                                    {
+                                        _currentRepetition++;
+                                    }
+                                }
+                                // Else it shall not repeat.
+                                else
+                                {
+                                    _currentFrame = 0;
+                                    _hasEnded = true;
+                                }
+                            }
+                        }
+
+                        // Update _frameStart.
+                        _frameStart = DateTime.Now;
+                    }
                 }
-
-                // Is the current frame over?
-                if (!_hasEnded 
-                    && !_isPaused
-                    && Globals.HasTimePassed(_frameDuration, _frameStart))
+                // Else it has only 1 frame.
+                else
                 {
-                    // If it's not reversed.
-                    if (!IsReversed)
-                    {
-                        // It's the next frame.
-                        _currentFrame++;
-
-                        // If the current repetition ended.
-                        if (_currentFrame == _frameCount)
-                        {
-                            // And it shall repeat.
-                            if (_repetitions < 0
-                                || (_repetitions > 0
-                                    && _currentRepetition < _repetitions))
-                            {
-                                // Start from the beginning.
-                                _currentFrame = 0;
-                                // A new repetition starts.
-                                if (_repetitions > 0)
-                                {
-                                    _currentRepetition++;
-                                }
-                            }
-                            // Else it shall not repeat.
-                            else
-                            {
-                                _currentFrame = (sbyte)(_frameCount - 1);
-                                _hasEnded = true;
-                            }
-                        }
-                    }
-                    // Else it is reversed.
-                    else
-                    {
-                        // It's the next frame.
-                        _currentFrame--;
-
-                        // If the current repetition ended.
-                        if (_currentFrame == -1)
-                        {
-                            // And it shall repeat.
-                            if (_repetitions < 0
-                                || (_repetitions > 0
-                                    && _currentRepetition < _repetitions))
-                            {
-                                // Start from the beginning.
-                                _currentFrame = (sbyte)(_frameCount - 1);
-                                // A new repetition starts.
-                                if (_repetitions > 0)
-                                {
-                                    _currentRepetition++;
-                                }
-                            }
-                            // Else it shall not repeat.
-                            else
-                            {
-                                _currentFrame = 0;
-                                _hasEnded = true;
-                            }
-                        }
-                    }
-
-                    // Update _frameStart.
-                    _frameStart = DateTime.Now;
+                    // Just select the first and only frame.
+                    _currentFrame = 0;
                 }
 
                 // Return the source rectangle.
