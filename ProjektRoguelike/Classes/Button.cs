@@ -23,12 +23,12 @@ namespace ProjektRoguelike
 
         public object Info;
 
-        public Vector2 position { get; set; }
+        public Vector2 RelativePosition { get; set; }
 
-        public Button(ButtonState ButtonState, PassObject ButtonActivated, object info, Vector2 Position)
+        public Button(ButtonState ButtonState, PassObject ButtonActivated, object info, Vector2 relativePosition)
         {
             Info = info;
-            position = Position;
+            RelativePosition = relativePosition;
             buttonState = ButtonState;
             buttonActivated = ButtonActivated;
 
@@ -78,7 +78,7 @@ namespace ProjektRoguelike
                     break;
                 case ButtonState.Selected:
                 case ButtonState.Activated:
-                    Globals.SpriteBatch.Draw(activated, new Rectangle(Camera.Position.ToPoint() + new Point((int)position.X, (int)position.Y), new Point(50, 50)), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
+                    Globals.SpriteBatch.Draw(activated, new Rectangle((Camera.Position + RelativePosition).ToPoint(), new Point(50, 50)), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
                     break;
                 default:
                     break;

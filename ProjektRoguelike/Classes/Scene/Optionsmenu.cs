@@ -13,9 +13,9 @@ namespace ProjektRoguelike
     {
         Texture2D bkg;
 
-        OptionsButton FullScreen, MusicVolume, SFXVolume;
+        private int fullscreen, music, sfx;
 
-        int fullscreen, music, sfx;
+        OptionsButton FullScreen, MusicVolume, SFXVolume;
 
         List<OptionsButton> buttons = new List<OptionsButton>();
 
@@ -24,8 +24,6 @@ namespace ProjektRoguelike
 
         XDocument xml;
 
-        bool Fullscreen = false;
-
         public Optionsmenu()
         {
             bkg = Globals.Content.Load<Texture2D>("Sprites/Misc/Options");
@@ -33,15 +31,15 @@ namespace ProjektRoguelike
             xml = Globals.save.GetFile("xml\\options.xml");
 
             saveObject = SaveOptions;
-            Savebutton = new Button(Button.ButtonState.Selected, saveObject, null, Camera.Position + new Vector2(400, 520));
+            Savebutton = new Button(Button.ButtonState.Selected, saveObject, null, new Vector2(400, 520));
 
-            FullScreen = new OptionsButton("Full Screen", fullscreen, 1, Button.ButtonState.Selected, Camera.Position + new Vector2(400, 220));
+            FullScreen = new OptionsButton("Full Screen", fullscreen, 1, Button.ButtonState.Selected, new Vector2(400, 220));
             buttons.Add(FullScreen);
 
-            MusicVolume = new OptionsButton("Music Volume", music, 20, Button.ButtonState.Unselected, Camera.Position + new Vector2(400, 320));
+            MusicVolume = new OptionsButton("Music Volume", music, 20, Button.ButtonState.Unselected, new Vector2(400, 320));
             buttons.Add(MusicVolume);
 
-            SFXVolume = new OptionsButton("SFX Volume", sfx, 20, Button.ButtonState.Unselected, Camera.Position + new Vector2(400, 420));
+            SFXVolume = new OptionsButton("SFX Volume", sfx, 20, Button.ButtonState.Unselected, new Vector2(400, 420));
             buttons.Add(SFXVolume);
 
             LoadData(xml);
@@ -73,9 +71,9 @@ namespace ProjektRoguelike
             }
 
             // Switch back to the mainmenu by hitting the escape key. 
-            if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
+            if (Globals.GetKeyDown(Keys.Escape))
             {
-                SaveOptions(null);
+                //SaveOptions(null);
                 Globals.gamestate = Gamestate.Mainmenu;
             }
         }
@@ -88,10 +86,18 @@ namespace ProjektRoguelike
                 buttons[i].Draw();
             }
             Globals.SpriteBatch.Draw(bkg, new Rectangle(Camera.Position.ToPoint(), (Globals.WindowDimensions + Vector2.One).ToPoint()), null, Color.White, 0, new Vector2(0f), SpriteEffects.None, 0.1f);
+            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Press enter to save", Camera.Position + Savebutton.RelativePosition + new Vector2(75, 15), Color.White);
         }
 
         public void SaveOptions(object info)
         {
+            // Apply the options.
+            // Apply the full screen.
+            Globals.Graphics.ApplyChanges();
+            // Apply the audio options (if necessary).
+            //...
+
+            // Save the options.
             XDocument xml = new XDocument(new XElement("Root",
                                                 new XElement("Options", "")));
 

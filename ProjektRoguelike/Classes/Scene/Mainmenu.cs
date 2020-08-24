@@ -14,7 +14,7 @@ namespace ProjektRoguelike
 
         Button NewRun, Continue, Challenges, Stats, Options;
 
-        PassObject NewRunObject, ContinueObject, ChallengeObject, StatsObject, OptionsObject;
+        PassObject NewRunObject, ContinueObject, ChallengesObject, StatsObject, OptionsObject;
 
         List<Button> buttons = new List<Button>();
 
@@ -26,23 +26,23 @@ namespace ProjektRoguelike
             bkg = Globals.Content.Load<Texture2D>("Sprites/Misc/Mainmenu1");
 
             NewRunObject = NewGame;
-            NewRun = new Button(Button.ButtonState.Selected, NewRunObject, null, /*Camera.Position + */new Vector2(380, 220));
+            NewRun = new Button(Button.ButtonState.Selected, NewRunObject, null, new Vector2(380, 220));
             buttons.Add(NewRun);
 
             ContinueObject = ContinueGame;
-            Continue = new Button(Button.ButtonState.Unselected, ContinueObject, null, /*Camera.Position + */new Vector2(380, 330));
+            Continue = new Button(Button.ButtonState.Unselected, ContinueObject, null, new Vector2(380, 330));
             buttons.Add(Continue);
 
-            ChallengeObject = null;
-            Challenges = new Button(Button.ButtonState.Unselected, null, null, /*Camera.Position + */new Vector2(380, 410));
+            ChallengesObject = SwitchToChallenges;
+            Challenges = new Button(Button.ButtonState.Unselected, ChallengesObject, null, new Vector2(380, 410));
             buttons.Add(Challenges);
 
-            StatsObject = null;
-            Stats = new Button(Button.ButtonState.Unselected, null, null, /*Camera.Position + */new Vector2(380, 470));
+            StatsObject = SwitchToStats;
+            Stats = new Button(Button.ButtonState.Unselected, StatsObject, null, new Vector2(380, 470));
             buttons.Add(Stats);
 
             OptionsObject = SwitchToOptions;
-            Options = new Button(Button.ButtonState.Unselected, OptionsObject, null, /*Camera.Position + */new Vector2(380, 550));
+            Options = new Button(Button.ButtonState.Unselected, OptionsObject, null, new Vector2(380, 550));
             buttons.Add(Options);
 
             xmlPlayer = Globals.save.GetFile("xml\\stats.xml");
@@ -111,12 +111,22 @@ namespace ProjektRoguelike
                 Level.Player.LoadData(xmlPlayer);
                 //Level.LoadData(xmlLevel);
                 Globals.gamestate = Gamestate.Active;
+            }
         }
-    }
 
         private void SwitchToOptions(object info)
         {
             Globals.gamestate = Gamestate.Optionsmenu;
+        }
+
+        private void SwitchToChallenges(object info)
+        {
+            Globals.gamestate = Gamestate.Challengesmenu;
+        }
+
+        private void SwitchToStats(object info)
+        {
+            Globals.gamestate = Gamestate.Statsmenu;
         }
     }
 }

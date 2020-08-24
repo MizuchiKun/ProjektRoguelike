@@ -115,11 +115,9 @@ namespace ProjektRoguelike
                     }
                     break;
                 case Gamestate.Mainmenu:
-                    Globals.UI.Update();
-                    break;
                 case Gamestate.Optionsmenu:
-                    Globals.UI.Update();
-                    break;
+                case Gamestate.Challengesmenu:
+                case Gamestate.Statsmenu:
                 case Gamestate.Dead:
                     Globals.UI.Update();
                     break;
@@ -163,9 +161,9 @@ namespace ProjektRoguelike
                     Globals.CurrentScene.Draw();
                     break;
                 case Gamestate.Mainmenu:
-                    Globals.UI.Draw();
-                    break;
                 case Gamestate.Optionsmenu:
+                case Gamestate.Challengesmenu:
+                case Gamestate.Statsmenu:
                     Globals.UI.Draw();
                     break;
                 case Gamestate.Dead:
