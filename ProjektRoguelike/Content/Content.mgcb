@@ -476,18 +476,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Misc/Arrowbutton.png
 
-#begin Sprites/Misc/Challenges.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Misc/Challenges.png
-
 #begin Sprites/Misc/ControlsInstructions.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -523,18 +511,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Misc/Options.png
-
-#begin Sprites/Misc/Stats.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Misc/Stats.png
 
 #begin Sprites/Pickups/Bomb.png
 /importer:TextureImporter

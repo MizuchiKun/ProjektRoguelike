@@ -45,7 +45,6 @@
     <Compile Include="Classes\Button\OptionsButton.cs" />
     <Compile Include="Classes\GameObject\GameObjectContainer\Room.cs" />
     <Compile Include="Classes\GameObject\Sprite.cs" />
-    <Compile Include="Classes\GameObject\Sprite\Trapdoor.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Enemy\FlyingEnemy\Flyboss.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Hole.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity\Environment\Chest.cs" />
@@ -85,8 +84,6 @@
     <Compile Include="Classes\GameObject\Sprite\Entity.cs" />
     <Compile Include="Classes\GameObject\Sprite\Door.cs" />
     <Compile Include="Classes\Save.cs" />
-    <Compile Include="Classes\Scene\Challengesmenu.cs" />
-    <Compile Include="Classes\Scene\Statsmenu.cs" />
     <Compile Include="Classes\Scene\Optionsmenu.cs" />
     <Compile Include="Classes\Scene\Mainmenu.cs" />
     <Compile Include="Classes\UI.cs" />

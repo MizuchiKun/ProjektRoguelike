@@ -13,9 +13,9 @@ namespace ProjektRoguelike
     {
         Texture2D bkg;
 
-        private int fullscreen, music, sfx;
-
         OptionsButton FullScreen, MusicVolume, SFXVolume;
+
+        int fullscreen, music, sfx;
 
         List<OptionsButton> buttons = new List<OptionsButton>();
 
@@ -23,6 +23,8 @@ namespace ProjektRoguelike
         Button Savebutton;
 
         XDocument xml;
+
+        bool Fullscreen = false;
 
         public Optionsmenu()
         {
@@ -73,7 +75,7 @@ namespace ProjektRoguelike
             // Switch back to the mainmenu by hitting the escape key. 
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
-                //SaveOptions(null);
+                SaveOptions(null);
                 Globals.gamestate = Gamestate.Mainmenu;
             }
         }
@@ -86,7 +88,6 @@ namespace ProjektRoguelike
                 buttons[i].Draw();
             }
             Globals.SpriteBatch.Draw(bkg, new Rectangle(Camera.Position.ToPoint(), (Globals.WindowDimensions + Vector2.One).ToPoint()), null, Color.White, 0, new Vector2(0f), SpriteEffects.None, 0.1f);
-            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Press enter to save", Savebutton.position + new Vector2(75, 15), Color.White);
         }
 
         public void SaveOptions(object info)
