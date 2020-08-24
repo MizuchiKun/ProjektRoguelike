@@ -12,16 +12,11 @@ namespace ProjektRoguelike
 
         public int Selected, SelectedMax;
 
-        public OptionsButton(string title, int selected, int selectedMax, ButtonState ButtonState, Vector2 Position) : base(ButtonState, null, selected, Position)
+        public OptionsButton(string title, int selected, int selectedMax, ButtonState ButtonState, Vector2 relativePosition) : base(ButtonState, null, selected, relativePosition)
         {
+            Title = title;
             Selected = selected;
             SelectedMax = selectedMax;
-
-            Title = title;
-            position = Position;
-            buttonState = ButtonState;
-
-            activated = Globals.Content.Load<Texture2D>("Sprites/Misc/Arrowbutton");
         }
 
         public override void Update()
@@ -49,24 +44,27 @@ namespace ProjektRoguelike
 
         public override void Draw()
         {
-            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Title, position + new Vector2(75, 10), Color.White);
+            // Update the position relative to the Camera.
+            Vector2 absolutePosition = Camera.Position + RelativePosition;
+
+            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Title, absolutePosition + new Vector2(75, 10), Color.White);
             if (SelectedMax == 1)
             {
                 switch (Selected)
                 {
                     case 0:
-                        Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "No", position + new Vector2(425, 10), Color.White);
+                        Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "No", absolutePosition + new Vector2(425, 10), Color.White);
                         Globals.Fullscreen = false;
                         break;
                     case 1:
-                        Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Yes", position + new Vector2(425, 10), Color.White);
+                        Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Yes", absolutePosition + new Vector2(425, 10), Color.White);
                         Globals.Fullscreen = true;
                         break;
                 }
             }
             else
             {
-                Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Selected.ToString(), position + new Vector2(425, 10), Color.White);
+                Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Selected.ToString(), absolutePosition + new Vector2(425, 10), Color.White);
             }
 
             // only draw the button, if it is either activated or selected.
@@ -75,10 +73,10 @@ namespace ProjektRoguelike
                 case ButtonState.Unselected:
                     break;
                 case ButtonState.Selected:
-                    Globals.SpriteBatch.Draw(activated, new Rectangle((int)position.X, (int)position.Y, 50, 50), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
+                    Globals.SpriteBatch.Draw(activated, new Rectangle((int)absolutePosition.X, (int)absolutePosition.Y, 50, 50), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
                     break;
                 case ButtonState.Activated:
-                    Globals.SpriteBatch.Draw(activated, new Rectangle((int)position.X, (int)position.Y, 50, 50), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
+                    Globals.SpriteBatch.Draw(activated, new Rectangle((int)absolutePosition.X, (int)absolutePosition.Y, 50, 50), null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.05f);
                     break;
                 default:
                     break;

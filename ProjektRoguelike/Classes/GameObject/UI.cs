@@ -22,7 +22,17 @@ namespace ProjektRoguelike
         /// </summary>
         public static Optionsmenu Optionsmenu { get; set; }
 
-        private bool mainCreated, optionCreated;
+        /// <summary>
+        /// The <see cref="Challengesmenu"> of this project.
+        /// </summary>
+        public static Challengesmenu Challengesmenu { get; set; }
+
+        /// <summary>
+        /// The <see cref="Statsmenu"> of this project.
+        /// </summary>
+        public static Statsmenu Statsmenu { get; set; }
+
+        private bool mainCreated, optionCreated, statCreated, challengeCreated;
 
         public override Rectangle Hitbox => Rectangle.Empty;
 
@@ -41,17 +51,28 @@ namespace ProjektRoguelike
 
             resetObject = ResetWorld;
 
-            mainCreated = false;
-            optionCreated = false;
+            mainCreated = optionCreated = challengeCreated = statCreated = false;
 
             restartButton = new Button(Button.ButtonState.Selected, ResetWorld, null, new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2));
         }
 
         public override void Update()
         {
+            if (Globals.Fullscreen == true)
+            {
+                Globals.Graphics.IsFullScreen = true;
+            }
+            else
+            {
+                Globals.Graphics.IsFullScreen = false;
+            }
             switch (Globals.gamestate)
             {
                 case Gamestate.Active:
+                    if (mainCreated == true)
+                    {
+                        mainCreated = optionCreated = challengeCreated = statCreated = false;
+                    }
                     break;
                 case Gamestate.Paused:
                     break;
@@ -71,6 +92,22 @@ namespace ProjektRoguelike
                     }
                     Optionsmenu.Update();
                     break;
+                case Gamestate.Challengesmenu:
+                    if (challengeCreated == false)
+                    {
+                        Challengesmenu = new Challengesmenu();
+                        challengeCreated = true;
+                    }
+                    Challengesmenu.Update();
+                    break;
+                case Gamestate.Statsmenu:
+                    if (statCreated == false)
+                    {
+                        Statsmenu = new Statsmenu();
+                        statCreated = true;
+                    }
+                    Statsmenu.Update();
+                    break;
                 case Gamestate.Dead:
                     restartButton.Update();
                     if (restartButton.buttonState == Button.ButtonState.Activated)
@@ -88,8 +125,6 @@ namespace ProjektRoguelike
             switch (Globals.gamestate)
             {
                 case Gamestate.Active:
-                    mainCreated = false;
-                    optionCreated = false;
                     #region Healthbar
                     for (int i = 0; i < Level.Player.HealthMax; i++)
                     {
@@ -179,6 +214,22 @@ namespace ProjektRoguelike
                         optionCreated = true;
                     }
                     Optionsmenu.Draw();
+                    break;
+                case Gamestate.Challengesmenu:
+                    if (challengeCreated == false)
+                    {
+                        Challengesmenu = new Challengesmenu();
+                        challengeCreated = true;
+                    }
+                    Challengesmenu.Draw();
+                    break;
+                case Gamestate.Statsmenu:
+                    if (statCreated == false)
+                    {
+                        Statsmenu = new Statsmenu();
+                        statCreated = true;
+                    }
+                    Statsmenu.Draw();
                     break;
                 case Gamestate.Dead:
                     restartButton.Draw();
