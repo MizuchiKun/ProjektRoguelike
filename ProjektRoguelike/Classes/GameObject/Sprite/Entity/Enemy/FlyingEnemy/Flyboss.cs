@@ -27,6 +27,10 @@ namespace ProjektRoguelike
 
         bool bla = true;
 
+        int itemNum;
+
+        Random rand = new Random();
+
         public override Rectangle Hitbox
         {
             get
@@ -52,7 +56,7 @@ namespace ProjektRoguelike
                effect)
         {
             Speed = 2f;
-            Health = 50;
+            Health = 5;
 
             Scale = new Vector2(1f);
 
@@ -66,10 +70,37 @@ namespace ProjektRoguelike
 
             // Set the _shadowSprite.
             _shadowSprite.Scale = Scale;
+
+            itemNum = rand.Next(1, 4 + 1);
         }
 
         public override void Update()
         {
+            if (Health <= 0)
+            {
+                Level.CurrentRoom.Add(new Trapdoor(Position));
+                switch (itemNum)
+                {
+                    case 1:
+                        Level.CurrentRoom.Add(new Itemstone(new Heart(Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale),
+                                                                        Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale));
+                        break;
+                    case 2:
+                        Level.CurrentRoom.Add(new Itemstone(new Poopsicle(Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale),
+                                                                        Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale));
+                        break;
+                    case 3:
+                        Level.CurrentRoom.Add(new Itemstone(new Shroom(Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale),
+                                                                        Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale));
+                        break;
+                    case 4:
+                        Level.CurrentRoom.Add(new Itemstone(new Syringe(Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale),
+                                                                        Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale));
+                        break;
+                    default:
+                        break;
+                }
+            }
             base.Update();
         }
 

@@ -53,7 +53,7 @@ namespace ProjektRoguelike
 
             mainCreated = optionCreated = challengeCreated = statCreated = false;
 
-            restartButton = new Button(Button.ButtonState.Selected, ResetWorld, null, new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2));
+            restartButton = new Button(Button.ButtonState.Selected, ResetWorld, null, new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 130, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2));
         }
 
         public override void Update()
@@ -233,6 +233,7 @@ namespace ProjektRoguelike
                     break;
                 case Gamestate.Dead:
                     restartButton.Draw();
+                    Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Press enter to restart", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 70, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 + 10), Color.White);
                     Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Game Over", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
                     break;
                 default:

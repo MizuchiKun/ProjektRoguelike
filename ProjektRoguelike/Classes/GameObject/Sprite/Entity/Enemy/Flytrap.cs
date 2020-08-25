@@ -31,7 +31,7 @@ namespace ProjektRoguelike
                      float rotation = 0f,
                      SpriteEffects effect = SpriteEffects.None)
 
-        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Enemies/Flytrapsheet_front"),
+        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Enemies/Flytrapsheet_down"),
                position,
                sourceRectangle: new Rectangle(0, 0, 256, 256),
                rotation,

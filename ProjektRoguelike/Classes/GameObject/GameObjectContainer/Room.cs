@@ -227,12 +227,15 @@ namespace ProjektRoguelike
             switch (Kind)
             {
                 case RoomKind.Start:
-                    // Add controls instructions in the centre of the room.
-                    Texture2D controlsInstructions = Globals.Content.Load<Texture2D>("Sprites/Misc/ControlsInstructions");
-                    _gameObjects.Add(new Sprite(texture: controlsInstructions,
-                                                position: Position + (Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale,
-                                                scale: new Vector2(5) * (Tile.Size / controlsInstructions.Bounds.Size.ToVector2()) * Globals.Scale,
-                                                layerDepth: 0.99999f));
+                    if (Level.LevelIndex <= 0)
+                    {
+                        // Add controls instructions in the centre of the room.
+                        Texture2D controlsInstructions = Globals.Content.Load<Texture2D>("Sprites/Misc/ControlsInstructions");
+                        _gameObjects.Add(new Sprite(texture: controlsInstructions,
+                                                    position: Position + (Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale,
+                                                    scale: new Vector2(5) * (Tile.Size / controlsInstructions.Bounds.Size.ToVector2()) * Globals.Scale,
+                                                    layerDepth: 0.99999f));
+                    }
                     break;
                 case RoomKind.Normal:
                     // Load the content from a file by using the roomIndex.

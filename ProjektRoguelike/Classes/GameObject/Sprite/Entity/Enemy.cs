@@ -34,18 +34,21 @@ namespace ProjektRoguelike
 
             // Close all doors.
             // If this is the first Enemy in the current room.
-            if (Level.CurrentRoom.Enemies.Count == 0)
+            if (Level.CurrentRoom != null)
             {
-                foreach (Door door in Level.CurrentRoom.Doors)
+                if (Level.CurrentRoom.Enemies.Count == 0)
                 {
-                    // If there's a door in that direction.
-                    if (door != null)
+                    foreach (Door door in Level.CurrentRoom.Doors)
                     {
-                        // If the door is not hidden and open.
-                        if (!(door.Kind == DoorKind.Hidden)
-                            && door.State == DoorState.Open)
+                        // If there's a door in that direction.
+                        if (door != null)
                         {
-                            door.Close();
+                            // If the door is not hidden and open.
+                            if (!(door.Kind == DoorKind.Hidden)
+                                && door.State == DoorState.Open)
+                            {
+                                door.Close();
+                            }
                         }
                     }
                 }

@@ -83,6 +83,7 @@
     <Compile Include="Classes\GameObject\Sprite\Tile.cs" />
     <Compile Include="Classes\GameObject\Sprite\Entity.cs" />
     <Compile Include="Classes\GameObject\Sprite\Door.cs" />
+    <Compile Include="Classes\GameObject\Sprite\Trapdoor.cs" />
     <Compile Include="Classes\GameObject\UI.cs" />
     <Compile Include="Classes\Save.cs" />
     <Compile Include="Classes\Scene\Challengesmenu.cs" />

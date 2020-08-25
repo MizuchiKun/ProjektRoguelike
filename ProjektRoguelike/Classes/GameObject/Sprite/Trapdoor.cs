@@ -7,56 +7,14 @@ namespace ProjektRoguelike
 {
 
     /// <summary>
-    /// A Door to another <see cref="Room"/>.
+    /// A Door to another <see cref="Level"/>.
     /// </summary>
     public class Trapdoor : Sprite
     {
         /// <summary>
-        /// The closing animations of all kinds of rooms.
-        /// </summary>
-        private Animation[] _closeAnimations = 
-        {
-            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Environment/DoorSheet"),
-                          frameDimensions: new Vector2(256),
-                          frameDuration: TimeSpan.FromMilliseconds(125),
-                          repetitions: 0),
-            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Environment/BossDoorSheet"),
-                          frameDimensions: new Vector2(256),
-                          frameDuration: TimeSpan.FromMilliseconds(125),
-                          repetitions: 0),
-            new Animation(animationSheet: Globals.Content.Load<Texture2D>("Sprites/Environment/HiddenDoorSheet"),
-                          frameDimensions: new Vector2(256),
-                          frameDuration: TimeSpan.FromMilliseconds(125),
-                          repetitions: 0)
-        };
-        /// <summary>
-        /// The texture of a locked door.
-        /// </summary>
-        private static Texture2D _lockedDoor = Globals.Content.Load<Texture2D>("Sprites/Environment/LockedDoor");
-
-        /// <summary>
         /// The inner width of a door.
         /// </summary>
         public static byte Width { get; } = 50;
-
-        /// <summary>
-        /// The direction in which the <see cref="Door"/> leads.
-        /// </summary>
-        public Directions Direction { get => _direction; }
-        /// <summary>
-        /// The direction in which the Door leads.
-        /// </summary>
-        private Directions _direction;
-
-        /// <summary>
-        /// The kind of this <see cref="Door"/>.
-        /// </summary>
-        public DoorKind Kind { get; }
-
-        /// <summary>
-        /// The state of this <see cref="Door"/>.
-        /// </summary>
-        public DoorState State { get; set; }
 
         /// <summary>
         /// A "poof" animation.
@@ -70,7 +28,7 @@ namespace ProjektRoguelike
         /// <summary>
         /// Creates a new <see cref="Trapdoor"/> with the given position, rotation and <see cref="Room"/>.
         /// </summary>
-        /// <param name="position">The position of the <see cref="Door"/>.</param>
+        /// <param name="position">The position of the <see cref="Trapdoor"/>.</param>
 
         public Trapdoor(Vector2 position)
         : base(texture: Globals.Content.Load<Texture2D>("Sprites/Environment/Trapdoor"),
@@ -102,6 +60,7 @@ namespace ProjektRoguelike
                 {
                     Level.LevelIndex += 1;
                     Globals.CurrentScene = new Level(Level.LevelIndex);
+                    Level.Player.Position = Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale;
                 }
 
                 // Remove _poofAnimationSprite if its animation is over.
