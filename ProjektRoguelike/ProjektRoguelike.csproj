@@ -86,6 +86,7 @@
     <Compile Include="Classes\GameObject\Sprite\Trapdoor.cs" />
     <Compile Include="Classes\GameObject\UI.cs" />
     <Compile Include="Classes\Save.cs" />
+    <Compile Include="Classes\Scene\Victoryscreen.cs" />
     <Compile Include="Classes\Scene\Challengesmenu.cs" />
     <Compile Include="Classes\Scene\Optionsmenu.cs" />
     <Compile Include="Classes\Scene\Mainmenu.cs" />

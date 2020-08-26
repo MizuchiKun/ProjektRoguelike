@@ -12,27 +12,7 @@ namespace ProjektRoguelike
     /// </summary>
     public class UI : GameObject
     {
-        /// <summary>
-        /// The <see cref="Mainmenu"> of this project.
-        /// </summary>
-        public static Mainmenu Mainmenu { get; set; }
-
-        /// <summary>
-        /// The <see cref="Optionsmenu"> of this project.
-        /// </summary>
-        public static Optionsmenu Optionsmenu { get; set; }
-
-        /// <summary>
-        /// The <see cref="Challengesmenu"> of this project.
-        /// </summary>
-        public static Challengesmenu Challengesmenu { get; set; }
-
-        /// <summary>
-        /// The <see cref="Statsmenu"> of this project.
-        /// </summary>
-        public static Statsmenu Statsmenu { get; set; }
-
-        private bool mainCreated, optionCreated, statCreated, challengeCreated;
+        private bool victoryCreated;
 
         public override Rectangle Hitbox => Rectangle.Empty;
 
@@ -49,70 +29,41 @@ namespace ProjektRoguelike
             key = Globals.Content.Load<Texture2D>("Sprites/Pickups/Key");
             coin = Globals.Content.Load<Texture2D>("Sprites/Pickups/Coin");
 
+            victoryCreated = false;
+
             resetObject = ResetWorld;
-
-            mainCreated = optionCreated = challengeCreated = statCreated = false;
-
             restartButton = new Button(Button.ButtonState.Selected, ResetWorld, null, new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 130, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2));
         }
 
         public override void Update()
         {
-            if (Globals.Fullscreen == true)
-            {
-                Globals.Graphics.IsFullScreen = true;
-            }
-            else
-            {
-                Globals.Graphics.IsFullScreen = false;
-            }
             switch (Globals.gamestate)
             {
                 case Gamestate.Active:
-                    if (mainCreated == true)
-                    {
-                        mainCreated = optionCreated = challengeCreated = statCreated = false;
-                    }
-                    break;
                 case Gamestate.Paused:
-                    break;
                 case Gamestate.Mainmenu:
-                    if (mainCreated == false)
-                    {
-                        Mainmenu = new Mainmenu();
-                        mainCreated = true;
-                    }
-                    Mainmenu.Update();
-                    break;
                 case Gamestate.Optionsmenu:
-                    if (optionCreated == false)
-                    {
-                        Optionsmenu = new Optionsmenu();
-                        optionCreated = true;
-                    }
-                    Optionsmenu.Update();
-                    break;
                 case Gamestate.Challengesmenu:
-                    if (challengeCreated == false)
-                    {
-                        Challengesmenu = new Challengesmenu();
-                        challengeCreated = true;
-                    }
-                    Challengesmenu.Update();
-                    break;
                 case Gamestate.Statsmenu:
-                    if (statCreated == false)
-                    {
-                        Statsmenu = new Statsmenu();
-                        statCreated = true;
-                    }
-                    Statsmenu.Update();
                     break;
                 case Gamestate.Dead:
+                    Globals.save.DeleteFile("xml\\level.xml");
+                    Globals.save.DeleteFile("xml\\stats.xml");
                     restartButton.Update();
                     if (restartButton.buttonState == Button.ButtonState.Activated)
                     {
                         ResetWorld(null);
+                    }
+                    if (Globals.GetKeyUp(Keys.Escape))
+                    {
+                        Globals.CurrentScene = new Mainmenu();
+                    }
+                    break;
+                case Gamestate.Win:
+                    if (victoryCreated == false)
+                    {
+                        Globals.CurrentScene = new Victoryscreen();
+                        victoryCreated = true;
                     }
                     break;
                 default:
@@ -122,6 +73,9 @@ namespace ProjektRoguelike
 
         public override void Draw()
         {
+            // Call the current Scene's Draw method.
+            Globals.CurrentScene.Draw();
+
             switch (Globals.gamestate)
             {
                 case Gamestate.Active:
@@ -200,42 +154,16 @@ namespace ProjektRoguelike
                     Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Paused", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
                     break;
                 case Gamestate.Mainmenu:
-                    if (mainCreated == false)
-                    {
-                        Mainmenu = new Mainmenu();
-                        mainCreated = true;
-                    }
-                    Mainmenu.Draw();
-                    break;
                 case Gamestate.Optionsmenu:
-                    if (optionCreated == false)
-                    {
-                        Optionsmenu = new Optionsmenu();
-                        optionCreated = true;
-                    }
-                    Optionsmenu.Draw();
-                    break;
                 case Gamestate.Challengesmenu:
-                    if (challengeCreated == false)
-                    {
-                        Challengesmenu = new Challengesmenu();
-                        challengeCreated = true;
-                    }
-                    Challengesmenu.Draw();
-                    break;
                 case Gamestate.Statsmenu:
-                    if (statCreated == false)
-                    {
-                        Statsmenu = new Statsmenu();
-                        statCreated = true;
-                    }
-                    Statsmenu.Draw();
                     break;
                 case Gamestate.Dead:
                     restartButton.Draw();
                     Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Press enter to restart", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 70, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 + 10), Color.White);
                     Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Game Over", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
                     break;
+                case Gamestate.Win:
                 default:
                     break;
             }

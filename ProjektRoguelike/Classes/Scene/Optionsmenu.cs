@@ -74,7 +74,8 @@ namespace ProjektRoguelike
             if (Globals.GetKeyDown(Keys.Escape))
             {
                 //SaveOptions(null);
-                Globals.gamestate = Gamestate.Mainmenu;
+                //Globals.gamestate = Gamestate.Mainmenu;
+                Globals.CurrentScene = new Mainmenu();
             }
         }
 
@@ -108,7 +109,8 @@ namespace ProjektRoguelike
 
             Globals.save.HandleSaveFormates(xml, "options.xml");
 
-            Globals.gamestate = Gamestate.Mainmenu;
+            //Globals.gamestate = Gamestate.Mainmenu;
+            Globals.CurrentScene = new Mainmenu();
         }
 
         public void LoadData(XDocument data)

@@ -59,8 +59,16 @@ namespace ProjektRoguelike
                 if (wentThroughDoor)
                 {
                     Level.LevelIndex += 1;
-                    Globals.CurrentScene = new Level(Level.LevelIndex);
-                    Level.Player.Position = Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale;
+                    if (Level.LevelIndex == 4)
+                    {
+                        Globals.gamestate = Gamestate.Win;
+                        Globals.CurrentScene = new Victoryscreen();
+                    }
+                    else
+                    {
+                        Globals.CurrentScene = new Level(Level.LevelIndex);
+                        Level.Player.Position = Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale;
+                    }
                 }
 
                 // Remove _poofAnimationSprite if its animation is over.

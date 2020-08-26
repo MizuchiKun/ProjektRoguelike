@@ -521,7 +521,7 @@ namespace ProjektRoguelike
             }
 
             // Draw the UI.
-            Globals.UI.Draw();
+            //Globals.UI.Draw();
 
             // Draw the player.
             Player.Draw();
@@ -624,6 +624,10 @@ namespace ProjektRoguelike
                                             new XElement("name", "Position"),
                                             new XElement("amount", Level.CurrentRoom.Position)));
 
+            xml.Element("Root").Element("Stats").Add(new XElement("Stat",
+                                            new XElement("name", "LevelIndex"),
+                                            new XElement("amount", LevelIndex)));
+
             Globals.save.HandleSaveFormates(xml, "level.xml");
         }
 
@@ -650,7 +654,9 @@ namespace ProjektRoguelike
                 string RoomPositionY = statList[1].Element("amount").Value.Substring(6 + RoomPositionX.Length).Trim(stuff);
 
                 // Create a new vector2 and use the position values, defined above.
-                /*Level.CurrentRoom*/Camera.Position = new Vector2(Convert.ToInt32(RoomPositionX), Convert.ToInt32(RoomPositionY));
+                Camera.Position = new Vector2(Convert.ToInt32(RoomPositionX), Convert.ToInt32(RoomPositionY));
+
+                //LevelIndex = Convert.ToByte(statList[2].Element("amount").Value, Globals.culture);
             }
         }
     }

@@ -81,7 +81,7 @@ namespace ProjektRoguelike
 
         public virtual void DeleteFile(string PATH)
         {
-            File.Delete(PATH);
+            File.Delete(Globals.appDataFilePath + "\\" + gameName + "\\" + PATH);
         }
 
         #region Getting XML Files

@@ -22,7 +22,7 @@ namespace ProjektRoguelike
     /// </summary>
     public enum Gamestate : byte
     {
-        Active, Paused, Mainmenu, Optionsmenu, Challengesmenu, Statsmenu,/*Cutsceen,*/ Dead
+        Active, Paused, Mainmenu, Optionsmenu, Challengesmenu, Statsmenu,/*Cutsceen,*/ Dead, Win
     }
 
     /// <summary>

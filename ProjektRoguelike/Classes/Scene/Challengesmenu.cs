@@ -20,10 +20,6 @@ namespace ProjektRoguelike
         public Challengesmenu()
         {
             bkg = Globals.Content.Load<Texture2D>("Sprites/Misc/Challenges");
-
-            xml = Globals.save.GetFile("xml\\options.xml");
-
-            //LoadData(xml);
         }
 
         public override void Update()
@@ -31,7 +27,8 @@ namespace ProjektRoguelike
             // Switch back to the mainmenu by hitting the escape key. 
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
-                Globals.gamestate = Gamestate.Mainmenu;
+                //Globals.gamestate = Gamestate.Mainmenu;
+                Globals.CurrentScene = new Mainmenu();
             }
         }
 

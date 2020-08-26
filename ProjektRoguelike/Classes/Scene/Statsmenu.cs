@@ -31,7 +31,8 @@ namespace ProjektRoguelike
             // Switch back to the mainmenu by hitting the escape key. 
             if (Globals.GetKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
-                Globals.gamestate = Gamestate.Mainmenu;
+                //Globals.gamestate = Gamestate.Mainmenu;
+                Globals.CurrentScene = new Mainmenu();
             }
         }
 

@@ -94,7 +94,8 @@ namespace ProjektRoguelike
         /// <param name="info"> Only here, so I can use my delegate. lol </param>
         private void NewGame(object info)
         {
-            //Level.CurrentRoom.Entities.Clear();
+            Globals.save.DeleteFile("xml\\level.xml");
+            Globals.save.DeleteFile("xml\\stats.xml");
             Globals.CurrentScene = new Level(0);
             Globals.gamestate = Gamestate.Active;
         }
@@ -116,17 +117,20 @@ namespace ProjektRoguelike
 
         private void SwitchToOptions(object info)
         {
-            Globals.gamestate = Gamestate.Optionsmenu;
+            //Globals.gamestate = Gamestate.Optionsmenu;
+            Globals.CurrentScene = new Optionsmenu();
         }
 
         private void SwitchToChallenges(object info)
         {
-            Globals.gamestate = Gamestate.Challengesmenu;
+            //Globals.gamestate = Gamestate.Challengesmenu;
+            Globals.CurrentScene = new Challengesmenu();
         }
 
         private void SwitchToStats(object info)
         {
-            Globals.gamestate = Gamestate.Statsmenu;
+            //Globals.gamestate = Gamestate.Statsmenu;
+            Globals.CurrentScene = new Statsmenu();
         }
     }
 }

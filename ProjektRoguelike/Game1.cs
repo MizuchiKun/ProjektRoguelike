@@ -35,7 +35,6 @@ namespace ProjektRoguelike
             Globals.Content = Content;
             Globals.Content.RootDirectory = "Content";
 
-
             // Create the GraphicsDeviceManager.
             Globals.Graphics = new GraphicsDeviceManager(this)
             {
@@ -63,6 +62,16 @@ namespace ProjektRoguelike
 
             // The save class.
             Globals.save = new Save(1, Globals.gameName);
+
+            if (Globals.save.GetFile("xml\\options.xml").Element("Root").Element("Options").Element("Option").Element("name").Equals("Full Screen")
+                && Globals.save.GetFile("xml\\options.xml").Element("Root").Element("Options").Element("Option").Element("selected").Equals("1"))
+            {
+                Globals.Graphics.IsFullScreen = true;
+            }
+            else
+            {
+                Globals.Graphics.IsFullScreen = false;
+            }
 
             // Set the initial Scene.
             Globals.CurrentScene = new Mainmenu();
@@ -98,7 +107,6 @@ namespace ProjektRoguelike
             switch (Globals.gamestate)
             {
                 case Gamestate.Active:
-                    // Call the current Scene's Update method.
                     Globals.CurrentScene.Update();
                     if (Globals.GetKeyDown(Keys.Escape))
                     {
@@ -109,6 +117,7 @@ namespace ProjektRoguelike
                     }
                     break;
                 case Gamestate.Paused:
+                    Globals.UI.Update();
                     if (Globals.GetKeyUp(Keys.P))
                     {
                         Globals.gamestate = Gamestate.Active;
@@ -118,7 +127,12 @@ namespace ProjektRoguelike
                 case Gamestate.Optionsmenu:
                 case Gamestate.Challengesmenu:
                 case Gamestate.Statsmenu:
+                case Gamestate.Win:
                 case Gamestate.Dead:
+                    // Call the current Scene's Update method.
+                    Globals.CurrentScene.Update();
+
+                    // Call the UI's Update method.
                     Globals.UI.Update();
                     break;
                 default:
@@ -150,24 +164,21 @@ namespace ProjektRoguelike
                 transformMatrix: Matrix.CreateTranslation(new Vector3(-Camera.Position, 0))
                                  * Matrix.CreateScale(Camera.Scale));
 
+            
+
+            
+
             switch (Globals.gamestate)
             {
                 case Gamestate.Active:
-                    // Call the current Scene's Draw method.
-                    Globals.CurrentScene.Draw();
-                    break;
                 case Gamestate.Paused:
-                    // Call the current Scene's Draw method.
-                    Globals.CurrentScene.Draw();
-                    break;
                 case Gamestate.Mainmenu:
                 case Gamestate.Optionsmenu:
                 case Gamestate.Challengesmenu:
                 case Gamestate.Statsmenu:
-                    Globals.UI.Draw();
-                    break;
+                case Gamestate.Win:
                 case Gamestate.Dead:
-                    Globals.CurrentScene.Draw();
+                    Globals.UI.Draw();
                     break;
                 default:
                     break;

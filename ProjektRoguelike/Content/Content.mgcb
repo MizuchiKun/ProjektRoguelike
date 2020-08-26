@@ -536,6 +536,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Misc/Stats.png
 
+#begin Sprites/Misc/Victoryscreen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Misc/Victoryscreen.png
+
 #begin Sprites/Pickups/Bomb.png
 /importer:TextureImporter
 /processor:TextureProcessor
