@@ -19,6 +19,8 @@ namespace ProjektRoguelike
 
         McTimer timer;
 
+        bool SoundHasPlayed;
+
         public Explosion(Vector2? position = null,
                          float rotation = 0f,
                          SpriteEffects effects = SpriteEffects.None)
@@ -45,10 +47,19 @@ namespace ProjektRoguelike
             OwnerID = 0;
 
             timer = new McTimer(300);
+
+            SoundHasPlayed = false;
         }
 
         public override void Update()
         {
+            if (!SoundHasPlayed)
+            {
+                Globals.sounds.PlaySoundEffect("Sound6");
+                SoundHasPlayed = true;
+            }
+            
+
             // Unlocking / opening doors.
             // Top.
             if ((Level.CurrentRoom.Doors[(byte)Directions.Up] != null

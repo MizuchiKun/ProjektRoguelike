@@ -20,6 +20,108 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Consolas24.spritefont
 
+#begin Sounds/Song/audio.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/Song/audio.mp3
+
+#begin Sounds/SoundEffect/Attack1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Attack1.wav
+
+#begin Sounds/SoundEffect/Destroyed.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Destroyed.wav
+
+#begin Sounds/SoundEffect/GetHitEnemy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/GetHitEnemy.wav
+
+#begin Sounds/SoundEffect/ONEECHAN.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/ONEECHAN.wav
+
+#begin Sounds/SoundEffect/Sound1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound1.wav
+
+#begin Sounds/SoundEffect/Sound10.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound10.wav
+
+#begin Sounds/SoundEffect/Sound11.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound11.wav
+
+#begin Sounds/SoundEffect/Sound2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound2.wav
+
+#begin Sounds/SoundEffect/Sound3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound3.wav
+
+#begin Sounds/SoundEffect/Sound4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound4.wav
+
+#begin Sounds/SoundEffect/Sound5.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound5.wav
+
+#begin Sounds/SoundEffect/Sound6.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound6.wav
+
+#begin Sounds/SoundEffect/Sound7.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound7.wav
+
+#begin Sounds/SoundEffect/Sound8.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound8.wav
+
+#begin Sounds/SoundEffect/Sound9.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Sound9.wav
+
+#begin Sounds/SoundEffect/Victory.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/Victory.mp3
+
 #begin Sprites/Effects/Explosionsheet.png
 /importer:TextureImporter
 /processor:TextureProcessor

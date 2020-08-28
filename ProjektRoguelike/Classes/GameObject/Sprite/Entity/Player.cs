@@ -18,9 +18,14 @@ namespace ProjektRoguelike
         public int HealthMax;
         public bool poopsicle = false;
 
-        public static ushort speed = 400;
+        public static ushort speed;
 
         public int itemcount;
+
+        /// <summary>
+        /// List of all the companions aiding around the player
+        /// </summary>
+        public static List<Flybuddy> Companions { get; set; } = new List<Flybuddy>();
 
         /// <summary>
         /// The damage the player deals to entities
@@ -90,6 +95,8 @@ namespace ProjektRoguelike
             Health = 15;
             HealthMax = Health;
 
+            speed = 400;
+
             // Set the initial animation.
             CurrentAnimation = _walkingAnimations[2];
         }
@@ -123,6 +130,8 @@ namespace ProjektRoguelike
                 //Level.CurrentRoom.Add(new Explosion(Position));
                 Level.CurrentRoom.Add(new Bomb(Position));
                 Level.Player.Bombs--;
+
+                Globals.sounds.PlaySoundEffect("Sound8");
             }
 
             //testing items and such
@@ -153,9 +162,9 @@ namespace ProjektRoguelike
             // effect used, when the player picks up the Poopsicle item. Spawn 3 flies, that are orbiting around you.
             if (poopsicle)
             {
-                Level.Companions.Add(new Flybuddy(new Vector2(Position.X, Position.Y + 55), 0));
-                Level.Companions.Add(new Flybuddy(new Vector2(Position.X + 40, Position.Y - 40)));
-                Level.Companions.Add(new Flybuddy(new Vector2(Position.X - 40, Position.Y - 40)));
+                Companions.Add(new Flybuddy(new Vector2(Position.X, Position.Y + 55), 0));
+                Companions.Add(new Flybuddy(new Vector2(Position.X + 40, Position.Y - 40)));
+                Companions.Add(new Flybuddy(new Vector2(Position.X - 40, Position.Y - 40)));
                 poopsicle = false;
             }
 
@@ -167,6 +176,8 @@ namespace ProjektRoguelike
             // Up.
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.W))
             {
+                // Play the movement sound.
+                //Globals.sounds.PlaySoundEffectOnce("Sound3");
                 // Move it up.
                 _velocity += -Vector2.UnitY * speed;
 
@@ -190,6 +201,8 @@ namespace ProjektRoguelike
             // Right.
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.D))
             {
+                // Play the movement sound.
+                //Globals.sounds.PlaySoundEffectOnce("Sound2");
                 // Move it right.
                 _velocity += Vector2.UnitX * speed;
 
@@ -213,6 +226,8 @@ namespace ProjektRoguelike
             // Down.
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.S))
             {
+                // Play the movement sound.
+                //Globals.sounds.PlaySoundEffectOnce("Sound4");
                 // Move it down.
                 _velocity += Vector2.UnitY * speed;
 
@@ -236,6 +251,8 @@ namespace ProjektRoguelike
             // Left.
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.A))
             {
+                // Play the movement sound.
+                //Globals.sounds.PlaySoundEffectOnce("Sound1");
                 // Move it left.
                 _velocity += -Vector2.UnitX * speed;
 
@@ -287,6 +304,7 @@ namespace ProjektRoguelike
             // Move it.
             if (_velocity != Vector2.Zero)
             {
+                Globals.sounds.PlaySoundEffectOnce("Sound4");
                 CurrentAnimation.Resume();
                 _velocity = Globals.DegreesToVector2(Globals.Vector2ToDegrees(_velocity)) * speed;
                 Move(_velocity);
@@ -305,26 +323,40 @@ namespace ProjektRoguelike
             // up
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Up) && timer.Test())
             {
+                Globals.sounds.PlaySoundEffect("Attack1");
                 Level.CurrentRoom.Add(new BasicAttack(0 - 90, Position));
                 timer.ResetToZero();
             }
             // right
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Right) && timer.Test())
             {
+                Globals.sounds.PlaySoundEffect("Attack1");
                 Level.CurrentRoom.Add(new BasicAttack(90 - 90, Position));
                 timer.ResetToZero();
             }
             // down
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Down) && timer.Test())
             {
+                Globals.sounds.PlaySoundEffect("Attack1");
                 Level.CurrentRoom.Add(new BasicAttack(180 - 90, Position));
                 timer.ResetToZero();
             }
             // left
             if (Globals.GetKey(Microsoft.Xna.Framework.Input.Keys.Left) && timer.Test())
             {
+                Globals.sounds.PlaySoundEffect("Attack1");
                 Level.CurrentRoom.Add(new BasicAttack(270 - 90, Position));
                 timer.ResetToZero();
+            }
+
+            // Draw the list of companions
+            for (int i = 0; i < Companions.Count; i++)
+            {
+                Companions[i].Update();
+                if (Companions[i].isDestroyed)
+                {
+                    Companions.RemoveAt(i);
+                }
             }
 
             // Update the Player's layer and stuff.
@@ -336,8 +368,14 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Draw()
         {
+            // Draw the list of companions
+            for (int i = 0; i < Companions.Count; i++)
+            {
+                Companions[i].Draw();
+            }
+
             //testing string to look how much damage something does
-            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Level.Seed.ToString(), new Vector2(Position.X, Position.Y - 75), Color.White);
+            //Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), Level.Seed.ToString(), new Vector2(Position.X, Position.Y - 75), Color.White);
 
             base.Draw();
         }
@@ -350,6 +388,7 @@ namespace ProjektRoguelike
                 // receive damage
                 base.GetHit(hitValue);
                 damageImunity.ResetToZero();
+                Globals.sounds.PlaySoundEffect("ONEECHAN");
             }
             else
             {

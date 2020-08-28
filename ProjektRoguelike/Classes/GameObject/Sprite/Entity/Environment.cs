@@ -36,6 +36,8 @@ namespace ProjektRoguelike
                 // Drops item X with X% chance
                 Dropchance(Dropnumber);
 
+                Globals.sounds.PlaySoundEffect("Destroyed");
+
                 // And disappear once youre done.
                 Level.CurrentRoom.Remove(this);
             }

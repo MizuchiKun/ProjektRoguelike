@@ -54,14 +54,17 @@ namespace ProjektRoguelike
         /// </summary>
         protected override void Initialize()
         {
+            // The save class.
+            Globals.save = new Save(1, Globals.gameName);
+
+            // Set the sounds class.
+            Globals.sounds = new Sounds();
+
             // Set the SpriteBatch.
             Globals.SpriteBatch = new SpriteBatch(Globals.Graphics.GraphicsDevice);
 
             // Set the UI.
             Globals.UI = new UI();
-
-            // The save class.
-            Globals.save = new Save(1, Globals.gameName);
 
             if (Globals.save.GetFile("xml\\options.xml").Element("Root").Element("Options").Element("Option").Element("name").Equals("Full Screen")
                 && Globals.save.GetFile("xml\\options.xml").Element("Root").Element("Options").Element("Option").Element("selected").Equals("1"))
@@ -112,6 +115,8 @@ namespace ProjektRoguelike
                     {
                         Level.SaveData();
                         Level.Player.SaveData();
+                        // [PLACEHOLDER] Save the data of the previous, the current and the next rooms of the level and all its objects excluding the player
+                        Globals.sounds.StopSong();
                         Globals.CurrentScene = new Mainmenu();
                         Globals.gamestate = Gamestate.Mainmenu;
                     }
@@ -128,10 +133,13 @@ namespace ProjektRoguelike
                 case Gamestate.Challengesmenu:
                 case Gamestate.Statsmenu:
                 case Gamestate.Win:
-                case Gamestate.Dead:
                     // Call the current Scene's Update method.
                     Globals.CurrentScene.Update();
 
+                    // Call the UI's Update method.
+                    Globals.UI.Update();
+                    break;
+                case Gamestate.Dead:
                     // Call the UI's Update method.
                     Globals.UI.Update();
                     break;
@@ -178,6 +186,8 @@ namespace ProjektRoguelike
                 case Gamestate.Statsmenu:
                 case Gamestate.Win:
                 case Gamestate.Dead:
+                    Globals.CurrentScene.Draw();
+
                     Globals.UI.Draw();
                     break;
                 default:

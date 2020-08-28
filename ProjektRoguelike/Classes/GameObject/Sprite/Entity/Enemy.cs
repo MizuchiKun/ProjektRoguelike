@@ -81,6 +81,12 @@ namespace ProjektRoguelike
             CollidePlayer();
         }
 
+        public override void GetHit(int hitValue)
+        {
+            Globals.sounds.PlaySoundEffect("GetHitEnemy");
+            base.GetHit(hitValue);
+        }
+
         public virtual bool HitWall()
         {
             // up

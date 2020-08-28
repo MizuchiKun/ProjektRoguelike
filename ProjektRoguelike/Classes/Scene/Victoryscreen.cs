@@ -68,18 +68,20 @@ namespace ProjektRoguelike
 
         public override void Draw()
         {
+            Globals.SpriteBatch.Draw(bkg, new Rectangle(Camera.Position.ToPoint(), (Globals.WindowDimensions + Vector2.One).ToPoint()), null, Color.White, 0, new Vector2(0f), SpriteEffects.None, 0.1f);
+
             for (int i = 0; i < buttons.Count; i++)
             {
                 buttons[i].Draw();
             }
 
-            Globals.SpriteBatch.Draw(bkg, new Rectangle(Camera.Position.ToPoint(), (Globals.WindowDimensions + Vector2.One).ToPoint()), null, Color.White, 0, new Vector2(0f), SpriteEffects.None, 0.1f);
             Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Mainmenu", mainButton.RelativePosition + new Vector2(60, 10), Color.White);
             Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "And another one!", restartButton.RelativePosition + new Vector2(60, 10), Color.White);
         }
 
         private void ToMainmenu(object info)
         {
+            Globals.CurrentScene = new Mainmenu();
             Globals.gamestate = Gamestate.Mainmenu;
         }
 

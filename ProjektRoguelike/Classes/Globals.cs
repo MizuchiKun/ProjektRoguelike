@@ -31,6 +31,11 @@ namespace ProjektRoguelike
     public static class Globals
     {
         /// <summary>
+        /// The <see cref="Sounds"> class for this project
+        /// </summary>
+        public static Sounds sounds;
+
+        /// <summary>
         /// Make the window fullscreen, if the fullscreen option is chosen.
         /// </summary>
         public static bool Fullscreen = false;

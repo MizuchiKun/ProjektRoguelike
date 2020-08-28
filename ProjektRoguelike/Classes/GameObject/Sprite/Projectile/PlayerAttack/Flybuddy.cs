@@ -69,11 +69,11 @@ namespace ProjektRoguelike
 
         public override void Update(/*List<Enemy> entities*/)
         {
-            if (Collides(Level.CurrentRoom.Enemies))
-            {
-                isDestroyed = true;
-                //damage touching enemy
-            }
+            //if (Collides(Level.CurrentRoom.Enemies))
+            //{
+            //    isDestroyed = true;
+            //    //damage touching enemy
+            //}
             if (isDestroyed == false)
             {
                 ChangePosition();
@@ -93,7 +93,7 @@ namespace ProjektRoguelike
                     //NEW
                     if (isColliding)
                     {
-                        Level.Companions.Remove(this);
+                        isDestroyed = true;
                     }
                 }
             }

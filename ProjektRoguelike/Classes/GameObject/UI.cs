@@ -12,8 +12,6 @@ namespace ProjektRoguelike
     /// </summary>
     public class UI : GameObject
     {
-        private bool victoryCreated;
-
         public override Rectangle Hitbox => Rectangle.Empty;
 
         Texture2D heart, bomb, key, coin = new Texture2D(Globals.Graphics.GraphicsDevice, 256, 256);
@@ -29,8 +27,6 @@ namespace ProjektRoguelike
             key = Globals.Content.Load<Texture2D>("Sprites/Pickups/Key");
             coin = Globals.Content.Load<Texture2D>("Sprites/Pickups/Coin");
 
-            victoryCreated = false;
-
             resetObject = ResetWorld;
             restartButton = new Button(Button.ButtonState.Selected, ResetWorld, null, new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 130, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2));
         }
@@ -45,6 +41,7 @@ namespace ProjektRoguelike
                 case Gamestate.Optionsmenu:
                 case Gamestate.Challengesmenu:
                 case Gamestate.Statsmenu:
+                case Gamestate.Win:
                     break;
                 case Gamestate.Dead:
                     Globals.save.DeleteFile("xml\\level.xml");
@@ -57,13 +54,7 @@ namespace ProjektRoguelike
                     if (Globals.GetKeyUp(Keys.Escape))
                     {
                         Globals.CurrentScene = new Mainmenu();
-                    }
-                    break;
-                case Gamestate.Win:
-                    if (victoryCreated == false)
-                    {
-                        Globals.CurrentScene = new Victoryscreen();
-                        victoryCreated = true;
+                        Globals.gamestate = Gamestate.Mainmenu;
                     }
                     break;
                 default:
@@ -157,13 +148,13 @@ namespace ProjektRoguelike
                 case Gamestate.Optionsmenu:
                 case Gamestate.Challengesmenu:
                 case Gamestate.Statsmenu:
+                case Gamestate.Win:
                     break;
                 case Gamestate.Dead:
                     restartButton.Draw();
                     Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Press enter to restart", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 70, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 + 10), Color.White);
                     Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "Game Over", new Vector2((int)Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 30, (int)Camera.Position.Y + Globals.Graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
                     break;
-                case Gamestate.Win:
                 default:
                     break;
             }

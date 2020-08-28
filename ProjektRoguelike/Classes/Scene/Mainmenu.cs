@@ -94,6 +94,7 @@ namespace ProjektRoguelike
         /// <param name="info"> Only here, so I can use my delegate. lol </param>
         private void NewGame(object info)
         {
+            Globals.sounds.PlaySong("audio", true);
             Globals.save.DeleteFile("xml\\level.xml");
             Globals.save.DeleteFile("xml\\stats.xml");
             Globals.CurrentScene = new Level(0);
@@ -110,7 +111,6 @@ namespace ProjektRoguelike
             {
                 Globals.CurrentScene = new Level(0, true);
                 Level.Player.LoadData(xmlPlayer);
-                //Level.LoadData(xmlLevel);
                 Globals.gamestate = Gamestate.Active;
             }
         }

@@ -109,7 +109,8 @@ namespace ProjektRoguelike
 
             Globals.save.HandleSaveFormates(xml, "options.xml");
 
-            //Globals.gamestate = Gamestate.Mainmenu;
+            Globals.sounds.LoadData();
+
             Globals.CurrentScene = new Mainmenu();
         }
 

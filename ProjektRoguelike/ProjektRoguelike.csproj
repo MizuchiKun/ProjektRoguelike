@@ -99,6 +99,7 @@
     <Compile Include="Classes\GameObject\Text.cs" />
     <Compile Include="Classes\Animation.cs" />
     <Compile Include="Classes\Scene\Statsmenu.cs" />
+    <Compile Include="Classes\Sounds.cs" />
     <Compile Include="Classes\_ClassTemplate.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Game1.cs" />
