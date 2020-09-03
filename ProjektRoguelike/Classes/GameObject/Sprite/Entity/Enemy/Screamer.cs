@@ -56,6 +56,7 @@ namespace ProjektRoguelike
             // if your attackcooldown is over, shoot towards the player
             if (timer.Test())
             {
+                Globals.sounds.PlaySoundEffectOnce("EnemyAttack");
                 Level.CurrentRoom.Add(new EnemyAttack(Globals.Vector2ToDegrees(Level.Player.Position - Position), Position, null, Globals.Vector2ToDegrees(Level.Player.Position - Position), SpriteEffects.None));
                 timer.ResetToZero();
             }

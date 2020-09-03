@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -427,6 +428,25 @@ namespace ProjektRoguelike
 
             // Return the GameObject List.
             return gameObjects;
+        }
+
+        public static void SaveRoom()
+        {
+            XDocument xml = new XDocument(new XElement("Root",
+                                                        new XElement("Room", "")));
+
+                // 9 lines
+            for (int i = 0; i < 9; i++)
+            {
+                // 15 columns
+                for (int j = 0; j < 15; j++)
+                {
+                    //Level.CurrentRoom._gameObjects[i][j]
+                }
+
+            }
+
+            Globals.save.HandleSaveFormates(xml, Level.LevelIndex.ToString() + Level.CurrentRoom.Position.ToString() + ".xml");
         }
     }
 }

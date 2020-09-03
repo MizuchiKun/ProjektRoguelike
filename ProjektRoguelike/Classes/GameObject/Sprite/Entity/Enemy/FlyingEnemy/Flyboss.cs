@@ -27,7 +27,7 @@ namespace ProjektRoguelike
 
         bool bla = true;
 
-        int itemNum;
+        int itemNum, HealthMax;
 
         Random rand = new Random();
 
@@ -57,14 +57,14 @@ namespace ProjektRoguelike
         {
             Speed = 2f;
             Health = 5;
+            HealthMax = Health;
 
             Scale = new Vector2(1f);
 
             AttackTimer = new McTimer(1500);
             SpawnTimer = new McTimer(3000);
-            MovementTimer = new McTimer(4000);
 
-            direction = Globals.DegreesToVector2(0);
+            direction = Globals.DegreesToVector2(45);
 
             HitValue = 0;
 
@@ -113,25 +113,36 @@ namespace ProjektRoguelike
 
         public override void ChangePosition()
         {
+            if (Collides(Level.CurrentRoom.Walls[0])||
+                (Collides(Level.CurrentRoom.Walls[2])))
+            {
+                direction = new Vector2(direction.X, -direction.Y);
+            }
+            if (Collides(Level.CurrentRoom.Walls[1]) ||
+                (Collides(Level.CurrentRoom.Walls[3])))
+            {
+                direction = new Vector2(-direction.X, direction.Y);
+            }
+
 
             // DIRECTIONAL LOOP
-            MovementTimer.UpdateTimer();
-            if (MovementTimer.Test())
-            {
-                // used to easily change the direction, in which the unit moves
-                bla = !bla;
-                switch (bla)
-                {
-                    case true:
-                        direction = Globals.DegreesToVector2(0);
-                        break;
-                    case false:
-                        direction = Globals.DegreesToVector2(180);
-                        break;
-                }
-                // to restart the directional loop
-                MovementTimer.ResetToZero();
-            }
+            //MovementTimer.UpdateTimer();
+            //if (MovementTimer.Test())
+            //{
+            //    // used to easily change the direction, in which the unit moves
+            //    bla = !bla;
+            //    switch (bla)
+            //    {
+            //        case true:
+            //            direction = Globals.DegreesToVector2(0);
+            //            break;
+            //        case false:
+            //            direction = Globals.DegreesToVector2(180);
+            //            break;
+            //    }
+            //    // to restart the directional loop
+            //    MovementTimer.ResetToZero();
+            //}
 
             // SPEED LOOP
             // speed up if youre not at maxspeed yet
@@ -177,11 +188,37 @@ namespace ProjektRoguelike
                 // Spawn 3 projectiles
                 for (int i = 0; i < 3; i++)
                 {
+                    Globals.sounds.PlaySoundEffectOnce("EnemyAttack");
                     Level.CurrentRoom.Add(new EnemyAttack(Globals.Vector2ToDegrees(Level.Player.Position - Position) - 25 + (i * 25), Position));
                 }
                 // Restart the thing.
                 AttackTimer.ResetToZero();
             }
+        }
+
+        public override void Draw()
+        {
+            for (int i = 0; i < HealthMax; i++)
+            {
+                Globals.SpriteBatch.Draw(Globals.Content.Load<Texture2D>("Sprites/Items/Heart"),
+                    new Rectangle((int)Camera.Position.X + (Globals.Graphics.PreferredBackBufferWidth / 2 / HealthMax * i + (Globals.Graphics.PreferredBackBufferWidth / 4)),
+                                  (int)Camera.Position.Y + (Globals.Graphics.PreferredBackBufferHeight / 8), 40, 40),
+                                   null, Color.Black, 0, new Vector2(.5f), new SpriteEffects(), 0.11f);
+            }
+
+            for (int i = 0; i < Health; i++)
+            {
+                Globals.SpriteBatch.Draw(Globals.Content.Load<Texture2D>("Sprites/Items/Heart"),
+                    new Rectangle((int)Camera.Position.X + (Globals.Graphics.PreferredBackBufferWidth / 2 / HealthMax * i + (Globals.Graphics.PreferredBackBufferWidth / 4)),
+                                  (int)Camera.Position.Y + (Globals.Graphics.PreferredBackBufferHeight / 8), 40, 40),
+                                   null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.1f);
+            }
+
+            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "The Duke of Flies", 
+                                          new Vector2(Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 155,
+                                          (int)Camera.Position.Y + (Globals.Graphics.PreferredBackBufferHeight / 8) - 25), Color.White);
+
+            base.Draw();
         }
     }
 }

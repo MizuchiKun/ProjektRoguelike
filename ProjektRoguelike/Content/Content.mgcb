@@ -38,6 +38,12 @@
 /processorParam:Quality=Best
 /build:Sounds/SoundEffect/Destroyed.wav
 
+#begin Sounds/SoundEffect/EnemyAttack.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffect/EnemyAttack.wav
+
 #begin Sounds/SoundEffect/GetHitEnemy.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
