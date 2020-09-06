@@ -17,7 +17,7 @@ namespace ProjektRoguelike
                       Rectangle? sourceRectangle = null,
                       float rotation = 0f,
                       SpriteEffects effects = SpriteEffects.None)
-        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Pickups/Key"),
+        : base(texture: Globals.Content.Load<Texture2D>("Sprites/Misc/Playerattack"),
                position: position,
                angle : angle,
                sourceRectangle: sourceRectangle,
@@ -26,6 +26,8 @@ namespace ProjektRoguelike
         {
 
             Speed = 250.0f;
+
+            Scale = new Vector2(0.1f);
 
             timer = new McTimer(1000);
 
