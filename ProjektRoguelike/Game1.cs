@@ -66,7 +66,8 @@ namespace ProjektRoguelike
             // Set the UI.
             Globals.UI = new UI();
 
-            if (Globals.save.GetFile("xml\\options.xml").Element("Root").Element("Options").Element("Option").Element("name").Equals("Full Screen")
+            if (Globals.save.GetFile("xml\\options.xml") != null
+                && Globals.save.GetFile("xml\\options.xml").Element("Root").Element("Options").Element("Option").Element("name").Equals("Full Screen")
                 && Globals.save.GetFile("xml\\options.xml").Element("Root").Element("Options").Element("Option").Element("selected").Equals("1"))
             {
                 Globals.Graphics.IsFullScreen = true;

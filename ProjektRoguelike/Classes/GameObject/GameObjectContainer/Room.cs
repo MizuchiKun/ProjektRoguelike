@@ -142,6 +142,18 @@ namespace ProjektRoguelike
             }
         }
 
+
+
+
+
+
+
+
+
+        private byte _id;
+
+
+
         /// <summary>
         /// Creates a new room by the given paramters.
         /// </summary>
@@ -150,6 +162,14 @@ namespace ProjektRoguelike
         /// <param name="kind">The kind of the door.</param>
         public Room(byte roomIndex, Vector2 gridPosition, RoomKind kind)
         {
+
+
+
+            _id = roomIndex;
+
+
+
+
             // Store the parameters.
             Position = gridPosition * Globals.WindowDimensions;
             Kind = kind;
@@ -228,7 +248,7 @@ namespace ProjektRoguelike
             switch (Kind)
             {
                 case RoomKind.Start:
-                    if (Level.LevelIndex <= 0)
+                    if (Level.LevelIndex == 0)
                     {
                         // Add controls instructions in the centre of the room.
                         Texture2D controlsInstructions = Globals.Content.Load<Texture2D>("Sprites/Misc/ControlsInstructions");
@@ -293,9 +313,12 @@ namespace ProjektRoguelike
 
                 // Get and add all GameObjects of this line.
                 byte index, metadata;
-                GameObject loadedGameObject = null;
+                GameObject loadedGameObject;
                 for (byte x = 0; x < 15; x++)
                 {
+                    // Reset the loaded game object.
+                    loadedGameObject = null;
+
                     // Get the index and metadata.
                     // If the metadata is defined.
                     if (splittedLine[x].Contains(":"))

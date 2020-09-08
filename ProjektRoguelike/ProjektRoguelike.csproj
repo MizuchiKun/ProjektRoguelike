@@ -120,6 +120,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\GameObject\Sprite\Projectile\EnemyAttack\" />
