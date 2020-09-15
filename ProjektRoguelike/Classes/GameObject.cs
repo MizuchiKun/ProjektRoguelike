@@ -17,14 +17,47 @@ namespace ProjektRoguelike
         public abstract void Draw();
 
         /// <summary>
+        /// Gets whether this <see cref="GameObject"/> collides with the given hitbox.
+        /// </summary>
+        /// <param name="otherHitbox">The other hitbox.</param>
+        /// <returns>True if they collide, false otherwise.</returns>
+        public bool Collides(Rectangle otherHitbox)
+        {
+            // They collide it their hitboxes intersect.
+            return Hitbox.Intersects(otherHitbox);
+        }
+
+        /// <summary>
         /// Gets whether this <see cref="GameObject"/> collides with the given other <see cref="GameObject"/>.
         /// </summary>
         /// <param name="otherGameObject">The other <see cref="GameObject"/>.</param>
         /// <returns>True if they collide, false otherwise.</returns>
-        public virtual bool Collides(GameObject otherGameObject)
+        public bool Collides(GameObject otherGameObject)
         {
             // They collide it their hitboxes intersect.
             return Hitbox.Intersects(otherGameObject.Hitbox);
+        }
+
+        /// <summary>
+        /// Gets whether this <see cref="GameObject"/> collides with any of the given other hitboxes.
+        /// </summary>
+        /// <param name="otherHitboxes">The other hitboxes.</param>
+        /// <returns>True if it collides with any of them, false otherwise.</returns>
+        public bool Collides(IEnumerable<Rectangle> otherHitboxes)
+        {
+            // Check every hitbox.
+            foreach (Rectangle hitbox in otherHitboxes)
+            {
+                // If it collides with one of them.
+                if (Collides(hitbox))
+                {
+                    // Return true.
+                    return true;
+                }
+            }
+
+            // It seemingly doesn't collide with any of them.
+            return false;
         }
 
         /// <summary>
@@ -34,7 +67,7 @@ namespace ProjektRoguelike
         /// <returns>True if it collides with any of them, false otherwise.</returns>
         public bool Collides(IEnumerable<GameObject> otherGameObjects)
         {
-            // Check every Sprite.
+            // Check every GameObject.
             foreach (GameObject gameObject in otherGameObjects)
             {
                 // If it collides with one of them.
@@ -78,7 +111,61 @@ namespace ProjektRoguelike
             collidingGameObjects = collidingObjects;
             return collides;
         }
-        
+
+        /// <summary>
+        /// Gets whether this <see cref="GameObject"/> touches the given other hitbox.
+        /// </summary>
+        /// <param name="otherHitbox">The other hitbox.</param>
+        /// <returns>True if they are touching, false otherwise.</returns>
+        public bool Touches(Rectangle otherHitbox)
+        {
+            // Get an inflated copy of the GameObject's hitbox.
+            Rectangle inflatedHitbox = Hitbox;
+            inflatedHitbox.Location += new Point(-1);
+            inflatedHitbox.Size += new Point(2);
+
+            // It just touches if it isn't colliding unless this hitbox is inflated by 1.
+            return (!Hitbox.Intersects(otherHitbox)
+                    && inflatedHitbox.Intersects(otherHitbox));
+        }
+
+        /// <summary>
+        /// Gets whether this <see cref="GameObject"/> touches the given other <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="otherGameObject">The other <see cref="GameObject"/>.</param>
+        /// <returns>True if they are touching, false otherwise.</returns>
+        public bool Touches(GameObject otherGameObject)
+        {
+            // Get an inflated copy of the GameObject's hitbox.
+            Rectangle inflatedHitbox = Hitbox;
+            inflatedHitbox.Location += new Point(-1);
+            inflatedHitbox.Size += new Point(2);
+
+            // It just touches if it isn't colliding unless this hitbox is inflated by 1.
+            return (!Hitbox.Intersects(otherGameObject.Hitbox)
+                    && inflatedHitbox.Intersects(otherGameObject.Hitbox));
+        }
+
+        /// <summary>
+        /// Get whether this <see cref="GameObject"/> touches one of the other hitboxes.
+        /// </summary>
+        /// <param name="otherHitboxes">The other hitboxes.</param>
+        /// <returns>True if it touches (at least) one of the other hitboxes.</returns>
+        public bool Touches(IEnumerable<Rectangle> otherHitboxes)
+        {
+            foreach (Rectangle hitbox in otherHitboxes)
+            {
+                if (Touches(hitbox))
+                {
+                    // It touches one of the hitboxes.
+                    return true;
+                }
+            }
+
+            // It seems that it doesn't touch any of the given hitboxes.
+            return false;
+        }
+
         /// <summary>
         /// Get whether this <see cref="GameObject"/> touches one of the other <see cref="GameObject"/>s.
         /// </summary>
@@ -97,23 +184,6 @@ namespace ProjektRoguelike
 
             // It seems that it doesn't touch any of the given objects.
             return false;
-        }
-
-        /// <summary>
-        /// Gets whether this <see cref="GameObject"/> touches the given other <see cref="GameObject"/>.
-        /// </summary>
-        /// <param name="otherGameObject">The other <see cref="GameObject"/>.</param>
-        /// <returns>True if they are touching, false otherwise.</returns>
-        public bool Touches(GameObject otherGameObject)
-        {
-            // Get an inflated copy of the GameObject's hitbox.
-            Rectangle inflatedHitbox = Hitbox;
-            inflatedHitbox.Location += new Point(-1);
-            inflatedHitbox.Size += new Point(2);
-
-            // It just touches if it isn't colliding unless this hitbox is inflated by 1.
-            return (!Hitbox.Intersects(otherGameObject.Hitbox)
-                    && inflatedHitbox.Intersects(otherGameObject.Hitbox));
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ProjektRoguelike
 {
@@ -73,6 +74,8 @@ namespace ProjektRoguelike
                           frameDuration: TimeSpan.FromMilliseconds(150))
         };
 
+        private static SoundEffectInstance _walkingSound;
+
         /// <summary>
         /// Creates a Player with the given graphical parameters.
         /// </summary>
@@ -99,6 +102,14 @@ namespace ProjektRoguelike
 
             // Set the initial animation.
             CurrentAnimation = _walkingAnimations[2];
+
+            // Initialize the walking sound effect.
+            if (_walkingSound == null)
+            {
+                _walkingSound = Globals.Content.Load<SoundEffect>("Sounds/SoundEffect/Sound4").CreateInstance();
+                _walkingSound.Volume = Globals.sounds.sfxVolume * Globals.sounds.sfxToMusicRatio;
+                _walkingSound.IsLooped = false;
+            }
         }
 
         /// <summary>
@@ -304,7 +315,12 @@ namespace ProjektRoguelike
             // Move it.
             if (_velocity != Vector2.Zero)
             {
-                Globals.sounds.PlaySoundEffectOnce("Sound4");
+                //Globals.sounds.PlaySoundEffectOnce("Sound4");
+                // Play the walking sound effect.
+                if (_walkingSound.State != SoundState.Playing)
+                {
+                    _walkingSound.Play();
+                }
                 CurrentAnimation.Resume();
                 _velocity = Globals.DegreesToVector2(Globals.Vector2ToDegrees(_velocity)) * speed;
                 Move(_velocity);
@@ -427,16 +443,16 @@ namespace ProjektRoguelike
                 switch (direction)
                 {
                     case Directions.Up:
-                        position.Y = Level.CurrentRoom.Walls[(byte)Directions.Up][0].Position.Y + (0.5f * Tile.Size.Y);
+                        position.Y = Level.CurrentRoom.Walls[(byte)Directions.Up].Location.Y + (1f * Tile.Size.Y);
                         break;
                     case Directions.Right:
-                        position.X = Level.CurrentRoom.Walls[(byte)Directions.Right][0].Position.X - (1.0f * Tile.Size.X);
+                        position.X = Level.CurrentRoom.Walls[(byte)Directions.Right].Location.X - (0.5f * Tile.Size.X);
                         break;
                     case Directions.Down:
-                        position.Y = Level.CurrentRoom.Walls[(byte)Directions.Down][0].Position.Y - (1.0f * Tile.Size.Y);
+                        position.Y = Level.CurrentRoom.Walls[(byte)Directions.Down].Location.Y - (0.5f * Tile.Size.Y);
                         break;
                     case Directions.Left:
-                        position.X = Level.CurrentRoom.Walls[(byte)Directions.Left][0].Position.X + (1.0f * Tile.Size.X);
+                        position.X = Level.CurrentRoom.Walls[(byte)Directions.Left].Location.X + (1.5f * Tile.Size.X);
                         break;
                 }
                 Position = position;

@@ -16,13 +16,16 @@ namespace ProjektRoguelike
     /// </summary>
     public class Sounds
     {
-        public float musicVolume, sfxVolume;
+        public float musicVolume, sfxVolume, sfxToMusicRatio;
 
         bool play = true;
 
         public Sounds()
         {
             LoadData();
+
+            // Set how loud the SFX should be, compared to the music.
+            sfxToMusicRatio = 0.5f;
         }
 
         public void PlaySoundEffect(string filename, bool repeating = false)
@@ -30,7 +33,7 @@ namespace ProjektRoguelike
             SoundEffect soundToPlay = Globals.Content.Load<SoundEffect>("Sounds/SoundEffect/" + filename);
             var soundInstance = soundToPlay.CreateInstance();
 
-            soundInstance.Volume = sfxVolume * 5 / 100;
+            soundInstance.Volume = sfxVolume * sfxToMusicRatio;
             soundInstance.IsLooped = repeating;
             soundInstance.Play();
         }
@@ -40,7 +43,7 @@ namespace ProjektRoguelike
             SoundEffect soundToPlay = Globals.Content.Load<SoundEffect>("Sounds/SoundEffect/" + filename);
             var soundInstance = soundToPlay.CreateInstance();
 
-            soundInstance.Volume = sfxVolume * 5 / 100;
+            soundInstance.Volume = sfxVolume * sfxToMusicRatio;
 
             if (play)
             {
@@ -56,7 +59,7 @@ namespace ProjektRoguelike
         public void PlaySong(string filename, bool repeating = false)
         {
             Song songToPlay = Globals.Content.Load<Song>("Sounds/Song/" + filename);
-            MediaPlayer.Volume = musicVolume * 5 / 100;
+            MediaPlayer.Volume = musicVolume;
             MediaPlayer.IsRepeating = repeating;
             MediaPlayer.Play(songToPlay);
         }
@@ -92,8 +95,8 @@ namespace ProjektRoguelike
                 List<XElement> optionList = (from t in data.Element("Root").Element("Options").Descendants("Option")
                                            select t).ToList<XElement>();
 
-                musicVolume = Convert.ToInt32(optionList[1].Element("selected").Value, Globals.culture);
-                sfxVolume = Convert.ToInt32(optionList[2].Element("selected").Value, Globals.culture);
+                musicVolume = Convert.ToInt32(optionList[1].Element("selected").Value, Globals.culture) / 20f;
+                sfxVolume = Convert.ToInt32(optionList[2].Element("selected").Value, Globals.culture) / 20f;
             }
         }
     }

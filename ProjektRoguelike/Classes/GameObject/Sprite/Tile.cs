@@ -22,6 +22,11 @@ namespace ProjektRoguelike
         }
 
         /// <summary>
+        /// The size of a tile texture.
+        /// </summary>
+        public static Vector2 TextureSize { get; } = new Vector2(256f);
+
+        /// <summary>
         /// Creates a Tile with the given graphical parameters.
         /// </summary>
         /// <param name="texture">Its texture.</param>

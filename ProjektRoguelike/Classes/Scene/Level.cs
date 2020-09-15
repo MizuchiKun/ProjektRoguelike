@@ -480,21 +480,6 @@ namespace ProjektRoguelike
                     _transitionDirection = null;
                 }
             }
-
-
-
-
-
-
-
-
-
-
-            Console.WriteLine(Camera.Position);
-
-
-
-
         }
 
         public override void Draw()

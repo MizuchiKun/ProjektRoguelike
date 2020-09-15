@@ -42,15 +42,25 @@ namespace ProjektRoguelike
         private Vector2 _topLeftCorner;
 
         /// <summary>
+        /// The Texture of a Room of this Level.
+        /// </summary>
+        private static Texture2D _roomTexture;
+
+        /// <summary>
+        /// The Sprite of this Room's background.
+        /// </summary>
+        private Sprite _roomSprite;
+
+        /// <summary>
         /// The kind of this <see cref="Room"/>.
         /// </summary>
         public RoomKind Kind { get; }
 
         /// <summary>
-        /// The walls of this <see cref="Room"/>.<br></br>
+        /// The hitboxes of the walls of this <see cref="Room"/>.<br></br>
         /// The first index specifies the direction (0=top, 1=right, 2=bottom, 3=left).
         /// </summary>
-        public Tile[][] Walls { get; } = new Tile[4][];
+        public Rectangle[] Walls { get; } = new Rectangle[4];
 
         /// <summary>
         /// The doors of this <see cref="Room"/>.<br></br>
@@ -142,18 +152,6 @@ namespace ProjektRoguelike
             }
         }
 
-
-
-
-
-
-
-
-
-        private byte _id;
-
-
-
         /// <summary>
         /// Creates a new room by the given paramters.
         /// </summary>
@@ -162,87 +160,102 @@ namespace ProjektRoguelike
         /// <param name="kind">The kind of the door.</param>
         public Room(byte roomIndex, Vector2 gridPosition, RoomKind kind)
         {
-
-
-
-            _id = roomIndex;
-
-
-
-
             // Store the parameters.
             Position = gridPosition * Globals.WindowDimensions;
             Kind = kind;
 
-            // Load the Textures.
-            Texture2D ground = Globals.Content.Load<Texture2D>("Sprites/Environment/Boden");
-            Texture2D wall = Globals.Content.Load<Texture2D>("Sprites/Environment/Wand");
-            Texture2D corner = Globals.Content.Load<Texture2D>("Sprites/Environment/Ecke");
+            // Initialize the wall hitboxes.
+            Walls[0] = new Rectangle((Position + new Vector2(0.5f, 0f) * Tile.Size * Globals.Scale).ToPoint(), (new Vector2(Dimensions.X, 1) * Tile.Size * Globals.Scale).ToPoint());
+            Walls[1] = new Rectangle((Position + new Vector2(0.5f + (Dimensions.X - 1), 0f) * Tile.Size * Globals.Scale).ToPoint(), (new Vector2(1, Dimensions.Y) * Tile.Size * Globals.Scale).ToPoint());
+            Walls[2] = new Rectangle((Position + new Vector2(0.5f, Dimensions.Y - 1) * Tile.Size * Globals.Scale).ToPoint(), (new Vector2(Dimensions.X, 1) * Tile.Size * Globals.Scale).ToPoint());
+            Walls[3] = new Rectangle((Position + new Vector2(0.5f, 0f) * Tile.Size * Globals.Scale).ToPoint(), (new Vector2(1, Dimensions.Y) * Tile.Size * Globals.Scale).ToPoint());
 
-            // Add the room background.
-            _topLeftCorner = Position;
-            _topLeftCorner += new Vector2(1, 0.5f) * Tile.Size * Globals.Scale;
-            // The corners.
-            _gameObjects.Add(new Tile(corner,
-                                      _topLeftCorner));
-            _gameObjects.Add(new Tile(corner,
-                                      _topLeftCorner + new Vector2(Dimensions.X - 1, 0) * Tile.Size * Globals.Scale,
-                                      rotation: 90f));
-            _gameObjects.Add(new Tile(corner,
-                                      _topLeftCorner + (Dimensions - Vector2.One) * Tile.Size * Globals.Scale,
-                                      rotation: 180f));
-            _gameObjects.Add(new Tile(corner,
-                                      _topLeftCorner + new Vector2(0, Dimensions.Y - 1) * Tile.Size * Globals.Scale,
-                                      rotation: -90f));
-            // The walls.
-            // Initialize the Walls arrays.
-            Walls[0] = new Tile[(int)Dimensions.X - 2];
-            Walls[1] = new Tile[(int)Dimensions.Y - 2];
-            Walls[2] = new Tile[(int)Dimensions.X - 2];
-            Walls[3] = new Tile[(int)Dimensions.Y - 2];
-            // Top and bottom.
-            for (byte x = 1; x < Dimensions.X - 1; x++)
-            {
-                // Top.
-                Tile topWall = new Tile(wall,
-                                        _topLeftCorner + new Vector2(x, 0) * Tile.Size * Globals.Scale,
-                                        rotation: 0f);
-                Walls[0][x - 1] = topWall;
+            // Initialize _topLeftCorner.
+            _topLeftCorner = Position + new Vector2(1, 0.5f) * Tile.Size * Globals.Scale;
 
-                // Bottom.
-                Tile bottomWall = new Tile(wall,
-                                           _topLeftCorner + new Vector2(x, Dimensions.Y - 1) * Tile.Size * Globals.Scale,
-                                           rotation: 180f);
-                Walls[2][x - 1] = bottomWall;
-            }
-            // Left and right.
-            for (byte y = 1; y < Dimensions.Y - 1; y++)
+            // Initialize the room texture.
+            if (_roomTexture == null)
             {
-                // Left.
-                Tile leftWall = new Tile(wall,
-                                         _topLeftCorner + new Vector2(0, y) * Tile.Size * Globals.Scale,
-                                         rotation: -90f);
-                Walls[3][y - 1] = leftWall;
+                // Create the texture.
+                Vector2 textureSize = new Vector2(15, 9) * Tile.TextureSize;
+                _roomTexture = new Texture2D(Globals.Graphics.GraphicsDevice, (int)textureSize.X, (int)textureSize.Y);
 
-                // Right.
-                Tile rightWall = new Tile(wall,
-                                          _topLeftCorner + new Vector2(Dimensions.X - 1, y) * Tile.Size * Globals.Scale,
-                                          rotation: 90f);
-                Walls[1][y - 1] = rightWall;
-            }
-            _gameObjects.AddRange(Walls[0]);
-            _gameObjects.AddRange(Walls[1]);
-            _gameObjects.AddRange(Walls[2]);
-            _gameObjects.AddRange(Walls[3]);
-            // The ground.
-            for (byte x = 1; x < Dimensions.X - 1; x++)
-            {
+                // Declare the colour data arrays.
+                Color[] ground, wallT, wallR, wallB, wallL, cornerTL, cornerTR, cornerBR, cornerBL;
+                int pixelCount = (int)(Tile.TextureSize.X * Tile.TextureSize.Y);
+                Rectangle sourceRect = new Rectangle(Vector2.Zero.ToPoint(), Tile.TextureSize.ToPoint());
+                ground = new Color[pixelCount]; wallT = new Color[pixelCount]; 
+                wallR = new Color[pixelCount]; wallB = new Color[pixelCount]; 
+                wallL = new Color[pixelCount]; cornerTL = new Color[pixelCount]; 
+                cornerTR = new Color[pixelCount]; cornerBR = new Color[pixelCount]; 
+                cornerBL = new Color[pixelCount];
+
+                // Get the colour data of the textures.
+                Globals.Content.Load<Texture2D>("Sprites/Environment/Boden").GetData(0, sourceRect, ground, 0, pixelCount);
+                Globals.Content.Load<Texture2D>("Sprites/Environment/WandT").GetData(0, sourceRect, wallT, 0, pixelCount);
+                Globals.Content.Load<Texture2D>("Sprites/Environment/WandR").GetData(0, sourceRect, wallR, 0, pixelCount);
+                Globals.Content.Load<Texture2D>("Sprites/Environment/WandB").GetData(0, sourceRect, wallB, 0, pixelCount);
+                Globals.Content.Load<Texture2D>("Sprites/Environment/WandL").GetData(0, sourceRect, wallL, 0, pixelCount);
+                Globals.Content.Load<Texture2D>("Sprites/Environment/EckeTL").GetData(0, sourceRect, cornerTL, 0, pixelCount);
+                Globals.Content.Load<Texture2D>("Sprites/Environment/EckeTR").GetData(0, sourceRect, cornerTR, 0, pixelCount);
+                Globals.Content.Load<Texture2D>("Sprites/Environment/EckeBR").GetData(0, sourceRect, cornerBR, 0, pixelCount);
+                Globals.Content.Load<Texture2D>("Sprites/Environment/EckeBL").GetData(0, sourceRect, cornerBL, 0, pixelCount);
+
+                // Create the texture.
+                Vector2 topLeftTextureCorner = new Vector2(0f) * Tile.TextureSize;
+                Rectangle destinationRect = new Rectangle(topLeftTextureCorner.ToPoint(), Tile.TextureSize.ToPoint());
+                // The corners.
+                _roomTexture.SetData(0, destinationRect, cornerTL, 0, pixelCount);
+                destinationRect.Location = (topLeftTextureCorner + new Vector2(Dimensions.X - 1, 0) * Tile.TextureSize).ToPoint();
+                _roomTexture.SetData(0, destinationRect, cornerTR, 0, pixelCount);
+                destinationRect.Location = (topLeftTextureCorner + (Dimensions - Vector2.One) * Tile.TextureSize).ToPoint();
+                _roomTexture.SetData(0, destinationRect, cornerBR, 0, pixelCount);
+                destinationRect.Location = (topLeftTextureCorner + new Vector2(0, Dimensions.Y - 1) * Tile.TextureSize).ToPoint();
+                _roomTexture.SetData(0, destinationRect, cornerBL, 0, pixelCount);
+                // The walls.
+                // Top and bottom.
+                for (byte x = 1; x < Dimensions.X - 1; x++)
+                {
+                    // Top.
+                    destinationRect.Location = (topLeftTextureCorner + new Vector2(x, 0) * Tile.TextureSize).ToPoint();
+                    _roomTexture.SetData(0, destinationRect, wallT, 0, pixelCount);
+
+                    // Bottom.
+                    destinationRect.Location = (topLeftTextureCorner + new Vector2(x, Dimensions.Y - 1) * Tile.TextureSize).ToPoint();
+                    _roomTexture.SetData(0, destinationRect, wallB, 0, pixelCount);
+                }
+                // Left and right.
                 for (byte y = 1; y < Dimensions.Y - 1; y++)
                 {
-                    _gameObjects.Add(new Tile(ground,
-                                              _topLeftCorner + new Vector2(x, y) * Tile.Size * Globals.Scale));
+                    // Left.
+                    destinationRect.Location = (topLeftTextureCorner + new Vector2(0, y) * Tile.TextureSize).ToPoint();
+                    _roomTexture.SetData(0, destinationRect, wallL, 0, pixelCount);
+
+                    // Right.
+                    destinationRect.Location = (topLeftTextureCorner + new Vector2(Dimensions.X - 1, y) * Tile.TextureSize).ToPoint();
+                    _roomTexture.SetData(0, destinationRect, wallR, 0, pixelCount);
+                }
+                // The ground.
+                for (byte x = 1; x < Dimensions.X - 1; x++)
+                {
+                    for (byte y = 1; y < Dimensions.Y - 1; y++)
+                    {
+
+                        destinationRect.Location = (topLeftTextureCorner + new Vector2(x, y) * Tile.TextureSize).ToPoint();
+                        _roomTexture.SetData(0, destinationRect, ground, 0, pixelCount);
+                    }
                 }
             }
+
+            // Set the room sprite.
+            _roomSprite = new Sprite(texture: _roomTexture,
+                                     position: Position + new Vector2(0.5f, 0) * Tile.Size,
+                                     origin: Vector2.Zero,
+                                     scale: Tile.Size / Tile.TextureSize,
+                                     layerDepth: 1f);
+
+            // Add the room sprite.
+            _gameObjects.Add(_roomSprite);
 
             // Add the room's content.
             switch (Kind)
@@ -253,7 +266,7 @@ namespace ProjektRoguelike
                         // Add controls instructions in the centre of the room.
                         Texture2D controlsInstructions = Globals.Content.Load<Texture2D>("Sprites/Misc/ControlsInstructions");
                         _gameObjects.Add(new Sprite(texture: controlsInstructions,
-                                                    position: Position + (Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size * Globals.Scale,
+                                                    position: Position + (Dimensions / 2 + new Vector2(0.5f, 0)) * Tile.Size,
                                                     scale: new Vector2(5) * (Tile.Size / controlsInstructions.Bounds.Size.ToVector2()) * Globals.Scale,
                                                     layerDepth: 0.99999f));
                     }

@@ -44,26 +44,13 @@ namespace ProjektRoguelike
         /// Calls the <see cref="GameObjectContainer"/>'s <see cref="GameObject"/>s' Update() methods.
         /// </summary>
         public override void Update()
-        {
+        {            
+            // Call your GameObjects' Update() methods.
             for (int i = 0; i < _gameObjects.Count; i++)
             {
                 _gameObjects[i].Update();
-                /*
-                if (_gameObjects[i].Done)
-                {
-                    _gameObjects.RemoveAt(i);
-                    i--;
-                }*/
             }
-            /*
-            foreach (GameObject gameObject in _gameObjects)
-            {
-                if (!gameObject.Done)
-                {
-                    gameObject.Update();
-                }
-            }
-            */
+            Console.WriteLine($"GameObjectContainer.cs:53: There are {_gameObjects.Count} GameObject in this Room.");
         }
 
         /// <summary>
