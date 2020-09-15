@@ -407,14 +407,15 @@ namespace ProjektRoguelike
         /// </summary>
         public override void Update()
         {
-            // If the player is in the boss room and all enemies are dead, spawn a trapdoor to the next level.
-            if (CurrentRoom.Kind == RoomKind.Boss && CurrentRoom.Enemies.Count == 0)
-            {
-                Level.CurrentRoom.Add(new Trapdoor(Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale + new Vector2(0, 150)));
-            }
             // If not transition is happening.
             if (_transitionDirection == null)
             {
+                // If the player is in the boss room and all enemies are dead, spawn a trapdoor to the next level.
+                if (CurrentRoom.Kind == RoomKind.Boss && CurrentRoom.Enemies.Count == 0)
+                {
+                    Level.CurrentRoom.Add(new Trapdoor(Level.CurrentRoom.Position + (Room.Dimensions / 2) * Tile.Size * Globals.Scale + new Vector2(0, 150)));
+                }
+
                 // Update the current room if no transition is happening.
                 CurrentRoom.Update();
 

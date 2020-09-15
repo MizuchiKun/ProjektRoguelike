@@ -78,7 +78,7 @@ namespace ProjektRoguelike
         {
             if (Health <= 0)
             {
-                Level.CurrentRoom.Add(new Trapdoor(Position));
+                //Level.CurrentRoom.Add(new Trapdoor(Position));
                 switch (itemNum)
                 {
                     case 1:

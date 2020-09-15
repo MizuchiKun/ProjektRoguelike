@@ -96,7 +96,7 @@ namespace ProjektRoguelike
         {
             Globals.sounds.PlaySong("audio", true);
             Globals.save.DeleteFile("xml\\level.xml");
-            Globals.save.DeleteFile("xml\\stats.xml");
+            Globals.save.DeleteFile("xml\\stats.xml"); // I, as a player, would like to keep my stats over multiple runs.
             Globals.CurrentScene = new Level(0);
             Globals.gamestate = Gamestate.Active;
         }
@@ -109,6 +109,7 @@ namespace ProjektRoguelike
             // If there is a Level to load.
             if (xmlLevel != null)
             {
+                Globals.sounds.PlaySong("audio", true);
                 Globals.CurrentScene = new Level(0, true);
                 Level.Player.LoadData(xmlPlayer);
                 Globals.gamestate = Gamestate.Active;
