@@ -50,7 +50,6 @@ namespace ProjektRoguelike
             {
                 _gameObjects[i].Update();
             }
-            Console.WriteLine($"GameObjectContainer.cs:53: There are {_gameObjects.Count} GameObject in this Room.");
         }
 
         /// <summary>
