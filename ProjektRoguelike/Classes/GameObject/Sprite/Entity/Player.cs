@@ -41,12 +41,12 @@ namespace ProjektRoguelike
         /// <summary>
         /// The bombs the player has at its disposal.
         /// </summary>
-        public int Bombs { get; set; } = 100;
+        public int Bombs { get; set; }
 
         /// <summary>
         /// The keys the player owns. Used for certain doors and chests.
         /// </summary>
-        public int Keys { get; set; } = 100;
+        public int Keys { get; set; }
 
         /// <summary>
         /// The items the player has picked up this run.

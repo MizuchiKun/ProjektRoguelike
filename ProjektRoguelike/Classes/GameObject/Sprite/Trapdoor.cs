@@ -59,7 +59,7 @@ namespace ProjektRoguelike
                 if (wentThroughDoor)
                 {
                     Level.LevelIndex += 1;
-                    if (Level.LevelIndex == 4)
+                    if (Level.LevelIndex >= 3)
                     {
                         Globals.gamestate = Gamestate.Win;
                         Globals.CurrentScene = new Victoryscreen();
