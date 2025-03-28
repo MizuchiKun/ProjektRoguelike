@@ -88,7 +88,7 @@ namespace ProjektRoguelike
         : base(texture: Globals.Content.Load<Texture2D>("Sprites/Playable Char/Herosheet_down"),
                position: position,
                sourceRectangle: new Rectangle(0, 0, 256, 256))
-        { 
+        {
             timer = new McTimer(600, true);
             damageImunity = new McTimer(500, true);
 
@@ -107,7 +107,7 @@ namespace ProjektRoguelike
             if (_walkingSound == null)
             {
                 _walkingSound = Globals.Content.Load<SoundEffect>("Sounds/SoundEffect/Sound4").CreateInstance();
-                _walkingSound.Volume = Globals.sounds.sfxVolume * Globals.sounds.sfxToMusicRatio;
+                _walkingSound.Volume = 0.5f * Globals.sounds.sfxVolume * Globals.sounds.sfxToMusicRatio;
                 _walkingSound.IsLooped = false;
             }
         }
@@ -462,7 +462,7 @@ namespace ProjektRoguelike
             // Else if it collides with another Entity or the frame of a door.
             else if (Collides(Level.CurrentRoom.Entities)
                      || ((byte)direction % 2 == 0
-                         && ((Level.CurrentRoom.Doors[1] != null && Collides(Level.CurrentRoom.Doors[1])) 
+                         && ((Level.CurrentRoom.Doors[1] != null && Collides(Level.CurrentRoom.Doors[1]))
                               || (Level.CurrentRoom.Doors[3] != null && Collides(Level.CurrentRoom.Doors[3])))
                          && ((Level.CurrentRoom.Doors[1] != null && Math.Abs(Position.Y - Level.CurrentRoom.Doors[1].Position.Y) > Door.Width * Scale.Y)
                              || (Level.CurrentRoom.Doors[3] != null && Math.Abs(Position.Y - Level.CurrentRoom.Doors[3].Position.Y) > Door.Width * Scale.Y)))

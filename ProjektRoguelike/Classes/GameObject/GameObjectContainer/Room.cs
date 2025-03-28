@@ -79,7 +79,7 @@ namespace ProjektRoguelike
                 {
                     _doors[i] = value[i];
                 }
-                
+
                 // Remove all Doors from _gameObjects.
                 for (ushort i = 0; i < _gameObjects.Count; i++)
                 {
@@ -184,10 +184,10 @@ namespace ProjektRoguelike
                 Color[] ground, wallT, wallR, wallB, wallL, cornerTL, cornerTR, cornerBR, cornerBL;
                 int pixelCount = (int)(Tile.TextureSize.X * Tile.TextureSize.Y);
                 Rectangle sourceRect = new Rectangle(Vector2.Zero.ToPoint(), Tile.TextureSize.ToPoint());
-                ground = new Color[pixelCount]; wallT = new Color[pixelCount]; 
-                wallR = new Color[pixelCount]; wallB = new Color[pixelCount]; 
-                wallL = new Color[pixelCount]; cornerTL = new Color[pixelCount]; 
-                cornerTR = new Color[pixelCount]; cornerBR = new Color[pixelCount]; 
+                ground = new Color[pixelCount]; wallT = new Color[pixelCount];
+                wallR = new Color[pixelCount]; wallB = new Color[pixelCount];
+                wallL = new Color[pixelCount]; cornerTL = new Color[pixelCount];
+                cornerTR = new Color[pixelCount]; cornerBR = new Color[pixelCount];
                 cornerBL = new Color[pixelCount];
 
                 // Get the colour data of the textures.
@@ -316,7 +316,7 @@ namespace ProjektRoguelike
             List<GameObject> gameObjects = new List<GameObject>();
 
             // Get the lines of the file.
-            string[] lines = File.ReadAllLines($"..\\..\\..\\..\\Content\\Rooms\\{roomKind}\\{roomKind.ToString().ToLower()}_{roomIndex}.room");
+            string[] lines = File.ReadAllLines($"..\\..\\..\\Content\\Rooms\\{roomKind}\\{roomKind.ToString().ToLower()}_{roomIndex}.room");
 
             // Go through all lines.
             for (byte y = 0; y < 9; y++)

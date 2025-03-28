@@ -148,7 +148,7 @@ namespace ProjektRoguelike
                     break;
             }
 
-            
+
 
             // Save the current states as the previous states (so they will be accessable as previous states in the next Update()).
             Globals.PreviousKeyboardState = Globals.CurrentKeyboardState;
@@ -173,9 +173,9 @@ namespace ProjektRoguelike
                 transformMatrix: Matrix.CreateTranslation(new Vector3(-Camera.Position, 0))
                                  * Matrix.CreateScale(Camera.Scale));
 
-            
 
-            
+
+
 
             switch (Globals.gamestate)
             {

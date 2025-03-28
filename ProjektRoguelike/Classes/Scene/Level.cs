@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
+//using System.Runtime.Remoting.Metadata.W3cXsd2001;  // Causes some issue when I'm trying to run it years later.
 
 namespace ProjektRoguelike
 {
@@ -112,8 +112,8 @@ namespace ProjektRoguelike
                 roomPositions.Add(currentRoomPos);
 
                 // Get the number of .room files in the "Normal" directory.
-                byte roomCount = (byte)Directory.GetFiles(path: $"..\\..\\..\\..\\Content\\Rooms\\{RoomKind.Normal}", 
-                                                          searchPattern:"*", 
+                byte roomCount = (byte)Directory.GetFiles(path: $"..\\..\\..\\Content\\Rooms\\{RoomKind.Normal}",
+                                                          searchPattern:"*",
                                                           searchOption: SearchOption.TopDirectoryOnly).Length;
 
                 // Add randomly chosen Room there.
@@ -134,7 +134,7 @@ namespace ProjektRoguelike
                 new Room(roomIndex: LevelIndex,
                          gridPosition: currentRoomPos,
                          kind: RoomKind.Boss);
-            
+
             // Choose a Room randomly from which you can start.
             do
             {
@@ -163,7 +163,7 @@ namespace ProjektRoguelike
                 roomPositions.Add(currentRoomPos);
 
                 // Get the number of .room files in the "Normal" directory.
-                byte roomCount = (byte)Directory.GetFiles(path: $"..\\..\\..\\..\\Content\\Rooms\\{RoomKind.Normal}",
+                byte roomCount = (byte)Directory.GetFiles(path: $"..\\..\\..\\Content\\Rooms\\{RoomKind.Normal}",
                                                           searchPattern: "*",
                                                           searchOption: SearchOption.TopDirectoryOnly).Length;
 
@@ -176,7 +176,7 @@ namespace ProjektRoguelike
 
 
             // Get the number of .room files in the "Hidden" directory.
-            byte hiddenRoomCount = (byte)Directory.GetFiles(path: $"..\\..\\..\\..\\Content\\Rooms\\{RoomKind.Hidden}",
+            byte hiddenRoomCount = (byte)Directory.GetFiles(path: $"..\\..\\..\\Content\\Rooms\\{RoomKind.Hidden}",
                                                             searchPattern: "*",
                                                             searchOption: SearchOption.TopDirectoryOnly).Length;
 
@@ -609,7 +609,7 @@ namespace ProjektRoguelike
 
                 // The location, where the RoomPositionX substring is supposed to stop.
                 int charLocation = statList[1].Element("amount").Value.IndexOf(" ", StringComparison.Ordinal);
-                
+
                 // The substring for the X-Coordinate in the position string.
                 // Start at index 3 (after "{X:") and go create the substring until the charLocation of the first white space.
                 string RoomPositionX = statList[1].Element("amount").Value.Substring(3, charLocation - 3);

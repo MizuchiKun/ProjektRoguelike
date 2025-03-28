@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
+// using System.Runtime.Remoting.Messaging;  // Causes some issue when I'm trying to run it years later.
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -214,7 +214,7 @@ namespace ProjektRoguelike
                                    null, Color.White, 0, new Vector2(.5f), new SpriteEffects(), 0.1f);
             }
 
-            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "The Duke of Flies", 
+            Globals.SpriteBatch.DrawString(Globals.Content.Load<SpriteFont>("Fonts/Consolas24"), "The Duke of Flies",
                                           new Vector2(Camera.Position.X + Globals.Graphics.PreferredBackBufferWidth / 2 - 155,
                                           (int)Camera.Position.Y + (Globals.Graphics.PreferredBackBufferHeight / 8) - 25), Color.White);
 
